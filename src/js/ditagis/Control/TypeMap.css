@@ -1,0 +1,51 @@
+.leaflet-control-typemap{
+    cursor: pointer;
+	background-color: #fff;
+	border-radius: 5px;
+}
+
+.leaflet-control-typemap .expandItems{
+	list-style-type: none;
+	display: none;
+}
+
+.leaflet-control-typemap .mvn {
+	margin-top: 0!important;
+	margin-bottom: 0!important;
+}
+
+.leaflet-control-typemap .fieldGroup>li {
+	margin: 5px 0;
+}
+
+.leaflet-control-typemap .fieldGroup,
+.leaflet-control-typemap .fieldGroupInline,
+.leaflet-control-typemap .fieldItem {
+	display: table-cell;
+	list-style-type: none;
+	margin: 0;
+	padding: 0 7px 0 0;
+}
+
+.leaflet-control-typemap .pls {
+	padding-left: 5px!important;
+	font-size: 12px;
+	font-weight: 300;
+}
+.leaflet-control-typemap .pls span{
+	font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+}
+
+.leaflet-control-typemap .pls-child {
+	padding-left: 0px!important;
+	font-size: 12px;
+	font-weight: 300;
+}
+.leaflet-control-typemap  input[type=radio],
+.leaflet-control-typemap  input[type=checkbox] {
+	box-sizing: border-box;
+	padding: 0;
+	margin-right: 7px;
+}

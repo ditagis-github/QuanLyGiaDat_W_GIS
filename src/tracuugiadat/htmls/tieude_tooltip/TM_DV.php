@@ -1,0 +1,2 @@
+<h6>Đất thương mại, dịch vụ</h6>
+Là đất sử dụng xây dựng các cơ sở kinh doanh, dịch vụ, thương mại và các công trình khác phục vụ cho kinh doanh, dịch vụ, thương mại (kể cả trụ sở, văn phòng đại diện của các tổ chức kinh tế)
