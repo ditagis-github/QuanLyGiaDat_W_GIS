@@ -1,1 +1,0 @@
-<a href="../../../files/">Open yourpdf.pdf with PDF.js</a>

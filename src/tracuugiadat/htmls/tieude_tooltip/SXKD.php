@@ -1,2 +1,0 @@
-<h6>Đất sản xuất, kinh doanh</h6>
-Đất sản xuất, kinh doanh phi nông nghiệp không phải là đất thương mại, dịch vụ: bao gồm các loại đất: đất khu công nghiệp; đất cụm công nghiệp; đất khu chế xuất; đất cơ sở sản xuất phi nông nghiệp; đất sử dụng cho hoạt động khoáng sản; đất sản xuất vật liệu xây dựng, làm đồ gốm.

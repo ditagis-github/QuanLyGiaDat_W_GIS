@@ -1,2 +1,0 @@
-<h6>Đất trồng cây lâu năm và Đất nông nghiệp khác</h6>
-Đất nông nghiệp khác là đất sử dụng để xây dựng nhà kính và các loại nhà khác phục vụ mục đích trồng trọt, kể cả các hình thức trồng trọt không trực tiếp trên đất; xây dựng chuồng trại chăn nuôi gia súc, gia cầm và các loại động vật khác được pháp luật cho phép; đất trồng trọt, chăn nuôi, nuôi trồng thủy sản cho mục đích học tập, nghiên cứu thí nghiệm; đất ươm tạo cây giống, con giống và đất trồng hoa, cây cảnh
