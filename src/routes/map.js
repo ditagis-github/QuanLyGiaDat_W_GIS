@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('map', { title: 'Express' });
+  res.render('map', { title: 'Hệ thống Giá đất tỉnh Bình Dương' });
 });
 
 module.exports = router;

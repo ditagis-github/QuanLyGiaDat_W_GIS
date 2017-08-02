@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
     }
     var positions = results[1];
     res.render('tracuu', {
-      title: 'Tra cứu', districts: districts, positions: positions
+      title: 'Hệ thống Tra cứu Giá đất tỉnh Bình Dương', districts: districts, positions: positions
     });
   })
 });
