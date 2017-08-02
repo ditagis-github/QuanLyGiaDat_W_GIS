@@ -1,8 +1,277 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    min-width: 384px;
 }
 
-a {
-  color: #00B7FF;
+
+/*===============================================================*/
+
+
+/*Header Css Start*/
+
+
+/*===============================================================*/
+
+.navbar-inverse {
+    background-color: #20c063;
+    border-color: #20c063;
 }
+
+.navbar-inverse .navbar-brand {
+    color: #fff;
+}
+
+.navbar-inverse .navbar-nav>.active>a,
+.navbar-inverse .navbar-nav>.active>a:hover,
+.navbar-inverse .navbar-nav>.active>a:focus {
+    color: #ffffff;
+    background-color: #10a75f;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+    color: #fff;
+}
+
+.navbar-inverse .navbar-nav>li>a:hover {
+    background-color: #10a75f;
+}
+
+.navbar-inverse .navbar-nav>.dropdown>a .caret {
+    border-top-color: #10a75f;
+    border-bottom-color: #10a75f;
+}
+
+
+/*============================================================*/
+
+
+/*Footer Css*/
+
+
+/*============================================================*/
+
+
+/*-- Footer Bottom Area --*/
+
+.footer-bottom-area {
+    background-color: #262626;
+    padding: 10px 0;
+    /*-- Copyright --*/
+    /*-- Author Credit --*/
+}
+
+@media only screen and (max-width: 767px) {
+    .footer-bottom-area .copyright {
+        text-align: center;
+    }
+}
+
+.footer-bottom-area .copyright p {
+    color: #9b9b9b;
+    font-family: "Montserrat", sans-serif;
+    font-size: 12px;
+    line-height: 24px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    margin-bottom: 0;
+}
+
+.footer-bottom-area .copyright h4 {
+    color: #ffffff;
+}
+
+.footer-bottom-area .copyright p span {
+    color: #ffffff;
+}
+
+@media only screen and (max-width: 767px) {
+    .footer-bottom-area .author-credit {
+        text-align: center;
+    }
+}
+
+.footer-bottom-area .author-credit p {
+    color: #9b9b9b;
+    font-family: "Montserrat", sans-serif;
+    font-size: 12px;
+    line-height: 24px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    margin-bottom: 0;
+}
+
+.footer-bottom-area .author-credit p a:hover {
+    color: #6ab43e;
+}
+
+.footer-bottom-area .author-credit p i {
+    color: #6ab43e;
+}
+
+.footer-bottom-area .author-credit p span {
+    color: #ffffff;
+}
+
+iframe {
+    width: 100%;
+}
+
+.fh-tracuu,
+iframe {
+    height: 680px;
+}
+
+.fh-form {
+    width: 100%;
+}
+
+.modal-dialog {
+    width: 246px;
+}
+
+.modal-footer {
+    margin-top: 0px;
+    padding: 5px;
+}
+
+
+
+/**
+Tra cứu
+**/
+
+
+
+.dv_table {
+    overflow-x:auto;
+}
+
+#dv_tb1, #dv_tb2, #dv_tb3, #dv_tb4, #dv_tb5{
+    /*width: 50%;*/
+    text-align: center;
+
+    overflow-x: auto;
+}
+
+.bg-primary{
+    font-size: 16pt;
+    font-weight: bold;
+    text-align: center;
+    color: #ffff00;
+    margin-top: 5px;
+    margin-bottom:5px;
+    padding: 8px;
+}
+
+
+
+#tb_loaidat  {
+    width: 100%;
+    border: 1px solid black;
+    border-collapse: collapse;
+    border-color: lightgray;
+}
+
+th, td {
+    padding-top: 1px;
+    padding-left: 1px;
+
+}
+
+th {
+    text-align: center;
+}
+
+#text_loaidat {
+    font-weight: bold;
+}
+.txt_loaidat {
+    text-align: center;
+}
+.tb_noidung {
+    width: 100%;
+
+}
+
+.pn_noidung {
+    padding:0px;
+    padding-top:15px;
+    padding-bottom: 15px;
+}
+
+.div_table {
+    margin-left: 15px;
+    margin-right: 15px;
+    overflow-x:auto;
+}
+
+#tb_diachinh th {
+    text-align: center;
+    vertical-align: middle;
+    background-color: #d9edf7;
+    padding: 5px;
+}
+
+#tb_diachinh td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 5px;
+}
+
+#tr_dongia_chuyen th{
+    height: 40px;
+    background-color: #999900;
+}
+
+#tr_tong_giatri th{
+    height: 40px;
+    background-color: #ffcccc;
+}
+
+#dv_tb1_tuyenduong {
+    height: 40px;
+}
+
+#tb_ketqua{
+    font-size: 10pt;
+
+}
+#tb_ketqua th {
+    text-align: center;
+    vertical-align: middle;
+    background-color: #d9edf7;
+    padding-top: 3px;
+    padding-bottom:  3px;
+}
+
+#tb_ketqua td {
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+#divKetqua .modal-dialog,#div-minimap .modal-dialog{
+    width: 100%;
+}
+
+#div_kq {
+    width: 100%;
+    display: flex;
+
+}
+
+.div_tieude_kq {
+    font-weight: bold;
+}
+
+
+.panel-info-ketqua {
+    border-color:#5cb85c;
+}
+.panel-info > .panel-heading-custom{
+    background-color: #5cb85c;
+
+    color: #ffffff;
+}
+
+

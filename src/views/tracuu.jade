@@ -1,0 +1,102 @@
+extends layout
+
+block content
+    style.
+        .ghichu {
+        padding: 10px;
+        }
+        .tooltip.top .tooltip-inner {
+        background-color: dodgerblue;
+        }
+        .tooltip.top .tooltip-arrow {
+        border-top-color: dodgerblue;
+        }
+        .tooltip.bottom .tooltip-inner {
+        background-color: dodgerblue;
+        }
+        .tooltip.bottom .tooltip-arrow {
+        border-bottom-color: dodgerblue;
+        }
+        .tooltip-inner {
+        max-width: 400px;
+        max-height: 400px;
+        overflow-y: auto
+        }
+        #divKetqua {
+        padding-left: 0px;
+        }
+    .container
+        .row
+            .col-md-12
+                p.bg-primary TRA C&#x1EE8;U GI&Aacute; &Dstrok;&#x1EA4;T T&#x1EC8;NH B&Igrave;NH D&#x1AF;&#x1A0;NG
+                .panel.panel-primary
+                    .panel-heading TH&Ocirc;NG TIN TRA C&#x1EE8;U
+                    .panel-body
+                        input(type='button', hidden='', value='Check', onclick='check();')
+                        .panel.panel-info
+                            .panel-heading &Dstrok;&#x1ECB;a ch&#x1EC9; th&#x1EED;a &dstrok;&#x1EA5;t
+                            .panel-body.pn_noidung
+                                table.tb_noidung
+                                    tr
+                                        td
+                                            .form-group
+                                                label.col-xs-12.col-sm-4.col-md-3.control-label(for='cboHuyen') Huy&#x1EC7;n, th&#x1ECB; x&atilde;, th&agrave;nh ph&#x1ED1;:
+                                                .col-xs-12.col-sm-8.col-md-6
+                                                    select#cboHuyen.form-control(onchange='act_td_chon_huyen(this.value);')
+                                                        option(value='') Ch&#x1ECD;n huy&#x1EC7;n, th&#x1ECB; x&atilde;, th&agrave;nh ph&#x1ED1;...
+                                                        each val in districts
+                                                            option(value= val.mahuyen)= val.tenhuyen
+                                    tr
+                                        td
+                                            .form-group
+                                                label.col-xs-12.col-sm-4.col-md-3.control-label(for='cboPhuongXa') X&atilde;, ph&#x1B0;&#x1EDD;ng, th&#x1ECB; tr&#x1EA5;n:
+                                                .col-xs-12.col-sm-8.col-md-6
+                                                    select#cboPhuongXa.form-control(onchange='act_td_chon_phuongxa(this.value);')
+                                                        option(value='') Ch&#x1ECD;n x&atilde;, ph&#x1B0;&#x1EDD;ng, th&#x1ECB; tr&#x1EA5;n...
+                                    tr
+                                        td
+                                            .form-group
+                                                label.col-xs-12.col-sm-4.col-md-3.control-label(for='txtTenduong') Tuy&#x1EBF;n &dstrok;&#x1B0;&#x1EDD;ng:
+                                                .col-xs-12.col-sm-8.col-md-6
+                                                    input#txtTenduong.form-control(type='text', placeholder='Nhập Tuyến đường...', onkeyup='act_td_chon_phuongxa(0);')
+                                    tr
+                                        td
+                                            .form-group
+                                                label.col-xs-12.col-sm-4.col-md-3.control-label(for='cbo_vitri') V&#x1ECB; tr&iacute; th&#x1EED;a &dstrok;&#x1EA5;t:
+                                                .col-xs-12.col-sm-8.col-md-6
+                                                    select#cbo_vitri.form-control(onchange='act_chon_vitri_thuadat(this.value);')
+                                                        option(value='') Ch&#x1ECD;n v&#x1ECB; tr&iacute; th&#x1EED;a &dstrok;&#x1EA5;t ...
+                                                        each val in positions
+                                                            option(value= val.code)= val.name
+                                hr
+                                #dv_tb_tuyenduong.div_table
+                                    table.table.table-bordered
+                        #dv_test
+    #div_ketqua
+        #divKetqua.modal.fade.col-xs-12.col-md-12.col-lg-12(tabindex='-10', role='dialog', aria-labelledby='modalLabel', aria-hidden='true')
+            .modal-dialog
+                .modal-content
+                    .modal-header(style='background-color: #337ab7;color: #ffffff')
+                        button.close(type='button', data-dismiss='modal')
+                            span(aria-hidden='true') &times;
+                            span.sr-only Close
+                        h3#lineModalLabel.modal-title K&#x1EBE;T QU&#x1EA2; TRA C&#x1EE8;U
+                    div(style='text-align: right; padding-right: 20px;padding-top: 5px;')
+                        a#export_doc(href='#')
+                            i.fa.fa-file-word-o(aria-hidden='true')
+                    #area-print.modal-body
+                        include ./tracuu/tuyenduong_chitiet
+                        
+                    .modal-footer
+                        button.btn.btn-danger.btn-default.btn-group-justified(type='button', data-dismiss='modal') Close
+    #div-minimap.modal.fade(role='dialog')
+        .modal-dialog
+            .modal-content
+                .modal-header(style='background-color: #337ab7;color: #ffffff')
+                    button.close(type='button', data-dismiss='modal')
+                        span(aria-hidden='true') &times;
+                        span.sr-only Close
+                    h3#lineModalLabel.modal-title B&#x1EA3;n &dstrok;&#x1ED3;
+                #area-print.modal-body
+                    iframe#mapiframe(src='./views/mini-map.html')
+    script(src='javascripts/tracuugiadat/scripts.js')

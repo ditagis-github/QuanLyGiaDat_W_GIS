@@ -1,0 +1,50 @@
+extends layout
+
+block content
+    script.
+        Loader.show();
+    .container
+        section#fh-grid-map.fh-inner-banner
+            #map
+            // Modal
+            #updatePrice.modal.fade(role='dialog')
+                .modal-dialog.modal-sm
+                    .modal-content
+                        form#supply-price-form(role='form')
+                            legend Cung c&#x1EA5;p gi&aacute; &dstrok;&#x1EA5;t
+                            .modal-body
+                                .form-group
+                                    label(for='name') H&#x1ECD; v&agrave; t&ecirc;n
+                                    input#name.form-control(type='text', name='name', placeholder='Họ và tên ')
+                                .form-group
+                                    label(for='phoneNumber') S&#x1ED1; &dstrok;i&#x1EC7;n tho&#x1EA1;i
+                                    input#phonenumber.form-control.input-medium.bfh-phone(type='text', data-format='ddd dddd dddd', name='phonenumber', placeholder='Số điện thoại ')
+                                .form-group
+                                    label(for='price') Gi&aacute; &dstrok;&#x1EA5;t
+                                    input#price.form-control(type='number', name='price', placeholder='Giá đất ')
+                                input#thuadatid(type='hidden', name='thuadatid')
+                                input#loaithuadat(type='hidden', name='loaithuadat')
+                            .modal-footer
+                                button.btn.btn-submit(type='submit') C&#x1EAD;p nh&#x1EAD;t
+                                button.btn.btn-default(type='button', data-dismiss='modal') &Dstrok;&oacute;ng
+        //
+            <script src="https://cdnjs.cloudflare.com/ajax/tracuugiadat/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous">
+            $(document).ready(function () {
+            $('#supply-price-form').ajaxForm({
+            url: 'supplyprice.php',
+            type: 'post',
+            dataType: 'json',
+            success: function (response, status) {
+            if (typeof response.error != undefined) {
+            $('#updatePrice').modal('toggle');
+            alert(response.message);
+            } else {
+            alert(response.message);
+            }
+            }
+            });
+            $('#price').on('focus', function () {
+            $(this).val('');
+            });
+            });</script>
+    script(async='', src='javascripts/lib/require.js', data-main='javascripts/app.js')
