@@ -91,9 +91,9 @@ define([
                 this.input = L.DomUtil.create('input', 'none-border', divInput);
                 this.input.setAttribute('placeholder', this.options.placeHolder);
                 L.DomEvent.on(this.input, 'keyup', function (event) {
-                    if (event.key === 'Enter') {
-                        this.findStreet();
-                    }
+                    // if (event.key === 'Enter') {
+                    this.findStreet();
+                    // }
                 }, this);
                 let divBtnSearch = L.DomUtil.create('div', 'search-button-container', searchBoxContainer);
                 let btnSearch = L.DomUtil.create('button', 'search-button none-border', divBtnSearch);
@@ -113,19 +113,9 @@ define([
                 return this.input.value;
             },
             findStreet() {
-                Loader.show();
                 this.resetMainResultTable();
-                if (this.timDuongLayer) {
-                    let query = new Query({
-                        params: {
-                            propertyName: 'tenconduon,tu,den'
-                        }
-                    });
+                if (this.getTextSeach() && this.getTextSeach().length > 0)
                     socket.emit('findStreet', { text: this.getTextSeach() });
-                    Loader.hide();
-                } else {
-                    console.log('Có lỗi xảy ra, không tìm thấy dữ liệu tìm đường')
-                }
             },
             mainResultClick(li) {
                 const id = li.getAttribute('data-id');

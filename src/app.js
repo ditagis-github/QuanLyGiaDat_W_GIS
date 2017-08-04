@@ -84,8 +84,9 @@ io.on('connection', function (socket) {
   })
   socket.on('findStreet', function (req) {
     client.query({
-      text: 'select gid,tu,den,tenconduon from timduong where tenconduon = $1',
-      values: [req.text]
+      // text: 'select gid,tu,den,tenconduon from timduong where tenconduon = $1',
+      text:`select gid,tu,den,tenconduon from timduong where vn_unaccent(tenconduon) like vn_unaccent($1) order by tenconduon`,
+      values: [`${req.text}%`]
     })
       .then(res => {
         socket.emit('findStreet', res.rows)
