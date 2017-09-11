@@ -65,7 +65,9 @@ define([
             },
             findStreet() {
                 this.resetMainResultTable();
+                
                 if (this.getTextSeach() && this.getTextSeach().length > 0) {
+                    Loader.show();
                     $.post('/timduong', { text: this.getTextSeach() })
                         .done((datas) => {
                             for (let item of datas) {
@@ -85,6 +87,9 @@ define([
                                 li.setAttribute('title', tooltip);
                             }
                             this.displayMainResultContainer();
+                            Loader.hide();
+                        }).fail(err=>{
+                            Loader.hide();
                         })
     }
             },
@@ -100,17 +105,14 @@ define([
                 latlng = geometryUtil.getLatlngPolyline(data.geometry),
                 x = latlng[0],
                 y = latlng[1];
+                // var marker = L.marker(latlng).addTo(this.map);
             //chuyen vi tri center cua map den x,y va zoom:18 voi hieu ung flyTo
             this.map.flyTo([x, y], 18);
+            popupUtil.show(this._map, latlng,`Từ:${data.properties.Tu}<br>Đến:${data.properties.Den}`);
             //hien thi popupContent sau khi da zoom den vi tri x,y
             //neu nhu tim duong thi khong can hien thi popup
             //có layer có tồn tại thì kiểm tra xem nó có định nghĩa popup hay không
             //nếu có thì hiển thị theo popup
-            const outField = this.timDuongLayer.options.outField;
-            if (outField) {
-                //hien thi popup len map
-                popupUtil.show(this._map, [x, y], this.timDuongLayer.getPopupContent(data.properties));
-            }
             //ẩn khung tìm kiếm
             this.displayMainResultContainer(false);
         })

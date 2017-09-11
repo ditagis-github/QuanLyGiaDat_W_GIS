@@ -5,14 +5,14 @@ define([
     return class {
         static getLatlngPolygon(geometry) {
             const
-                x = geometry.coordinates[0][0][0][1],
-                y = geometry.coordinates[0][0][0][0];
+                x = geometry.coordinates[0][0][1],
+                y = geometry.coordinates[0][0][0];
             return [x, y];
         }
         static getLatlngPolyline(geometry) {
             const
-                x = geometry.coordinates[0][0][1],
-                y = geometry.coordinates[0][0][0];
+                x = geometry.coordinates[0][0][1] || geometry.coordinates[0][1],
+                y = geometry.coordinates[0][0][0] || geometry.coordinates[0][0];
             return [x, y];
         }
         static getLatlngCentroid(vertices) {
