@@ -28,6 +28,7 @@ require([
   'css!styles/map.css'
 ], function (L, mapconfig, BetterWms, Locate, Loading, Watermark, LayerList, Legend, TypeMap, Search, QueryTask,
   SearchBox) {
+    mapconfig.map.options.crs = L.CRS.EPSG4326;
     var map = new L.Map(mapconfig.map.div, mapconfig.map.options);
     L.Map.prototype.getLayer = function (id) {
       return this.getWmsLayer(id) || this.getBasemap(id);

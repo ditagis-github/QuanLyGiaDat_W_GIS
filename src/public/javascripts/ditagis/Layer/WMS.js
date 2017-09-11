@@ -13,6 +13,7 @@ define(['L',
             this.name = options.name;
             this.id = options.id;
         },
+        _highLightThuaDat: null,
         _thuadatid: undefined,
         _loaithuadat: undefined,
         onAdd: function (map) {
@@ -20,11 +21,10 @@ define(['L',
             //   Register a click listener, then do all the upstream WMS things
             L.TileLayer.WMS.prototype.onAdd.call(this, map);
             map.on('click', this.mouseClickEvent, this);
-            
         },
 
         onRemove: function (map) {
-            this.map = map;
+
             // Triggered when the layer is removed from a map.
             //   Unregister a click listener, then do all the upstream WMS things
             L.TileLayer.WMS.prototype.onRemove.call(this, map);
@@ -32,19 +32,33 @@ define(['L',
             // map.off('mouseover', this.mouseOverEvent, this);
         },
         mouseClickEvent: function (evt) {
-            //nếu có outfield thì mới hiển thị
-            if (this.options.outField) {
-                if (this._map) {
-                    const zoom = this._map.getZoom();
-                    if (zoom) {
-                        //nếu hiển thị thì mới tìm kiếm
-                        if ((this.options.minZoom !== undefined && zoom >= this.options.minZoom) &&
-                            (this.options.maxZoom !== undefined && zoom <= this.options.maxZoom)) {
-                            this.getFeatureInfo(evt.latlng);
+            if (this.id === 'thuadat') {
+                if (this._highLightThuaDat) {
+                    this._map.removeLayer(this._highLightThuaDat);
+                    delete this._highLightThuaDat;
+                }
+                //nếu có outfield thì mới hiển thị
+                if (this.options.outField) {
+                    if (this._map) {
+                        const zoom = this._map.getZoom();
+                        if (zoom) {
+                            //nếu hiển thị thì mới tìm kiếm
+                            if ((this.options.minZoom !== undefined && zoom >= this.options.minZoom) &&
+                                (this.options.maxZoom !== undefined && zoom <= this.options.maxZoom)) {
+                                this.getFeatureInfo(evt.latlng);
+                            }
                         }
                     }
                 }
             }
+        },
+        hightLightThuaDat(coors) {
+            if (this._highLightThuaDat) {
+                this._map.removeLayer(this._highLightThuaDat);
+                delete this._highLightThuaDat;
+            }
+            this._highLightThuaDat = L.polygon(coors, { color: 'red' }).addTo(this._map);
+            this._highLightThuaDat.bringToFront();
         },
         getPopupContent(props) {
             var div = null;
@@ -62,7 +76,7 @@ define(['L',
                             var tr = L.DomUtil.create('tr', null, tbody),
                                 tdName = L.DomUtil.create('td', null, tr),
                                 tdValue = L.DomUtil.create('td', null, tr);
-                                const alias = this.getAlias(name);
+                            const alias = this.getAlias(name);
                             tdName.innerText = alias || name;
                             tdValue.innerText = value;
                         }
@@ -72,11 +86,11 @@ define(['L',
                 else if (this.options.outField) {
                     for (var i in this.options.outField) {
                         var value = props[this.options.outField[i]];
-                       if (value) {
+                        if (value) {
                             var tr = L.DomUtil.create('tr', null, tbody),
                                 tdName = L.DomUtil.create('td', null, tr),
                                 tdValue = L.DomUtil.create('td', null, tr);
-                                const alias = this.getAlias(name);
+                            const alias = this.getAlias(name);
                             tdName.innerText = alias || name;
                             tdValue.innerText = value;
                         }
@@ -88,9 +102,9 @@ define(['L',
                 // a.setAttribute('data-target', '#updatePrice');
                 a.innerText = "Cung cấp giá đất";
                 a.setAttribute('href', '#');
-                L.DomEvent.on(a,'click',()=>{
-                    if($){
-                    $('#updatePrice').modal();
+                L.DomEvent.on(a, 'click', () => {
+                    if ($) {
+                        $('#updatePrice').modal();
                     }
                 })
             }
@@ -112,7 +126,7 @@ define(['L',
                     transparent: this.wmsParams.transparent,
                     version: this.wmsParams.version,
                     format: this.wmsParams.format,
-                    bbox: this._map.getBounds().toBBoxString(),
+                    bbox: this._map.getBounds().toBBoxString() + ',EPSG:4326',
                     height: size.y,
                     width: size.x,
                     layers: this.wmsParams.layers,
@@ -124,7 +138,7 @@ define(['L',
             params[params.version === '1.3.0' ? 'j' : 'y'] = point.y;
             return params;
         },
-        getFeatureInfo (latlng) {
+        getFeatureInfo(latlng) {
 
             let queryTask = new QueryTask(this._url);
             let query = new Query({
@@ -133,6 +147,23 @@ define(['L',
             queryTask.execute(query).then((features) => {
                 if (features != undefined && features.length > 0) {
                     var ft = features[0];
+
+                    let query = new Query({
+                        params: {
+                            featureId: ft.id
+                        }
+                    });
+                    const thuaDatLayer = this._map.getLayer('thuadat');
+                    thuaDatLayer.getFeatures(query).then((results) => {
+                        const feature = results[0];
+                        const tmpCoors = feature.geometry.coordinates[0];
+                        let coors = [];
+                        for (let item of tmpCoors) {
+                            coors.push([item[1], item[0]]);
+                        }
+                        this.hightLightThuaDat(coors);
+                        // this._map.fitBounds(polygon.getBounds());
+                    });
                     if (ft.properties != undefined) {
                         var content = this.getPopupContent(ft.properties);
 
@@ -147,7 +178,14 @@ define(['L',
                         if (content != undefined) {
                             //thi goi den ham showresult de hien thi popup
                             // showResults(err, latlng, content);
-                            popupUtil.show(this._map, latlng, content)
+                            var popup = popupUtil.show(this._map, latlng, content);
+                            L.DomEvent.on(popup._closeButton, 'click', () => {
+                                if (this._highLightThuaDat) {
+                                    this._map.removeLayer(this._highLightThuaDat);
+                                    delete this._highLightThuaDat;
+                                }
+                                L.DomEvent.off(popup._closeButton, 'click');
+                            })
                         }
                         // nếu không có content thì chỉ cần fly đến vị trí latlng
                         else {
@@ -185,11 +223,11 @@ define(['L',
          * Lấy alias của thuộc tính
          * @param {Stirng} name tên của thuộc tính
          */
-        getAlias(name){
+        getAlias(name) {
             const layerInfos = this.options.layerInfos;
-            if(layerInfos){
-                for(let info of layerInfos) {
-                    if(info.name === name){
+            if (layerInfos) {
+                for (let info of layerInfos) {
+                    if (info.name === name) {
                         return info.alias;
                     }
                 }

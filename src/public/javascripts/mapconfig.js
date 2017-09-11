@@ -8,9 +8,9 @@ define([], function () {
                 fullscreenControlOptions: {
                     position: 'topleft'
                 },
-                center: [10.877913, 106.705313],
+                center: [10.95113, 106.705313],
                 // [11.132197, 106.692286],
-                zoom: 16
+                zoom: 12,
             }
         },
         layers: [{
@@ -236,7 +236,7 @@ define([], function () {
                 options: {
                     layers: 'sqlserver:hanhchinh',
                     maxZoom: 14,
-                    minZoom: 13,
+                    minZoom: 10,
                     transparent: true,
                     format: 'image/png',
                 },
@@ -283,7 +283,7 @@ define([], function () {
                 url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',
                 options: {
                     layers: 'sqlserver:songho',
-                    minZoom: 15,
+                    minZoom: 14,
                     transparent: true,
                     format: 'image/png',
 
@@ -310,7 +310,7 @@ define([], function () {
                 url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',
                 options: {
                     layers: 'sqlserver:timduong',
-                    minZoom: 15,
+                    minZoom: 14,
                     transparent: true,
                     format: 'image/png',
                 },

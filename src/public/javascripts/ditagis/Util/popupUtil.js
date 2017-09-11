@@ -11,6 +11,7 @@ define([
                 .setLatLng(latlng)
                 .setContent(content);
             popup.openOn(map);
+            return popup;
         }
     }
 
