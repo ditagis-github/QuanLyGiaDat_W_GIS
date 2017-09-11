@@ -4,20 +4,24 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var Session = require('express-session')
 var map = require('./routes/map');
 var tracuu = require('./routes/tracuu');
 
 var app = express();
 var server = require('http').Server(app);
-var io = require('socket.io')(server);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(Session({
+	secret: 'faeb4453e5d14fe6f6d04637f78077c76c73d1b4',
+	proxy: true,
+	resave: true,
+  saveUninitialized: true,
+	})
+);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,6 +29,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', map);
+app.use('/map', map);
 app.use('/tracuu', tracuu);
 
 // catch 404 and forward to error handler
@@ -43,57 +48,6 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-});
-
-/**
- * SOCKET IO
- */
-const { Client } = require('pg')
-const config = {
-  host: '112.78.5.153',
-  port: 5432,
-  user: 'postgres',
-  password: '123',
-  database: 'BinhDuong_GiaDat'
-};
-const client = new Client(config)
-client.connect();
-io.on('connection', function (socket) {
-  socket.on('findThuaDat', function (req) {
-    console.log(req);
-    var where = ['1=1'];
-    if (req.soto) {
-      where.push(`sohieutoba = '${req.soto}'`);
-    }
-    if (req.sothua) {
-      where.push(`sohieuthua = '${req.sothua}'`)
-    }
-    if (req.huyen) {
-      where.push(`maquanhuye = '${req.huyen}'`);
-    }
-    if (req.maphuongxa) {
-      where.push(`maphuongxa = '${req.maphuongxa}'`);
-    }
-    where = where.join(' and ');
-    client.query({
-      text: `select gid,chusohuu,tenquanhuy,tenphuongx,dientich,sohieutoba,sohieuthua from thuadat where ${where} `
-    }).then(res => {
-      socket.emit('findThuaDat', res.rows)
-    })
-      .catch(e => console.log(e))
-  })
-  socket.on('findStreet', function (req) {
-    client.query({
-      // text: 'select gid,tu,den,tenconduon from timduong where tenconduon = $1',
-      text:`select gid,tu,den,tenconduon from timduong where vn_unaccent(tenconduon) like vn_unaccent($1) order by tenconduon`,
-      values: [`${req.text}%`]
-    })
-      .then(res => {
-        socket.emit('findStreet', res.rows)
-      })
-      .catch(e => console.log(e))
-
-  });
 });
 
 module.exports.app = app;

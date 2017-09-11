@@ -1,7 +1,6 @@
 define([
     'L',
-    'jquery'
-], function (L, $) {
+], function (L) {
     'use strict';
     return class {
         constructor(options = {}) {

@@ -1,24 +1,7 @@
-var socket = io.connect();
-
 require.config({
   // define paths to where all of our dependencies live
   paths: {
-
-
-    'ditagis': 'ditagis',
-    'jquery': "lib/jquery-1.10.2.min",
-    'jquery-ui': "lib/jquery-ui.min",
-    // 'jquery-form': 'lib/jquery.form.min',
-    // 'bootstrap': "lib/bootstrap.min",
     use: "use"
-  },
-  use: {
-    // bootstrap: {
-    //   deps: ['jquery']
-    // },
-    // 'jquery-form': {
-    //   deps: ['jquery']
-    // }
   },
   map: {
     '*': {
@@ -28,12 +11,9 @@ require.config({
   }
 });
 
-// require all dependencies, we still need to require our leaflet-heat and leaflet-markercluster modules so they load
 require([
   'L',
   'mapconfig',
-  // 'jquery',
-  // "ditagis/lib/leaflet-google",
   'ditagis/Layer/WMS',
   'ditagis/Control/Locate',
   'ditagis/Control/Loading',
@@ -44,8 +24,6 @@ require([
   'ditagis/Control/Search',
   "ditagis/support/QueryTask",
   "ditagis/Control/SearchBox",
-  // "jquery-form",
-  // "boostrap",
   'css!styles/leaflet.css',
   'css!styles/map.css'
 ], function (L, mapconfig, BetterWms, Locate, Loading, Watermark, LayerList, Legend, TypeMap, Search, QueryTask,

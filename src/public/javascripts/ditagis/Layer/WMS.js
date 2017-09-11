@@ -11,7 +11,7 @@ define(['L',
             this._url = url;
             L.Util.setOptions(this, options);
             this.name = options.name;
-            this.id = options.id
+            this.id = options.id;
         },
         _thuadatid: undefined,
         _loaithuadat: undefined,
@@ -20,9 +20,7 @@ define(['L',
             //   Register a click listener, then do all the upstream WMS things
             L.TileLayer.WMS.prototype.onAdd.call(this, map);
             map.on('click', this.mouseClickEvent, this);
-            // map.on('mouseover', this.mouseOverEvent, this);
-            this._thuadatid = L.DomUtil.get('thuadatid');
-            this._loaithuadat = L.DomUtil.get('loaithuadat');
+            
         },
 
         onRemove: function (map) {
@@ -86,16 +84,21 @@ define(['L',
                 }
 
                 var a = L.DomUtil.create('a', '', div);
-                a.setAttribute('data-toggle', 'modal');
-                a.setAttribute('data-target', '#updatePrice');
+                // a.setAttribute('data-toggle', 'modal');
+                // a.setAttribute('data-target', '#updatePrice');
                 a.innerText = "Cung cấp giá đất";
                 a.setAttribute('href', '#');
+                L.DomEvent.on(a,'click',()=>{
+                    if($){
+                    $('#updatePrice').modal();
+                    }
+                })
             }
             return div;
         },
         _supplyPrice: function (thuadatid, loaithuadat) {
-            this._thuadatid.value = thuadatid,
-                this._loaithuadat.value = loaithuadat;
+            this._thuadatid = thuadatid,
+                this._loaithuadat = loaithuadat;
         },
         generateParams(latlng) {
             var point = this._map.latLngToContainerPoint(latlng, this._map.getZoom()),
@@ -121,7 +124,7 @@ define(['L',
             params[params.version === '1.3.0' ? 'j' : 'y'] = point.y;
             return params;
         },
-        getFeatureInfo: function (latlng) {
+        getFeatureInfo (latlng) {
 
             let queryTask = new QueryTask(this._url);
             let query = new Query({
@@ -137,8 +140,8 @@ define(['L',
                         //muc dich khi nguoi dan cung cap gia dat thi khi POST len server se biet duoc nguoi dan dang cung cap gia dat cho thua dat nao
                         // day la vi du khi click vao thua dat co objectid la 4443
                         //<input type="hidden" name="thuadatid" id="thuadatid" class="form-control" value="thuadat.4443">
-                        var thuadatid = ft.id.match(/\d+/);
-                        var loaithuadat = ft.id.match(/[a-zA-Z]+/);
+                        var thuadatid = ft.id.match(/\d+/)[0];
+                        var loaithuadat = ft.id.match(/[a-zA-Z]+/)[0];
                         this._supplyPrice(thuadatid, loaithuadat);
                         //neu co noi dung hien thi 
                         if (content != undefined) {

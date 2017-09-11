@@ -1,4 +1,4 @@
-const { Client } = require('pg')
+const { Client,Pool } = require('pg')
 const config = {
   host: '112.78.5.153',
   port: 5432,
@@ -8,3 +8,4 @@ const config = {
 };
 const client = new Client(config)
 module.exports = client
+exports.pool = new Pool(config);
