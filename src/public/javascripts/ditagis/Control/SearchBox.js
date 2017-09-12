@@ -273,20 +273,20 @@ define([
                 let labelChuSoHuu = L.DomUtil.create('label', null, divChuSoHuu);
                 labelChuSoHuu.innerText = 'Chủ sở hữu';
                 this.inputChuSoHuu = L.DomUtil.create('input', 'form-control', divChuSoHuu);
-                this.inputChuSoHuu.setAttribute('placeHolder','Có thể để trống');
+                this.inputChuSoHuu.setAttribute('placeHolder', 'Có thể để trống');
                 //Chủ sử dụng
                 let divChuSuDung = L.DomUtil.create('div', 'form-group', container);
                 let labelChuSuDung = L.DomUtil.create('label', null, divChuSuDung);
                 labelChuSuDung.innerText = 'Chủ sử dụng';
                 this.inputChuSuDung = L.DomUtil.create('input', 'form-control', divChuSuDung);
-                this.inputChuSuDung.setAttribute('placeHolder','Có thể để trống');
+                this.inputChuSuDung.setAttribute('placeHolder', 'Có thể để trống');
                 //số tờ
                 let divSoTo = L.DomUtil.create('div', 'form-group', container);
                 let labelSoTo = L.DomUtil.create('label', null, divSoTo);
                 labelSoTo.innerText = 'Số tờ';
                 this.inputSoTo = L.DomUtil.create('input', 'form-control', divSoTo);
                 this.inputSoTo.type = 'number';
-                this.inputSoTo.setAttribute('placeHolder','Có thể để trống');
+                this.inputSoTo.setAttribute('placeHolder', 'Có thể để trống');
 
                 //số thửa
                 let divSoThua = L.DomUtil.create('div', 'form-group', container);
@@ -314,7 +314,14 @@ define([
                 this.panelResultTable.innerHTML = '';
             },
             search() {
-                Loader.show();
+                // Loader.show();
+                let notify = $.notify({
+                    title: `<strong>Tìm thửa đất</strong>`,
+                    message: 'Đang tìm...'
+                }, {
+                        showProgressbar: true,
+                        delay: 20000
+                    })
                 this.resetResultTable();
                 //ẩn bảng tìm kiếm
                 this.displaySearchContainer(false);
@@ -333,8 +340,8 @@ define([
                         sothua: soHieuThua,
                         huyen: maQuanHuyen,
                         phuongxa: maPhuongXa,
-                        chuSoHuu:chuSoHuu,
-                        chuSuDung:chuSuDung
+                        chuSoHuu: chuSoHuu,
+                        chuSuDung: chuSuDung
                     })
                         .done(features => {
                             for (let feature of features) {
@@ -356,14 +363,16 @@ define([
                                 }
                                 li.setAttribute('title', title);
 
-                                //dang ky su kien click cho the li va goi den ham panelResultClick de xu ly
-                                L.DomEvent.on(li, 'click', this.panelResultClick, this);
+                                //dang ky su kien click cho the li va goi den ham thuaDatResultClick de xu ly
+                                L.DomEvent.on(li, 'click', this.thuaDatResultClick, this);
                                 //hiển thị bảng kết quả
                                 this.displayPanelResultContainer();
                             }
-                            Loader.hide();
+                            // Loader.hide();
+                            let message = features.length > 0 ? 'Tìm kiếm thành công, có ' + features.length + ' được tìm thấy' : 'Không tìm thấy kết quả như yêu cầu';
+                            notify.update({ 'type': 'success', 'message': message, 'progress': 100 });
                         }).fail(function () {
-                            Loader.hide();
+                            notify.update({ 'type': 'danger', 'message': 'Không tìm thấy kết quả', 'progress': 100 });
                         })
                 }
             },
