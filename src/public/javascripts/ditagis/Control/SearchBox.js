@@ -274,12 +274,14 @@ define([
                 labelChuSoHuu.innerText = 'Chủ sở hữu';
                 this.inputChuSoHuu = L.DomUtil.create('input', 'form-control', divChuSoHuu);
                 this.inputChuSoHuu.setAttribute('placeHolder', 'Có thể để trống');
+                L.DomEvent.on(this.inputChuSoHuu, 'keyup', this.inputPanelSearchThuaDatKeyUp, this);
                 //Chủ sử dụng
                 let divChuSuDung = L.DomUtil.create('div', 'form-group', container);
                 let labelChuSuDung = L.DomUtil.create('label', null, divChuSuDung);
                 labelChuSuDung.innerText = 'Chủ sử dụng';
                 this.inputChuSuDung = L.DomUtil.create('input', 'form-control', divChuSuDung);
                 this.inputChuSuDung.setAttribute('placeHolder', 'Có thể để trống');
+                L.DomEvent.on(this.inputChuSuDung, 'keyup', this.inputPanelSearchThuaDatKeyUp, this);
                 //số tờ
                 let divSoTo = L.DomUtil.create('div', 'form-group', container);
                 let labelSoTo = L.DomUtil.create('label', null, divSoTo);
@@ -287,7 +289,7 @@ define([
                 this.inputSoTo = L.DomUtil.create('input', 'form-control', divSoTo);
                 this.inputSoTo.type = 'number';
                 this.inputSoTo.setAttribute('placeHolder', 'Có thể để trống');
-
+                L.DomEvent.on(this.inputSoTo, 'keyup', this.inputPanelSearchThuaDatKeyUp, this);
                 //số thửa
                 let divSoThua = L.DomUtil.create('div', 'form-group', container);
                 let labelSoThua = L.DomUtil.create('label', null, divSoThua);
@@ -295,6 +297,7 @@ define([
                 this.inputSoThua = L.DomUtil.create('input', 'form-control', divSoThua);
                 this.inputSoThua.type = 'number';
                 this.inputSoThua.setAttribute('placeHolder', 'Có thể để trống');
+                L.DomEvent.on(this.inputSoThua, 'keyup', this.inputPanelSearchThuaDatKeyUp, this);
 
                 let divSearch = L.DomUtil.create('div', 'form-group', container);
                 let btnSearch = L.DomUtil.create('input', 'btn-primary', container);
@@ -310,8 +313,13 @@ define([
                     this.displayPanelResultContainer(true);
                 }, this);
             },
+            inputPanelSearchThuaDatKeyUp(){
+                if (event.key === 'Enter') {
+                    this.search();
+                }
+            },
             resetResultTable() {
-                this.panelResultTable.innerHTML = '';
+                this.panelResultContainer.innerHTML = '';
             },
             search() {
                 // Loader.show();
@@ -322,58 +330,70 @@ define([
                         showProgressbar: true,
                         delay: 20000
                     })
-                this.resetResultTable();
-                //ẩn bảng tìm kiếm
-                this.displaySearchContainer(false);
+                try {
 
+                    this.resetResultTable();
+                    //ẩn bảng tìm kiếm
+                    this.displaySearchContainer(false);
+                    let ul = L.DomUtil.create('ul', 'list-group', this.panelResultContainer);
 
-                //lấy dữ liệu từ người dùng
-                const soHieuToBanDo = this.inputSoTo.value,
-                    soHieuThua = this.inputSoThua.value,
-                    chuSoHuu = this.inputChuSoHuu.value,
-                    chuSuDung = this.inputChuSuDung.value,
-                    maQuanHuyen = this.cbDistrict.value,
-                    maPhuongXa = this.cbWard.value;
-                if ($) {
-                    $.post('/map/thuadat/timkiem', {
-                        soto: soHieuToBanDo,
-                        sothua: soHieuThua,
-                        huyen: maQuanHuyen,
-                        phuongxa: maPhuongXa,
-                        chuSoHuu: chuSoHuu,
-                        chuSuDung: chuSuDung
-                    })
-                        .done(features => {
-                            for (let feature of features) {
-                                const id = feature.OBJECTID, //lấy id của feature 
-                                    chuSoHuu = feature.ChuSoHuu; //lấy tên người sở hữu 
-                                let li = L.DomUtil.create('li', 'list-group-item', this.panelResultTable); //tạo dom
-                                li.setAttribute('data-id', 'thuadat.' + id); //gán giá trị id cho data-id
-                                li.innerText = chuSoHuu; //hiển thị tên chủ sở hữu 
-
-                                /**
-                                 * Hiển thị title khi người dùng rê chuột vào kết quả
-                                 */
-                                var title = '';
-                                for (var key in feature) {
-                                    var value = feature[key];
-                                    if (value) {
-                                        title += `${this.thuadatLayer.getAlias(key) || key} : ${value}\r\n`;
-                                    }
-                                }
-                                li.setAttribute('title', title);
-
-                                //dang ky su kien click cho the li va goi den ham thuaDatResultClick de xu ly
-                                L.DomEvent.on(li, 'click', this.thuaDatResultClick, this);
-                                //hiển thị bảng kết quả
-                                this.displayPanelResultContainer();
-                            }
-                            // Loader.hide();
-                            let message = features.length > 0 ? 'Tìm kiếm thành công, có ' + features.length + ' được tìm thấy' : 'Không tìm thấy kết quả như yêu cầu';
-                            notify.update({ 'type': 'success', 'message': message, 'progress': 100 });
-                        }).fail(function () {
-                            notify.update({ 'type': 'danger', 'message': 'Không tìm thấy kết quả', 'progress': 100 });
+                    //lấy dữ liệu từ người dùng
+                    const soHieuToBanDo = this.inputSoTo.value,
+                        soHieuThua = this.inputSoThua.value,
+                        chuSoHuu = this.inputChuSoHuu.value,
+                        chuSuDung = this.inputChuSuDung.value,
+                        maQuanHuyen = this.cbDistrict.value,
+                        maPhuongXa = this.cbWard.value;
+                    if ($) {
+                        $.post('/map/thuadat/timkiem', {
+                            soto: soHieuToBanDo,
+                            sothua: soHieuThua,
+                            huyen: maQuanHuyen,
+                            phuongxa: maPhuongXa,
+                            chuSoHuu: chuSoHuu,
+                            chuSuDung: chuSuDung
                         })
+                            .done(features => {
+                                for (let feature of features) {
+                                    const id = feature.OBJECTID;//lấy id của feature 
+                                    
+                                    let li = L.DomUtil.create('li', 'list-group-item', ul); //tạo dom
+                                    li.setAttribute('data-id', 'thuadat.' + id); //gán giá trị id cho data-id
+                                    let nameStrong = L.DomUtil.create('strong', 'name');
+                                    if (feature.ChuSoHuu && feature.ChuSoHuu.trim()) {
+                                        nameStrong.innerText = feature.ChuSoHuu;
+                                    } else {
+                                        nameStrong.innerText = 'Vô danh';
+                                        L.DomUtil.addClass(nameStrong, 'error');
+                                    }
+                                    li.innerHTML = `${nameStrong.outerHTML} ${feature.TenPhuongXa ? ', ' + feature.TenPhuongXa : ''} ${feature.TenQuanHuyen ? ', ' + feature.TenQuanHuyen : ''}`
+                                    /*
+                                     * Hiển thị title khi người dùng rê chuột vào kết quả
+                                     */
+                                    var title = '';
+                                    for (var key in feature) {
+                                        var value = feature[key];
+                                        if (value) {
+                                            title += `${this.thuadatLayer.getAlias(key) || key} : ${value}\r\n`;
+                                        }
+                                    }
+                                    li.setAttribute('title', title);
+
+                                    //dang ky su kien click cho the li va goi den ham thuaDatResultClick de xu ly
+                                    L.DomEvent.on(li, 'click', this.thuaDatResultClick, this);
+                                    //hiển thị bảng kết quả
+                                    this.displayPanelResultContainer();
+                                }
+                                // Loader.hide();
+                                let message = features.length > 0 ? 'Tìm kiếm thành công, có ' + features.length + ' được tìm thấy' : 'Không tìm thấy kết quả như yêu cầu';
+                                notify.update({ 'type': 'success', 'message': message, 'progress': 90 });
+                            }).fail(function () {
+                                notify.update({ 'type': 'danger', 'message': 'Không tìm thấy kết quả', 'progress': 90 });
+                            })
+                    }
+
+                } catch (error) {
+                    notify.update({ 'type': 'danger', 'message': 'Không tìm thấy kết quả', 'progress': 90 });
                 }
             },
             thuaDatResultClick(evt) {
@@ -429,7 +449,7 @@ define([
                 L.DomEvent.on(closeButton, 'click', (evt) => {
                     this.displayPanelResultContainer(false);
                 }, this);
-                this.panelResultTable = L.DomUtil.create('ul', 'list-group', container);
+                this.panelResultContainer = L.DomUtil.create('div', 'results-container', container);
             },
 
         })
