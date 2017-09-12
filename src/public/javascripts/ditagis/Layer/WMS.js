@@ -20,7 +20,7 @@ define(['L',
             // Triggered when the layer is added to a map.
             //   Register a click listener, then do all the upstream WMS things
             L.TileLayer.WMS.prototype.onAdd.call(this, map);
-            map.on('click', this.mouseClickEvent, this);
+            map.on('click', this.click, this);
         },
 
         onRemove: function (map) {
@@ -28,10 +28,10 @@ define(['L',
             // Triggered when the layer is removed from a map.
             //   Unregister a click listener, then do all the upstream WMS things
             L.TileLayer.WMS.prototype.onRemove.call(this, map);
-            map.off('click', this.mouseClickEvent, this);
+            map.off('click', this.click, this);
             // map.off('mouseover', this.mouseOverEvent, this);
         },
-        mouseClickEvent: function (evt) {
+        click: function (evt) {
             if (this.id === 'thuadat') {
                 if (this._highLightThuaDat) {
                     this._map.removeLayer(this._highLightThuaDat);
@@ -52,13 +52,23 @@ define(['L',
                 }
             }
         },
-        hightLightThuaDat(coors) {
+        highLightThuaDat(geometry) {
+            this.clearHighlightThuaDat();
+            if (geometry) {
+                const tmpCoors = geometry.coordinates[0];
+                let coors = [];
+                for (let item of tmpCoors) {
+                    coors.push([item[1], item[0]]);
+                }
+                this._highLightThuaDat = L.polygon(coors, { color: 'red' }).addTo(this._map);
+                this._highLightThuaDat.bringToFront();
+            }
+        },
+        clearHighlightThuaDat() {
             if (this._highLightThuaDat) {
                 this._map.removeLayer(this._highLightThuaDat);
                 delete this._highLightThuaDat;
             }
-            this._highLightThuaDat = L.polygon(coors, { color: 'red' }).addTo(this._map);
-            this._highLightThuaDat.bringToFront();
         },
         getPopupContent(props) {
             var div = null;
@@ -156,12 +166,7 @@ define(['L',
                     const thuaDatLayer = this._map.getLayer('thuadat');
                     thuaDatLayer.getFeatures(query).then((results) => {
                         const feature = results[0];
-                        const tmpCoors = feature.geometry.coordinates[0];
-                        let coors = [];
-                        for (let item of tmpCoors) {
-                            coors.push([item[1], item[0]]);
-                        }
-                        this.hightLightThuaDat(coors);
+                        this.highLightThuaDat(feature.geometry);
                         // this._map.fitBounds(polygon.getBounds());
                     });
                     if (ft.properties != undefined) {
@@ -180,10 +185,7 @@ define(['L',
                             // showResults(err, latlng, content);
                             var popup = popupUtil.show(this._map, latlng, content);
                             L.DomEvent.on(popup._closeButton, 'click', () => {
-                                if (this._highLightThuaDat) {
-                                    this._map.removeLayer(this._highLightThuaDat);
-                                    delete this._highLightThuaDat;
-                                }
+                                this.clearHighlightThuaDat();
                                 L.DomEvent.off(popup._closeButton, 'click');
                             })
                         }
