@@ -25,8 +25,14 @@ class DatabaseManager {
             if (info.huyen) {
                 where.push(`MaQuanHuyen = '${info.huyen}'`);
             }
-            if (info.MaPhuongXa) {
+            if (info.phuongxa) {
                 where.push(`MaPhuongXa = '${info.phuongxa}'`);
+            }
+            if (info.chuSoHuu) {
+                where.push(`contains(chusohuu,'"${info.chuSoHuu}"')`);
+            }
+            if (info.chuSuDung) {
+                where.push(`contains(chusudung,'"${info.chuSoHuu}"')`);
             }
             where = where.join(' and ');
             this.sql.connect(config).then(() => {

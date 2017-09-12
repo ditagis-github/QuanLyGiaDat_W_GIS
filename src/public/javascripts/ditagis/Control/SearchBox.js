@@ -268,12 +268,25 @@ define([
                         }
                     })
                 }
+                //Chủ sở hữu
+                let divChuSoHuu = L.DomUtil.create('div', 'form-group', container);
+                let labelChuSoHuu = L.DomUtil.create('label', null, divChuSoHuu);
+                labelChuSoHuu.innerText = 'Chủ sở hữu';
+                this.inputChuSoHuu = L.DomUtil.create('input', 'form-control', divChuSoHuu);
+                this.inputChuSoHuu.setAttribute('placeHolder','Có thể để trống');
+                //Chủ sử dụng
+                let divChuSuDung = L.DomUtil.create('div', 'form-group', container);
+                let labelChuSuDung = L.DomUtil.create('label', null, divChuSuDung);
+                labelChuSuDung.innerText = 'Chủ sử dụng';
+                this.inputChuSuDung = L.DomUtil.create('input', 'form-control', divChuSuDung);
+                this.inputChuSuDung.setAttribute('placeHolder','Có thể để trống');
                 //số tờ
                 let divSoTo = L.DomUtil.create('div', 'form-group', container);
                 let labelSoTo = L.DomUtil.create('label', null, divSoTo);
                 labelSoTo.innerText = 'Số tờ';
                 this.inputSoTo = L.DomUtil.create('input', 'form-control', divSoTo);
                 this.inputSoTo.type = 'number';
+                this.inputSoTo.setAttribute('placeHolder','Có thể để trống');
 
                 //số thửa
                 let divSoThua = L.DomUtil.create('div', 'form-group', container);
@@ -281,6 +294,7 @@ define([
                 labelSoThua.innerText = 'Số thửa';
                 this.inputSoThua = L.DomUtil.create('input', 'form-control', divSoThua);
                 this.inputSoThua.type = 'number';
+                this.inputSoThua.setAttribute('placeHolder', 'Có thể để trống');
 
                 let divSearch = L.DomUtil.create('div', 'form-group', container);
                 let btnSearch = L.DomUtil.create('input', 'btn-primary', container);
@@ -309,6 +323,8 @@ define([
                 //lấy dữ liệu từ người dùng
                 const soHieuToBanDo = this.inputSoTo.value,
                     soHieuThua = this.inputSoThua.value,
+                    chuSoHuu = this.inputChuSoHuu.value,
+                    chuSuDung = this.inputChuSuDung.value,
                     maQuanHuyen = this.cbDistrict.value,
                     maPhuongXa = this.cbWard.value;
                 if ($) {
@@ -316,7 +332,9 @@ define([
                         soto: soHieuToBanDo,
                         sothua: soHieuThua,
                         huyen: maQuanHuyen,
-                        phuongxa: maPhuongXa
+                        phuongxa: maPhuongXa,
+                        chuSoHuu:chuSoHuu,
+                        chuSuDung:chuSuDung
                     })
                         .done(features => {
                             for (let feature of features) {
