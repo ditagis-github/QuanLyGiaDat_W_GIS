@@ -37,7 +37,7 @@ class DatabaseManager {
             where = where.join(' and ');
             this.sql.connect(config).then(() => {
                 const request = new this.sql.Request()
-                let sql = `select OBJECTID,ChuSoHuu,TenQuanHuyen,TenPhuongXa,DienTich,SoHieuToBanDo,SoHieuThua from THUADAT where ${where}`
+                let sql = `select OBJECTID,ChuSoHuu,TenQuanHuyen,TenPhuongXa,DienTich,SoHieuToBanDo,SoHieuThua from THUADAT where ${where} order by tenquanhuyen,tenphuongxa,chusohuu`
                 console.log(sql);
                 request.query(sql, (err, result) => {
                     if (err) {
