@@ -367,7 +367,7 @@ define([
                         })
                 }
             },
-            panelResultClick(evt) {
+            thuaDatResultClick(evt) {
                 let li = evt.target;
                 const id = li.getAttribute('data-id');
 
@@ -381,28 +381,28 @@ define([
                         const data = features[0]; //vì query theo id nên chỉ duy nhất có một features được trả về
                         let plg = this.thuadatLayer.highLightThuaDat(data.geometry);
                         if (plg) {
-                            let latlng = plg.getCenter(),
-                                x = latlng.lat,
-                                y = latlng.lng;
+                            // let latlng = plg.getCenter(),
+                            //     x = latlng.lat,
+                            //     y = latlng.lng;
 
                             //chuyen vi tri center cua map den x,y va zoom:18 voi hieu ung flyTo
                             this._map.fitBounds(plg.getBounds());
                             // this.map.flyTo([x, y], 18);
                             //hien thi popupContent sau khi da zoom den vi tri x,y
-                            if (data != undefined) {
-                                //neu nhu tim duong thi khong can hien thi popup
-                                //có layer có tồn tại thì kiểm tra xem nó có định nghĩa popup hay không
-                                //nếu có thì hiển thị theo popup
-                                const outField = this.thuadatLayer.options.outField;
-                                if (outField) {
-                                    //hien thi popup len map
-                                    var popup = popupUtil.show(this._map, [x, y], this.thuadatLayer.getPopupContent(data.properties));
-                                    L.DomEvent.on(popup._closeButton, 'click', () => {
-                                        this.thuadatLayer.clearHighlightThuaDat();
-                                        L.DomEvent.off(popup._closeButton, 'click');
-                                    })
-                                }
-                            }
+                            // if (data != undefined) {
+                            //     //neu nhu tim duong thi khong can hien thi popup
+                            //     //có layer có tồn tại thì kiểm tra xem nó có định nghĩa popup hay không
+                            //     //nếu có thì hiển thị theo popup
+                            //     const outField = this.thuadatLayer.options.outField;
+                            //     if (outField) {
+                            //         //hien thi popup len map
+                            //         var popup = popupUtil.show(this._map, [x, y], this.thuadatLayer.getPopupContent(data.properties));
+                            //         L.DomEvent.on(popup._closeButton, 'click', () => {
+                            //             this.thuadatLayer.clearHighlightThuaDat();
+                            //             L.DomEvent.off(popup._closeButton, 'click');
+                            //         })
+                            //     }
+                            // }
                         }
                     })
                 }
