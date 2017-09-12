@@ -63,6 +63,7 @@ define(['L',
                 this._highLightThuaDat = L.polygon(coors, { color: 'red' }).addTo(this._map);
                 this._highLightThuaDat.bringToFront();
             }
+            return this._highLightThuaDat;
         },
         clearHighlightThuaDat() {
             if (this._highLightThuaDat) {

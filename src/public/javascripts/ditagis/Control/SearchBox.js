@@ -360,26 +360,30 @@ define([
                         }
                     });
                     this.thuadatLayer.getFeatures(query).then((features) => {
-                        const data = features[0], //vì query theo id nên chỉ duy nhất có một features được trả về
-                            latlng = geometryUtil.getLatlngCentroid(data.geometry.coordinates[0]),
-                            x = latlng[0],
-                            y = latlng[1];
-                        this.thuadatLayer.highLightThuaDat(data.geometry);
-                        //chuyen vi tri center cua map den x,y va zoom:18 voi hieu ung flyTo
-                        this.map.flyTo([x, y], 18);
-                        //hien thi popupContent sau khi da zoom den vi tri x,y
-                        if (data != undefined) {
-                            //neu nhu tim duong thi khong can hien thi popup
-                            //có layer có tồn tại thì kiểm tra xem nó có định nghĩa popup hay không
-                            //nếu có thì hiển thị theo popup
-                            const outField = this.thuadatLayer.options.outField;
-                            if (outField) {
-                                //hien thi popup len map
-                                var popup = popupUtil.show(this._map, [x, y], this.thuadatLayer.getPopupContent(data.properties));
-                                L.DomEvent.on(popup._closeButton, 'click', () => {
-                                    this.thuadatLayer.clearHighlightThuaDat();
-                                    L.DomEvent.off(popup._closeButton, 'click');
-                                })
+                        const data = features[0]; //vì query theo id nên chỉ duy nhất có một features được trả về
+                        let plg = this.thuadatLayer.highLightThuaDat(data.geometry);
+                        if (plg) {
+                            let latlng = plg.getCenter(),
+                                x = latlng.lat,
+                                y = latlng.lng;
+
+                            //chuyen vi tri center cua map den x,y va zoom:18 voi hieu ung flyTo
+                            this._map.fitBounds(plg.getBounds());
+                            // this.map.flyTo([x, y], 18);
+                            //hien thi popupContent sau khi da zoom den vi tri x,y
+                            if (data != undefined) {
+                                //neu nhu tim duong thi khong can hien thi popup
+                                //có layer có tồn tại thì kiểm tra xem nó có định nghĩa popup hay không
+                                //nếu có thì hiển thị theo popup
+                                const outField = this.thuadatLayer.options.outField;
+                                if (outField) {
+                                    //hien thi popup len map
+                                    var popup = popupUtil.show(this._map, [x, y], this.thuadatLayer.getPopupContent(data.properties));
+                                    L.DomEvent.on(popup._closeButton, 'click', () => {
+                                        this.thuadatLayer.clearHighlightThuaDat();
+                                        L.DomEvent.off(popup._closeButton, 'click');
+                                    })
+                                }
                             }
                         }
                     })
