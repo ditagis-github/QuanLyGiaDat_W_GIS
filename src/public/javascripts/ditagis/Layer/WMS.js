@@ -2,8 +2,9 @@ define(['L',
     "ditagis/Util/popupUtil",
     "ditagis/support/Query",
     "ditagis/support/QueryTask",
+    "ditagis/toolview/bootstrap"
 
-], function (L, popupUtil, Query, QueryTask) {
+], function (L, popupUtil, Query, QueryTask,bootstrap) {
     L.TileLayer.BetterWMS = L.TileLayer.WMS.extend({
         options: {},
         initialize: function (url, options) {
@@ -75,8 +76,8 @@ define(['L',
             var div = null;
             //nếu có outfield thì mới generate popup
             if (this.options.outField) {
-                var div = L.DomUtil.create('div');
-                var table = L.DomUtil.create('table', 'table-bordered', div);
+                var div = L.DomUtil.create('div','popup-container');
+                var table = L.DomUtil.create('table', 'popup-content table-bordered', div);
                 var tbody = L.DomUtil.create('tbody', null, table);
                 //nếu có outfield thì hiển thị theo outfield
                 //nếu outfield là * thì hiển thị tất cả
@@ -107,17 +108,56 @@ define(['L',
                         }
                     }
                 }
-
-                var a = L.DomUtil.create('a', '', div);
+                let divFooter = L.DomUtil.create('div','popup-footer',div)
+                let viewPrice = L.DomUtil.create('a', 'item', divFooter);
                 // a.setAttribute('data-toggle', 'modal');
                 // a.setAttribute('data-target', '#updatePrice');
-                a.innerText = "Cung cấp giá đất";
-                a.setAttribute('href', '#');
-                L.DomEvent.on(a, 'click', () => {
+                viewPrice.setAttribute('title', "Xem giá đất");
+                viewPrice.innerHTML = '<i class="fa fa-eye" aria-hidden="true"></i>';
+                viewPrice.setAttribute('href', '#');
+                L.DomEvent.on(viewPrice, 'click', (evt) => {
+                    evt.preventDefault();
                     if ($) {
-                        $('#updatePrice').modal();
+                        let body = `<h3>${props.GiaDat?props.GiaDat + 'VNĐ' : 'Chưa có thông tin giá đất'} </h3>`;
+                        let modal = bootstrap.modal('modal-giadat','Giá đất',body);
+                        modal.modal();
                     }
                 })
+                let cungCapGiaDat = L.DomUtil.create('a', 'item', divFooter);
+                cungCapGiaDat.setAttribute('title', "Cung cấp giá đất");
+                cungCapGiaDat.innerHTML = '<i class="fa fa-handshake-o" aria-hidden="true"></i>'
+                cungCapGiaDat.setAttribute('href', '#');
+                L.DomEvent.on(cungCapGiaDat, 'click', (evt) => {
+                    evt.preventDefault();
+                    if ($) {
+                        let body = ``;
+                        let modal = bootstrap.modal('modal-cungcapgiadat','Cung cấp giá đất',body);
+                        modal.modal();
+                    }
+                })
+                let chuyenDoiMucDich = L.DomUtil.create('a', 'item', divFooter);
+                chuyenDoiMucDich.setAttribute('title', "Chuyển đổi mục đích");
+                chuyenDoiMucDich.innerHTML = '<i class="fa fa-exchange" aria-hidden="true"></i>'
+                chuyenDoiMucDich.setAttribute('href', '#');
+                L.DomEvent.on(chuyenDoiMucDich, 'click', (evt) => {
+                    evt.preventDefault();
+                    if ($) {
+                        let body = `<table class='table'>
+                        <thead>
+                            <th>Mục đích hiện tại</th>
+                            <th>Diện tích</th>
+                            <th>Mục đích chuyển đổi</th>
+                            <th>Diện tích chuyển đổi</th>
+                            <th>Chi phí chuyển đổi</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        </table>`;
+                        let modal = bootstrap.modal('modal-chuyendoimucdich','Chuyển đổi mục đích',body);
+                        modal.modal();
+                    }
+                })
+                
             }
             return div;
         },

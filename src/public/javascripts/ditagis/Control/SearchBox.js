@@ -385,7 +385,7 @@ define([
                                     this.displayPanelResultContainer();
                                 }
                                 // Loader.hide();
-                                let message = features.length > 0 ? 'Tìm kiếm thành công, có ' + features.length + ' được tìm thấy' : 'Không tìm thấy kết quả như yêu cầu';
+                                let message = features.length > 0 ? 'Tìm kiếm thành công, có ' + features.length + ' kết quả được tìm thấy' : 'Không tìm thấy kết quả như yêu cầu';
                                 notify.update({ 'type': 'success', 'message': message, 'progress': 90 });
                             }).fail(function () {
                                 notify.update({ 'type': 'danger', 'message': 'Không tìm thấy kết quả', 'progress': 90 });
