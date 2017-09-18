@@ -119,7 +119,7 @@ define(['L',
                     evt.preventDefault();
                     if ($) {
                         let body = `<h3>${props.GiaDat?props.GiaDat + 'VNĐ' : 'Chưa có thông tin giá đất'} </h3>`;
-                        let modal = bootstrap.modal('modal-giadat','Giá đất',body);
+                        let modal = bootstrap.modal({id:'modal-giadat',title:'Giá đất',body:body});
                         modal.modal();
                     }
                 })
@@ -131,7 +131,7 @@ define(['L',
                     evt.preventDefault();
                     if ($) {
                         let body = ``;
-                        let modal = bootstrap.modal('modal-cungcapgiadat','Cung cấp giá đất',body);
+                        let modal = bootstrap.modal({id:'modal-cungcapgiadat',title:'Cung cấp giá đất',body:body});
                         modal.modal();
                     }
                 })
@@ -153,7 +153,7 @@ define(['L',
                         <tbody>
                         </tbody>
                         </table>`;
-                        let modal = bootstrap.modal('modal-chuyendoimucdich','Chuyển đổi mục đích',body);
+                        let modal = bootstrap.modal({id:'modal-chuyendoimucdich',title:'Chuyển đổi mục đích',body:body});
                         modal.modal();
                     }
                 })

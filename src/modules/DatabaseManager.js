@@ -59,7 +59,12 @@ class DatabaseManager {
         return new Promise((resolve, reject) => {
             this.sql.connect(config).then(() => {
                 const request = new this.sql.Request()
-                let sql = `select OBJECTID,tu,den,TenConDuong from timduong where contains(tenconduong,'"${text}"') order by TenConDuong`;
+                let sql = `SELECT * FROM (
+                    SELECT OBJECTID,tu,den,TenConDuong,
+                    ROW_NUMBER() OVER (PARTITION BY TenConDuong ORDER BY OBJECTID) AS RowNumber
+                    from timduong 
+                    where contains(tenconduong,'"${text}"')
+                ) a WHERE a.RowNumber = 1 order by a.TenConDuong`;
                 request.query(sql, (err, result) => {
                     if (err) {
                         console.log(err);
