@@ -125,12 +125,13 @@ define(['L',
                 })
                 let cungCapGiaDat = L.DomUtil.create('a', 'item', divFooter);
                 cungCapGiaDat.setAttribute('title', "Cung cấp giá đất");
+                cungCapGiaDat.setAttribute('')
                 cungCapGiaDat.innerHTML = '<i class="fa fa-handshake-o" aria-hidden="true"></i>'
                 cungCapGiaDat.setAttribute('href', '#');
                 L.DomEvent.on(cungCapGiaDat, 'click', (evt) => {
                     evt.preventDefault();
                     if ($) {
-                        let body = ``;
+                        let body = `Chức năng sẽ sớm được cập nhật trong phiên bản tiếp theo`;
                         let modal = bootstrap.modal({id:'modal-cungcapgiadat',title:'Cung cấp giá đất',body:body});
                         modal.modal();
                     }
@@ -151,6 +152,7 @@ define(['L',
                             <th>Chi phí chuyển đổi</th>
                         </thead>
                         <tbody>
+                        Chức năng sẽ sớm được cập nhật trong phiên bản tiếp theo
                         </tbody>
                         </table>`;
                         let modal = bootstrap.modal({id:'modal-chuyendoimucdich',title:'Chuyển đổi mục đích',body:body});
