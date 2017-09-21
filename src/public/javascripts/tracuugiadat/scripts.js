@@ -193,8 +193,8 @@ function act_td_chon_phuongxa(val) {
             for (let item of data) {
                 var str_row_temp = ` <tr> 
                 <td>${item.ten_duong}</td><td>${item.tu}</td><td>${item.den}</td>
-                <td><a href='#'  data-target='#divKetqua' title='Xem giá đất' onclick='act_td_xem(${item.id});'>Xem giá đất</a> | 
-                <a href='#' title='Xem vị trí tại bản đồ' data-tenduong='${item.ten_duong}' data-tu='{tu}' data-den='${item.den}' onclick='focusmap(this);'>Xem vị trí</a> </td>
+                <td><a data-target='#divKetqua' title='Xem giá đất' onclick='act_td_xem(${item.id});'>Xem giá đất</a> | 
+                <a title='Xem vị trí tại bản đồ' data-tenduong='${item.ten_duong}' data-tu='${item.tu}' data-den='${item.den}' onclick='focusmap(this);'>Xem vị trí</a> </td>
                 </tr> `;
                 str += str_row_temp;
             }
@@ -934,6 +934,7 @@ function get_data_to_wordfile(id, vitri, nam) {
 }
 
 function focusmap(evt) {
+    Loader.show();
     const it = $(evt),
         tenduong = it.attr('data-tenduong'),
         tu = it.attr('data-tu'),
@@ -946,6 +947,7 @@ function focusmap(evt) {
         Loader.hide();
     }).catch(() => {
         alert('Không tìm được vị trí trên bản đồ');
+        Loader.hide();
     })
 
 

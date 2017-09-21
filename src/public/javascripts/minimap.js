@@ -4,19 +4,7 @@ require.config({
 
 
     'ditagis': 'ditagis',
-    'jquery': "lib/jquery-1.10.2.min",
-    'jquery-ui': "lib/jquery-ui.min",
-    // 'jquery-form': 'lib/jquery.form.min',
-    // 'bootstrap': "lib/bootstrap.min",
     use: "use"
-  },
-  use: {
-    // bootstrap: {
-    //   deps: ['jquery']
-    // },
-    // 'jquery-form': {
-    //   deps: ['jquery']
-    // }
   },
   map: {
     '*': {
@@ -30,20 +18,15 @@ require.config({
 require([
   'L',
   'mapconfig',
-  // 'jquery',
-  // "ditagis/lib/leaflet-google",
   'ditagis/Layer/WMS',
   'ditagis/Control/LayerList',
   'ditagis/Control/Legend',
   'ditagis/Control/TypeMap',
   "ditagis/support/Query",
   "ditagis/Util/geometryUtil",
-  // "jquery-form",
-  // "boostrap",
   'css!styles/leaflet.css',
   'css!styles/map.css',
-  // 'css!styles/minimap.css'
-], function (L, mapconfig, BetterWms, LayerList, Legend, TypeMap, Query,geometryUtil) {
+], function (L, mapconfig, BetterWms, LayerList, Legend, TypeMap, Query, geometryUtil) {
   var map = new L.Map(mapconfig.map.div, mapconfig.map.options);
   L.Map.prototype.getLayer = function (id) {
     return this.getWmsLayer(id) || this.getBasemap(id);
@@ -58,38 +41,31 @@ require([
   window.Map = {
     zoom: function (tenduong, tu, den) {
       return new Promise((resolve, reject) => {
-        let query = new Query({
-          params: {
-            propertyName: 'tenconduon,tu,den'
-          }
-        });
-        const layer = map.getLayer('timduong');
-        layer.getFeatures(query).then((features) => {
-
-
-
-          for (let feature of features) {
-            const props = feature.properties,
-              _tenduong = props.tenconduon,
-              _tu = props.tu,
-              _den = props.den;
-            if (tenduong == _tenduong && tu == _tu && den == _den) {
-              query.params = {
-                featureId: feature.id
-              }
-              layer.getFeatures(query).then((features) => {
-                const data = features[0], //vì query theo id nên chỉ duy nhất có một features được trả về
-                  latlng = geometryUtil.getLatlngPolyline(data.geometry),
-                  x = latlng[0],
-                  y = latlng[1];
-                //chuyen vi tri center cua map den x,y va zoom:18 voi hieu ung flyTo
-                map.flyTo([x, y], 18);
-                resolve(data);
+        $.post('/map/timduong', { text: tenduong })
+          .done((datas) => {
+            if (datas.length <= 0) {
+              reject('cannot find street')
+            } else {
+              let data = datas[0];
+              const layer = map.getLayer('timduong');
+              let query = new Query({
+                params: {
+                  featureId: data.OBJECTID
+                }
               });
-              break;
+              layer.getFeatures(query).then((features) => {
+                const data = features[0];
+                //chuyen vi tri center cua map den x,y va zoom:18 voi hieu ung flyTo
+                
+                let polyline = highlight(data.geometry);
+                if(polyline)
+                map.flyTo(polyline.getCenter(), 18);
+                resolve(data);
+              }).catch(err => reject('cannot find street'));
             }
-          }
-        })
+          }).fail(err => {
+            reject(err);
+          })
       });
     }
   }
@@ -99,7 +75,26 @@ require([
         return bm;
     }
   }
-
+  var _highLight = null;
+  function highlight(geometry) {  
+    clearHighlight();
+    if (geometry) {
+      const tmpCoors = geometry.coordinates;
+      let coors = [];
+      for (let item of tmpCoors) {
+        coors.push([item[1], item[0]]);
+      }
+      _highLight = L.polyline(coors, {weight:5, color: 'red',fill:false,bubblingMouseEvents:false,dashArray:"5, 5" }).addTo(map);
+      _highLight.bringToFront();
+    }
+    return _highLight;
+  }
+  function clearHighlight() {
+    if (_highLight) {
+      map.removeLayer(_highLight);
+      delete _highLight;
+    }
+  }
 
   const initBasemap = () => {
     let bases = [],
@@ -189,8 +184,8 @@ require([
       //"Bản đồ": OpenStreetMap,
       "Dữ liệu Vệ tinh": map.getBasemap('satellite')
     }, {
-      position: position
-    }).addTo(map);
+        position: position
+      }).addTo(map);
 
 
 

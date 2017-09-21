@@ -125,7 +125,6 @@ define(['L',
                 })
                 let cungCapGiaDat = L.DomUtil.create('a', 'item', divFooter);
                 cungCapGiaDat.setAttribute('title', "Cung cấp giá đất");
-                cungCapGiaDat.setAttribute('')
                 cungCapGiaDat.innerHTML = '<i class="fa fa-handshake-o" aria-hidden="true"></i>'
                 cungCapGiaDat.setAttribute('href', '#');
                 L.DomEvent.on(cungCapGiaDat, 'click', (evt) => {
