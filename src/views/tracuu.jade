@@ -28,7 +28,6 @@ block content
     .container
         .row
             .col-md-12
-                p.bg-primary TRA C&#x1EE8;U GI&Aacute; &Dstrok;&#x1EA4;T T&#x1EC8;NH B&Igrave;NH D&#x1AF;&#x1A0;NG
                 .panel.panel-primary
                     .panel-heading TH&Ocirc;NG TIN TRA C&#x1EE8;U
                     .panel-body
@@ -64,7 +63,7 @@ block content
                                             .form-group
                                                 label.col-xs-12.col-sm-4.col-md-3.control-label(for='cbo_vitri') V&#x1ECB; tr&iacute; th&#x1EED;a &dstrok;&#x1EA5;t:
                                                 .col-xs-12.col-sm-8.col-md-6
-                                                    select#cbo_vitri.form-control(onchange='act_chon_vitri_thuadat(this.value);')
+                                                    select#cbo_vitri.form-control()
                                                         option(value='') Ch&#x1ECD;n v&#x1ECB; tr&iacute; th&#x1EED;a &dstrok;&#x1EA5;t ...
                                                         each val in positions
                                                             option(value= val.code)= val.name
@@ -92,7 +91,7 @@ block content
     #div-minimap.modal.fade(role='dialog')
         .modal-dialog
             .modal-content
-                .modal-header(style='background-color: #337ab7;color: #ffffff')
+                .modal-header(style='background-color: #20c063;color: #ffffff')
                     button.close(type='button', data-dismiss='modal')
                         span(aria-hidden='true') &times;
                         span.sr-only Close

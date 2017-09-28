@@ -37,4 +37,9 @@ router.post('/viewdetail', function (req, res) {
     res.status(200).send(rows);
   })
 })
+router.post('/tinh_bang5', function (req, res) {
+  tracuudb.act_tinh_bang5(req.body.id, req.body.vitri,req.body.sonam).then(rows => {
+    res.status(200).send(rows);
+  })
+})
 module.exports = router;

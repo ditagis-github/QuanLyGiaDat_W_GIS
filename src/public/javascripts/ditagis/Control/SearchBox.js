@@ -268,13 +268,6 @@ define([
                         }
                     })
                 }
-                //Chủ sở hữu
-                let divChuSoHuu = L.DomUtil.create('div', 'form-group', container);
-                let labelChuSoHuu = L.DomUtil.create('label', null, divChuSoHuu);
-                labelChuSoHuu.innerText = 'Chủ sở hữu';
-                this.inputChuSoHuu = L.DomUtil.create('input', 'form-control', divChuSoHuu);
-                this.inputChuSoHuu.setAttribute('placeHolder', 'Có thể để trống');
-                L.DomEvent.on(this.inputChuSoHuu, 'keyup', this.inputPanelSearchThuaDatKeyUp, this);
                 //Chủ sử dụng
                 let divChuSuDung = L.DomUtil.create('div', 'form-group', container);
                 let labelChuSuDung = L.DomUtil.create('label', null, divChuSuDung);
@@ -340,7 +333,6 @@ define([
                     //lấy dữ liệu từ người dùng
                     const soHieuToBanDo = this.inputSoTo.value,
                         soHieuThua = this.inputSoThua.value,
-                        chuSoHuu = this.inputChuSoHuu.value,
                         chuSuDung = this.inputChuSuDung.value,
                         maQuanHuyen = this.cbDistrict.value,
                         maPhuongXa = this.cbWard.value;
@@ -350,7 +342,6 @@ define([
                             sothua: soHieuThua,
                             huyen: maQuanHuyen,
                             phuongxa: maPhuongXa,
-                            chuSoHuu: chuSoHuu,
                             chuSuDung: chuSuDung
                         })
                             .done(features => {
@@ -360,8 +351,8 @@ define([
                                     let li = L.DomUtil.create('li', 'list-group-item', ul); //tạo dom
                                     li.setAttribute('data-id', 'thuadat.' + id); //gán giá trị id cho data-id
                                     let nameStrong = L.DomUtil.create('strong', 'name');
-                                    if (feature.ChuSoHuu && feature.ChuSoHuu.trim()) {
-                                        nameStrong.innerText = feature.ChuSoHuu;
+                                    if (feature.ChuSuDung && feature.ChuSuDung.trim()) {
+                                        nameStrong.innerText = feature.ChuSuDung;
                                     } else {
                                         nameStrong.innerText = 'Vô danh';
                                         L.DomUtil.addClass(nameStrong, 'error');

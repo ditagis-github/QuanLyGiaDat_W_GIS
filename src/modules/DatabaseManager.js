@@ -28,9 +28,6 @@ class DatabaseManager {
             if (info.phuongxa) {
                 where.push(`MaPhuongXa = '${info.phuongxa}'`);
             }
-            if (info.chuSoHuu) {
-                where.push(`contains(chusohuu,'"${info.chuSoHuu}"')`);
-            }
             if (info.chuSuDung) {
                 where.push(`contains(chusudung,'"${info.chuSoHuu}"')`);
             }
