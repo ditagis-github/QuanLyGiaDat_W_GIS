@@ -6,6 +6,13 @@ define([
     constructor(options) {
     }
     chuyeDoiMucDich(props) {
+      let notify = $.notify({
+        title: `<strong>Chuyển đổi mục đích sử dụng đất</strong>`,
+        message: 'Đang tải dữ liệu...'
+    }, {
+            showProgressbar: true,
+            delay: 20000
+        })
       // let dataSource = null;
       $.post('/map/thuadat/mdsd', { soTo: props.SoHieuToBanDo, soThua: props.SoHieuThua, phuongXa: props.MaPhuongXa, quanHuyen: props.MaQuanHuyen })
         .done((datas) => {
@@ -33,6 +40,7 @@ define([
           body.appendChild(table);
           let tbody = table.getElementsByTagName('tbody')[0];
           let dataSource = [];
+          notify.update({},{'progress': 50 });
           $.post('/map/thuadat/chitiet', {
             soTo: props.SoHieuToBanDo, soThua: props.SoHieuThua, phuongXa: props.MaPhuongXa, quanHuyen: props.MaQuanHuyen
           })
@@ -82,6 +90,9 @@ define([
                 tr.appendChild(tdYear);
                 tbody.appendChild(tr);
               }
+              notify.update({ 'type': 'success', 'message': 'Truy vấn thành công', 'progress': 90 });
+            }).fail(err=>{
+              notify.update({ 'type': 'danger', 'message': 'Truy vấn thất bại', 'progress': 90 });
             })
           let footer = document.createElement('div');
           let label = document.createElement('label');
@@ -129,6 +140,8 @@ define([
           footer.appendChild(btnClose);
           let modal = bootstrap.modal('modal-giadat', 'Chuyển mục đích sử dụng', body, footer, { dlgLarge: true });
           modal.modal();
+        }).fail(err=>{
+          notify.update({ 'type': 'danger', 'message': 'Truy vấn thất bại', 'progress': 90 });
         })
     }
   }
