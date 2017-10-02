@@ -763,12 +763,3 @@
     background-color: #fff;
     background-color: rgba(255,255,255,.7);
 }
-.popup-container .popup-footer{
-	margin: 5px;
-}
-.popup-container .popup-footer .item{
-	padding: 5px;
-}
-.popup-container .popup-footer .fa{
-	font-size: 25px;
-}

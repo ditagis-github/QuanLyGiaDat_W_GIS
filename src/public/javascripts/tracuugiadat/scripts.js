@@ -369,14 +369,6 @@ function act_td_xem(val) {
         $("#dv_loai").html(ghichu);
 
         $("#dv_tb1").html(banggia1);
-
-        //alert(data.bang_gia);
-
-        //$("#dv_tb3").load("table_template_chuyen_muc_dich.php");
-        //tinh_gia_chuyen_LUA_CHN();
-
-        // $("#dv_tb4").html(data.bang_gia4);
-        // $("#dv_tb5").html(data.bang_gia5);
         $("#txtduong").val(val);
 
 

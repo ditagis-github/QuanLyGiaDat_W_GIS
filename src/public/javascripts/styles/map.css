@@ -94,3 +94,21 @@ div .table {
 	border: 1px solid #cdd1d4;
 }
 
+.popup-container .popup-footer{
+	margin: 5px;
+}
+.popup-container .popup-footer .item{
+	padding: 5px;
+}
+.popup-container .popup-footer .fa{
+	font-size: 25px;
+	color:#20c063
+}
+.cmd-container{
+	left: 0;
+    position: absolute;
+    margin-left: 15px;
+}
+.cmd-container .price{
+	color:#20c063
+}

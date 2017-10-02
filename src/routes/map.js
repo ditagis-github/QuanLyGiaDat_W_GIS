@@ -25,4 +25,18 @@ router.post('/timduong', function (req, res) {
     res.status(400).send('Đã có lỗi xảy ra');
   })
 });
+router.post('/thuadat/chitiet', function (req, res) {
+  dbMng.chitietthuadat(req.body).then(result => {
+    res.status(200).send(result);
+  }).catch(e => {
+    res.status(400).send('Đã có lỗi xảy ra');
+  })
+});
+router.post('/thuadat/mdsd', function (req, res) {
+  dbMng.loaiMucDichSD(req.body).then(result => {
+    res.status(200).send(result);
+  }).catch(e => {
+    res.status(400).send('Đã có lỗi xảy ra');
+  })
+});
 module.exports = router;

@@ -2,9 +2,10 @@ define(['L',
     "ditagis/Util/popupUtil",
     "ditagis/support/Query",
     "ditagis/support/QueryTask",
-    "ditagis/toolview/bootstrap"
+    "ditagis/toolview/bootstrap",
+    "ditagis/Layer/PopupAction"
 
-], function (L, popupUtil, Query, QueryTask,bootstrap) {
+], function (L, popupUtil, Query, QueryTask,bootstrap,PopupAction) {
     L.TileLayer.BetterWMS = L.TileLayer.WMS.extend({
         options: {},
         initialize: function (url, options) {
@@ -13,7 +14,10 @@ define(['L',
             L.Util.setOptions(this, options);
             this.name = options.name;
             this.id = options.id;
+            if(this.id === 'thuadat')
+            this._popupAction = PopupAction();
         },
+        
         _highLightThuaDat: null,
         _thuadatid: undefined,
         _loaithuadat: undefined,
@@ -76,8 +80,8 @@ define(['L',
             var div = null;
             //nếu có outfield thì mới generate popup
             if (this.options.outField) {
-                var div = L.DomUtil.create('div','popup-container');
-                var table = L.DomUtil.create('table', 'popup-content table table-bordered', div);
+                var div = L.DomUtil.create('div','popup-container table-responsive');
+                var table = L.DomUtil.create('table', 'popup-content table', div);
                 var tbody = L.DomUtil.create('tbody', null, table);
                 //nếu có outfield thì hiển thị theo outfield
                 //nếu outfield là * thì hiển thị tất cả
@@ -119,7 +123,7 @@ define(['L',
                     evt.preventDefault();
                     if ($) {
                         let body = `<h3>${props.GiaDat?props.GiaDat + 'VNĐ' : 'Chưa có thông tin giá đất'} </h3>`;
-                        let modal = bootstrap.modal({id:'modal-giadat',title:'Giá đất',body:body});
+                        let modal = bootstrap.modal('modal-giadat','Giá đất',body);
                         modal.modal();
                     }
                 })
@@ -131,7 +135,7 @@ define(['L',
                     evt.preventDefault();
                     if ($) {
                         let body = `Chức năng sẽ sớm được cập nhật trong phiên bản tiếp theo`;
-                        let modal = bootstrap.modal({id:'modal-cungcapgiadat',title:'Cung cấp giá đất',body:body});
+                        let modal = bootstrap.modal('modal-cungcapgiadat','Cung cấp giá đất',body);
                         modal.modal();
                     }
                 })
@@ -141,22 +145,7 @@ define(['L',
                 chuyenDoiMucDich.setAttribute('href', '#');
                 L.DomEvent.on(chuyenDoiMucDich, 'click', (evt) => {
                     evt.preventDefault();
-                    if ($) {
-                        let body = `<table class='table'>
-                        <thead>
-                            <th>Mục đích hiện tại</th>
-                            <th>Diện tích</th>
-                            <th>Mục đích chuyển đổi</th>
-                            <th>Diện tích chuyển đổi</th>
-                            <th>Chi phí chuyển đổi</th>
-                        </thead>
-                        <tbody>
-                        Chức năng sẽ sớm được cập nhật trong phiên bản tiếp theo
-                        </tbody>
-                        </table>`;
-                        let modal = bootstrap.modal({id:'modal-chuyendoimucdich',title:'Chuyển đổi mục đích',body:body});
-                        modal.modal();
-                    }
+                    this._popupAction.chuyeDoiMucDich(props);
                 })
                 
             }
@@ -218,9 +207,9 @@ define(['L',
                         //muc dich khi nguoi dan cung cap gia dat thi khi POST len server se biet duoc nguoi dan dang cung cap gia dat cho thua dat nao
                         // day la vi du khi click vao thua dat co objectid la 4443
                         //<input type="hidden" name="thuadatid" id="thuadatid" class="form-control" value="thuadat.4443">
-                        var thuadatid = ft.id.match(/\d+/)[0];
-                        var loaithuadat = ft.id.match(/[a-zA-Z]+/)[0];
-                        this._supplyPrice(thuadatid, loaithuadat);
+                        // var thuadatid = ft.id.match(/\d+/)[0];
+                        // var loaithuadat = ft.id.match(/[a-zA-Z]+/)[0];
+                        // this._supplyPrice(thuadatid, loaithuadat);
                         //neu co noi dung hien thi 
                         if (content != undefined) {
                             //thi goi den ham showresult de hien thi popup
