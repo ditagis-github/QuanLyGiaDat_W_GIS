@@ -5,7 +5,7 @@ define(['L',
     "ditagis/toolview/bootstrap",
     "ditagis/Layer/PopupAction"
 
-], function (L, popupUtil, Query, QueryTask,bootstrap,PopupAction) {
+], function (L, popupUtil, Query, QueryTask, bootstrap, PopupAction) {
     L.TileLayer.BetterWMS = L.TileLayer.WMS.extend({
         options: {},
         initialize: function (url, options) {
@@ -14,10 +14,10 @@ define(['L',
             L.Util.setOptions(this, options);
             this.name = options.name;
             this.id = options.id;
-            if(this.id === 'thuadat')
-            this._popupAction = PopupAction();
+            if (this.id === 'thuadat')
+                this._popupAction = PopupAction();
         },
-        
+
         _highLightThuaDat: null,
         _thuadatid: undefined,
         _loaithuadat: undefined,
@@ -80,7 +80,7 @@ define(['L',
             var div = null;
             //nếu có outfield thì mới generate popup
             if (this.options.outField) {
-                var div = L.DomUtil.create('div','popup-container table-responsive');
+                var div = L.DomUtil.create('div', 'popup-container table-responsive');
                 var table = L.DomUtil.create('table', 'popup-content table', div);
                 var tbody = L.DomUtil.create('tbody', null, table);
                 //nếu có outfield thì hiển thị theo outfield
@@ -101,7 +101,8 @@ define(['L',
                 //hiển thị theo outField
                 else if (this.options.outField) {
                     for (var i in this.options.outField) {
-                        var value = props[this.options.outField[i]];
+                        let name = this.options.outField[i],
+                            value = props[name];
                         if (value) {
                             var tr = L.DomUtil.create('tr', null, tbody),
                                 tdName = L.DomUtil.create('td', null, tr),
@@ -112,7 +113,7 @@ define(['L',
                         }
                     }
                 }
-                let divFooter = L.DomUtil.create('div','popup-footer',div)
+                let divFooter = L.DomUtil.create('div', 'popup-footer', div)
                 let viewPrice = L.DomUtil.create('a', 'item', divFooter);
                 // a.setAttribute('data-toggle', 'modal');
                 // a.setAttribute('data-target', '#updatePrice');
@@ -122,8 +123,8 @@ define(['L',
                 L.DomEvent.on(viewPrice, 'click', (evt) => {
                     evt.preventDefault();
                     if ($) {
-                        let body = `<h3>${props.GiaDat?props.GiaDat + 'VNĐ' : 'Chưa có thông tin giá đất'} </h3>`;
-                        let modal = bootstrap.modal('modal-giadat','Giá đất',body);
+                        let body = `<h3>${props.GiaDat ? props.GiaDat + 'VNĐ' : 'Chưa có thông tin giá đất'} </h3>`;
+                        let modal = bootstrap.modal('modal-giadat', 'Giá đất', body);
                         modal.modal();
                     }
                 })
@@ -135,7 +136,7 @@ define(['L',
                     evt.preventDefault();
                     if ($) {
                         let body = `Chức năng sẽ sớm được cập nhật trong phiên bản tiếp theo`;
-                        let modal = bootstrap.modal('modal-cungcapgiadat','Cung cấp giá đất',body);
+                        let modal = bootstrap.modal('modal-cungcapgiadat', 'Cung cấp giá đất', body);
                         modal.modal();
                     }
                 })
@@ -147,7 +148,7 @@ define(['L',
                     evt.preventDefault();
                     this._popupAction.chuyeDoiMucDich(props);
                 })
-                
+
             }
             return div;
         },

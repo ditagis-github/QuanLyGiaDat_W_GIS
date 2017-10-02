@@ -26,10 +26,10 @@ define([], function () {
                 // opacity: 0.7,
                 minZoom: 15,
                 version: '1.1.0',
-                outField: ["*"],
+                outField: ["KyHieuMDSD","ChuSuDung","SoHieuToBanDo","SoHieuThua","DienTich"],
                 layerInfos: [{
-                    name: 'ChuSoHuu',
-                    alias: 'Chủ sở hữu'
+                    name: 'ChuSuDung',
+                    alias: 'Chủ sử dụng'
                 },
                 {
                     name: 'DienTich',
@@ -44,46 +44,9 @@ define([], function () {
                     alias: 'Số hiệu thửa'
                 },
                 {
-                    name: 'SoNha',
-                    alias: 'Địa chỉ'
-                },
-                {
-                    name: 'TenQuanHuyen',
-                    alias: 'Tên quận/huyện'
-                },
-                {
-                    name: 'TenPhuongXa',
-                    alias: 'Tên phường xã'
-                },
-                {
-                    name: 'GiaDat',
-                    alias: 'Giá đất'
-                },
-                {
                     name: 'KyHieuMDSD',
                     alias: 'Ký hiệu mục đích sử dụng'
-                }
-                ]
-                // typemap: [
-                //     {
-                //         checked:true,
-                //         name: 'Giá đất',
-                //         style: 'sqlserver:THUADAT',
-                //         subs: [
-                //             {
-                //                 checked: true,
-                //                 name: 'Giá nhà nước',
-                //                 style: 'sqlserver:thuadat_gianhanuoc'
-                //             }, {
-                //                 name: 'Giá thị trường',
-                //                 style: 'sqlserver:thuadat_giathitruong'
-                //             }, {
-                //                 name: 'Giá người dân cung cấp',
-                //                 style: 'sqlserver:thuadat_gianguoidancungcap'
-                //             }
-                //         ]
-                //     }
-                // ]
+                }]
             }
         },
         {

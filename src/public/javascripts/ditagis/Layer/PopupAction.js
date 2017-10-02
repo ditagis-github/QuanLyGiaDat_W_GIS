@@ -93,7 +93,6 @@ define([
           let btnSubmit = document.createElement('button');
           btnSubmit.classList.add('btn', 'btn-primary');
           btnSubmit.innerText = "Chấp nhận";
-          btnSubmit.getAttribute
           btnSubmit.addEventListener('click', () => {
             let total = 0;
             for (const item of dataSource) {
