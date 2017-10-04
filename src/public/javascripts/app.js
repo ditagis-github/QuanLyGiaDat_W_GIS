@@ -28,7 +28,7 @@ require([
   'css!styles/map.css'
 ], function (L, mapconfig, BetterWms, Locate, Loading, Watermark, LayerList, Legend, TypeMap, Search, QueryTask,
   SearchBox) {
-    mapconfig.map.options.crs = L.CRS.EPSG4326;
+    
     var map = new L.Map(mapconfig.map.div, mapconfig.map.options);
     L.Map.prototype.getLayer = function (id) {
       return this.getWmsLayer(id) || this.getBasemap(id);
@@ -68,15 +68,24 @@ require([
           format: 'image/png',
           layers: 'satellite'
         });
+      var satelliteLabel = L.tileLayer(
+        'http://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+          transparent: true,
+          format: 'image/png',
+          layers: 'satellite'
+        });
       satellite.id = 'satellite'
+      
       satellite.on('add remove', (evt) => {
         const type = evt.type;
         if (type === 'add') {
+          satelliteLabel.addTo(map);
           satellite.bringToBack(); //chuyển nó xuống tầng dưới, tại vì nó là basemap
           //set độ mờ cho layer là 0.7
           if (map.layers)
             map.layers.map((layer) => layer.setOpacity(0.7));
         } else {
+          map.removeLayer(satelliteLabel);
           if (map.layers)
             map.layers.map((layer) => layer.setOpacity(1));
         }
