@@ -81,7 +81,7 @@ define(['L',
             //nếu có outfield thì mới generate popup
             if (this.options.outField) {
                 var div = L.DomUtil.create('div', 'popup-container table-responsive');
-                var table = L.DomUtil.create('table', 'popup-content table', div);
+                var table = L.DomUtil.create('table', 'table', div);
                 var tbody = L.DomUtil.create('tbody', null, table);
                 //nếu có outfield thì hiển thị theo outfield
                 //nếu outfield là * thì hiển thị tất cả

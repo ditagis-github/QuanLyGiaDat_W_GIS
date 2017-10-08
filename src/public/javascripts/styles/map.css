@@ -84,16 +84,21 @@ table.featureInfo caption {
 	font-weight: bold;
 	padding: .2em .2em;
 }
-
-div .table {
-	max-height: 300px;
-	overflow: auto;
+.leaflet-popup-content-wrapper, .leaflet-popup-tip{
+	background: #20c063;
+    color: #fff;
 }
+
 .leaflet-touch .leaflet-control-layers,
 .leaflet-touch .leaflet-bar {
 	border: 1px solid #cdd1d4;
 }
-
+.popup-container{
+	font-size:16px;
+}
+.popup-container table tr td:first-child{
+	font-weight: bold;
+}
 .popup-container .popup-footer{
 	margin: 5px;
 }
@@ -102,7 +107,10 @@ div .table {
 }
 .popup-container .popup-footer .fa{
 	font-size: 25px;
-	color:#20c063
+	color:#fff
+}
+.leaflet-container a.leaflet-popup-close-button{
+	color: #fff
 }
 .cmd-container{
 	left: 0;
@@ -110,5 +118,10 @@ div .table {
     margin-left: 15px;
 }
 .cmd-container .price{
-	color:#20c063
+	font-size: 28px;
+	color:#fff
+}
+.modal-header,.modal-footer{
+	color: #fff;
+	background-color: #20c063
 }
