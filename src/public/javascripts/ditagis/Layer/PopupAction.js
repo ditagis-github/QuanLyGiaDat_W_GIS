@@ -4,14 +4,18 @@ define([
 ], function (bootstrap) {
   class Popup {
     constructor(options) {
+      Number.prototype.format = function() {
+        var re = '\\d(?=(\\d{' + 3 + '})+' +  '$' + ')';
+        return this.toFixed(0).replace(new RegExp(re, 'g'), '$&,');
+      }
     }
     chuyeDoiMucDich(props) {
       let notify = $.notify({
         title: `<strong>Chuyển đổi mục đích sử dụng đất</strong>`,
         message: 'Đang tải dữ liệu...'
-    }, {
-            showProgressbar: true,
-            delay: 20000
+      }, {
+          showProgressbar: true,
+          delay: 20000
         })
       // let dataSource = null;
       $.post('/map/thuadat/mdsd', { soTo: props.SoHieuToBanDo, soThua: props.SoHieuThua, phuongXa: props.MaPhuongXa, quanHuyen: props.MaQuanHuyen })
@@ -40,7 +44,7 @@ define([
           body.appendChild(table);
           let tbody = table.getElementsByTagName('tbody')[0];
           let dataSource = [];
-          notify.update({},{'progress': 50 });
+          notify.update({}, { 'progress': 50 });
           $.post('/map/thuadat/chitiet', {
             soTo: props.SoHieuToBanDo, soThua: props.SoHieuThua, phuongXa: props.MaPhuongXa, quanHuyen: props.MaQuanHuyen
           })
@@ -50,10 +54,10 @@ define([
               for (let item of datas) {
                 let tr = document.createElement('tr');
                 for (let key in item) {
-                  if (key === 'nhomDat') continue;
                   let value = item[key];
                   let td = document.createElement('td');
-                  td.innerText = value;
+                  if(value)
+                  td.innerText = !isNaN(value)?value.format():value;
                   tr.appendChild(td);
                 }
 
@@ -91,16 +95,16 @@ define([
                 tbody.appendChild(tr);
               }
               notify.update({ 'type': 'success', 'message': 'Truy vấn thành công', 'progress': 90 });
-            }).fail(err=>{
+            }).fail(err => {
               notify.update({ 'type': 'danger', 'message': 'Truy vấn thất bại', 'progress': 90 });
             })
           let footer = document.createElement('div');
           let label = document.createElement('label');
           label.classList.add('cmd-container');
           label.innerText = 'Phí chuyển đổi: ';
-          this.price = document.createElement('span');
-          this.price.classList.add('price');
-          label.appendChild(this.price);
+          let price = document.createElement('span');
+          price.classList.add('price');
+          label.appendChild(price);
           let btnSubmit = document.createElement('button');
           btnSubmit.classList.add('btn', 'btn-primary');
           btnSubmit.innerText = "Chấp nhận";
@@ -128,7 +132,7 @@ define([
                 }
               }
             }
-            this.price.innerText = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + ' VNĐ';
+            price.innerText = total.format() +' VNĐ';
           })
           let btnClose = document.createElement('button');
           btnClose.type = 'button';
@@ -138,12 +142,82 @@ define([
           footer.appendChild(label);
           footer.appendChild(btnSubmit);
           footer.appendChild(btnClose);
-          let modal = bootstrap.modal('modal-giadat', 'Chuyển mục đích sử dụng', body, footer, { dlgLarge: true });
+          let modal = bootstrap.modal('modal-thuadat-chuyendoimucdich', `Chuyển mục đích sử dụng | Số tờ: ${props.SoHieuToBanDo} | Số thửa: ${props.SoHieuThua}`, body, footer, { dlgLarge: true });
           modal.modal();
-        }).fail(err=>{
+        }).fail(err => {
           notify.update({ 'type': 'danger', 'message': 'Truy vấn thất bại', 'progress': 90 });
         })
     }
+    xemGiaDat(props) {
+      let that = this;
+      let total = 0;
+      let body = document.createElement('div');
+      let columns = ['Mục đích sử đụng đất', 'Đơn giá', 'Diện tích', 'Thành tiền']
+      let table = bootstrap.table(columns);
+      body.appendChild(table);
+      let tbody = table.getElementsByTagName('tbody')[0];
+      let footer = document.createElement('div');
+      let label = document.createElement('label');
+      label.classList.add('cmd-container');
+      label.innerText = 'Tổng tiền: ';
+      let price = document.createElement('span');
+      price.classList.add('price');
+      
+      label.appendChild(price);
+      let btnClose = document.createElement('button');
+      btnClose.type = 'button';
+      btnClose.classList.add('btn', 'btn-default');
+      btnClose.setAttribute('data-dismiss', 'modal');
+      btnClose.innerText = 'Đóng';
+      footer.appendChild(label);
+      footer.appendChild(btnClose);
+      let modal = bootstrap.modal('modal-giadat', `Xem giá đất | Số tờ: ${props.SoHieuToBanDo} | Số thửa: ${props.SoHieuThua}`, body, footer, { dlgLarge: true });
+      let notify = $.notify({
+        title: `<strong>Xem giá đất</strong>`,
+        message: 'Đang tải dữ liệu...'
+      }, {
+          showProgressbar: true,
+          delay: 20000
+        })
+      // let dataSource = null;
+      $.post('/map/thuadat/chitiet', {
+        soTo: props.SoHieuToBanDo, soThua: props.SoHieuThua, phuongXa: props.MaPhuongXa, quanHuyen: props.MaQuanHuyen
+      })
+        .done((datas) => {
+          if (!datas) return;
+          for (let item of datas) {
+            let tr = document.createElement('tr');
+            for (let key in item) {
+              let value = item[key];
+              let td = document.createElement('td');
+              if(value)
+              td.innerText = !isNaN(value)?value.format():value;
+              tr.appendChild(td);
+            }
+
+            //muc dich chuyen
+            let donGia = item['donGia'] || 0,
+              dienTich = item['dienTich'] || 0,
+              thanhTien = 0;
+            donGia = parseFloat(donGia);
+            dienTich = parseFloat(dienTich);
+            thanhTien = donGia * dienTich;
+            total+=thanhTien;
+
+            let tdThanhTien = document.createElement('td');
+            tdThanhTien.innerText = thanhTien.format() +' VNĐ';
+            tr.appendChild(tdThanhTien);
+            tbody.appendChild(tr);
+          }
+          price.innerText = total.format() +' VNĐ';
+          notify.update({ 'type': 'success', 'message': 'Truy vấn thành công', 'progress': 90 });
+        }).fail(err => {
+          notify.update({ 'type': 'danger', 'message': 'Truy vấn thất bại', 'progress': 90 });
+        })
+  
+      modal.modal();
+    }
+    
   }
   return function (options) {
     return new Popup(options);

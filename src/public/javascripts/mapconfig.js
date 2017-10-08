@@ -28,8 +28,18 @@ define([], function () {
                 version: '1.1.0',
                 outField: ["KyHieuMDSD","ChuSuDung","SoHieuToBanDo","SoHieuThua","DienTich"],
                 layerInfos: [{
+                    name: 'TenQuanHuyen',
+                    alias: 'Quận/Huyện'
+                },{
+                    name: 'TenXaPhuong',
+                    alias: 'Xã/Phường'
+                },{
                     name: 'ChuSuDung',
                     alias: 'Chủ sử dụng'
+                },
+                {
+                    name: 'ChuSoHuu',
+                    alias: 'Chủ sở hữu'
                 },
                 {
                     name: 'DienTich',

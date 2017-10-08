@@ -122,11 +122,7 @@ define(['L',
                 viewPrice.setAttribute('href', '#');
                 L.DomEvent.on(viewPrice, 'click', (evt) => {
                     evt.preventDefault();
-                    if ($) {
-                        let body = `<h3>${props.GiaDat ? props.GiaDat + 'VNĐ' : 'Chưa có thông tin giá đất'} </h3>`;
-                        let modal = bootstrap.modal('modal-giadat', 'Giá đất', body);
-                        modal.modal();
-                    }
+                    this._popupAction.xemGiaDat(props);
                 })
                 let cungCapGiaDat = L.DomUtil.create('a', 'item', divFooter);
                 cungCapGiaDat.setAttribute('title', "Cung cấp giá đất");
