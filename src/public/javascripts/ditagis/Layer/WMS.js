@@ -37,7 +37,7 @@ define(['L',
             // map.off('mouseover', this.mouseOverEvent, this);
         },
         click: function (evt) {
-            if (this.id === 'thuadat') {
+            if (this.id === 'thuadat' || this.id === 'thuadatnongnghiep' || this.id === 'thuadatphinongnghiep') {
                 if (this._highLightThuaDat) {
                     this._map.removeLayer(this._highLightThuaDat);
                     delete this._highLightThuaDat;
@@ -58,6 +58,7 @@ define(['L',
             }
         },
         highLightThuaDat(geometry) {
+            const thuaDatLayer = this._map.getLayer('thuadat');
             this.clearHighlightThuaDat();
             if (geometry) {
                 const tmpCoors = geometry.coordinates[0];
@@ -65,18 +66,20 @@ define(['L',
                 for (let item of tmpCoors) {
                     coors.push([item[1], item[0]]);
                 }
-                this._highLightThuaDat = L.polygon(coors, { color: 'red' }).addTo(this._map);
-                this._highLightThuaDat.bringToFront();
+                thuaDatLayer._highLightThuaDat = L.polygon(coors, { color: 'red' }).addTo(this._map);
+                thuaDatLayer._highLightThuaDat.bringToFront();
             }
-            return this._highLightThuaDat;
+            return thuaDatLayer._highLightThuaDat;
         },
         clearHighlightThuaDat() {
-            if (this._highLightThuaDat) {
-                this._map.removeLayer(this._highLightThuaDat);
-                delete this._highLightThuaDat;
+            const thuaDatLayer = this._map.getLayer('thuadat');
+            if (thuaDatLayer._highLightThuaDat) {
+                this._map.removeLayer(thuaDatLayer._highLightThuaDat);
+                delete thuaDatLayer._highLightThuaDat;
             }
         },
         getPopupContent(props) {
+            const thuaDatLayer = this._map.getLayer('thuadat');
             var div = null;
             //nếu có outfield thì mới generate popup
             if (this.options.outField) {
@@ -122,7 +125,7 @@ define(['L',
                 viewPrice.setAttribute('href', '#');
                 L.DomEvent.on(viewPrice, 'click', (evt) => {
                     evt.preventDefault();
-                    this._popupAction.xemGiaDat(props);
+                    thuaDatLayer._popupAction.xemGiaDat(props);
                 })
                 let cungCapGiaDat = L.DomUtil.create('a', 'item', divFooter);
                 cungCapGiaDat.setAttribute('title', "Cung cấp giá đất");
@@ -142,17 +145,13 @@ define(['L',
                 chuyenDoiMucDich.setAttribute('href', '#');
                 L.DomEvent.on(chuyenDoiMucDich, 'click', (evt) => {
                     evt.preventDefault();
-                    this._popupAction.chuyeDoiMucDich(props);
+                    thuaDatLayer._popupAction.chuyeDoiMucDich(props);
                 })
 
             }
             return div;
         },
-        _supplyPrice: function (thuadatid, loaithuadat) {
-            this._thuadatid = thuadatid,
-                this._loaithuadat = loaithuadat;
-        },
-        generateParams(latlng) {
+        generateParams(latlng,wmsParams = this.wmsParams) {
             var point = this._map.latLngToContainerPoint(latlng, this._map.getZoom()),
                 size = this._map.getSize(),
 
@@ -160,15 +159,15 @@ define(['L',
                     request: 'GetFeatureInfo',
                     service: 'WMS',
                     srs: 'EPSG:4326',
-                    styles: this.wmsParams.styles,
-                    transparent: this.wmsParams.transparent,
-                    version: this.wmsParams.version,
-                    format: this.wmsParams.format,
+                    styles: wmsParams.styles,
+                    transparent: wmsParams.transparent,
+                    version: wmsParams.version,
+                    format: wmsParams.format,
                     bbox: this._map.getBounds().toBBoxString() + ',EPSG:4326',
                     height: size.y,
                     width: size.x,
-                    layers: this.wmsParams.layers,
-                    query_layers: this.wmsParams.layers,
+                    layers: wmsParams.layers,
+                    query_layers: wmsParams.layers,
                     info_format: 'application/json'
                 };
 
@@ -177,10 +176,10 @@ define(['L',
             return params;
         },
         getFeatureInfo(latlng) {
-
+            const thuaDatLayer = this._map.getLayer('thuadat');
             let queryTask = new QueryTask(this._url);
             let query = new Query({
-                params: this.generateParams(latlng)
+                params: this.generateParams(latlng,thuaDatLayer.wmsParams)
             })
             queryTask.execute(query).then((features) => {
                 if (features != undefined && features.length > 0) {
@@ -191,7 +190,7 @@ define(['L',
                             featureId: ft.id
                         }
                     });
-                    const thuaDatLayer = this._map.getLayer('thuadat');
+                   
                     thuaDatLayer.getFeatures(query).then((results) => {
                         const feature = results[0];
                         this.highLightThuaDat(feature.geometry);
@@ -251,7 +250,7 @@ define(['L',
         },
         /**
          * Lấy alias của thuộc tính
-         * @param {Stirng} name tên của thuộc tính
+         * @param {String} name tên của thuộc tính
          */
         getAlias(name) {
             const layerInfos = this.options.layerInfos;

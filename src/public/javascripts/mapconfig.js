@@ -26,14 +26,14 @@ define([], function () {
                 // opacity: 0.7,
                 minZoom: 15,
                 version: '1.1.0',
-                outField: ["KyHieuMDSD","ChuSuDung","SoHieuToBanDo","SoHieuThua","DienTich"],
+                outField: ["KyHieuMDSD", "ChuSuDung", "SoHieuToBanDo", "SoHieuThua", "DienTich"],
                 layerInfos: [{
                     name: 'TenQuanHuyen',
                     alias: 'Quận/Huyện'
-                },{
+                }, {
                     name: 'TenXaPhuong',
                     alias: 'Xã/Phường'
-                },{
+                }, {
                     name: 'ChuSuDung',
                     alias: 'Chủ sử dụng'
                 },
@@ -70,39 +70,43 @@ define([], function () {
                 format: 'image/png',
                 styles: 'sqlserver:ThuaDat_PhanViTri',
                 transparent: true,
-                // opacity: 0.7,
                 minZoom: 15,
                 version: '1.1.0',
-                // outField: {
-                //     ChuSoHuu: 'Tên chủ sở hữu',
-                //     SoHieuToBanDo: 'Số tờ bản đồ',
-                //     SoHieuThua: 'Số thửa',
-                //     sothuacu: 'Số thửa cũ',
-                //     dientich: 'Diện tích',
-                //     diachithuadat: 'Địa chỉ'
-                // },
+                outField: ["KyHieuMDSD", "ChuSuDung", "SoHieuToBanDo", "SoHieuThua", "DienTich"],
+                layerInfos: [{
+                    name: 'TenQuanHuyen',
+                    alias: 'Quận/Huyện'
+                }, {
+                    name: 'TenXaPhuong',
+                    alias: 'Xã/Phường'
+                }, {
+                    name: 'ChuSuDung',
+                    alias: 'Chủ sử dụng'
+                },
+                {
+                    name: 'ChuSoHuu',
+                    alias: 'Chủ sở hữu'
+                },
+                {
+                    name: 'DienTich',
+                    alias: 'Diện tích'
+                },
+                {
+                    name: 'SoHieuToBanDo',
+                    alias: 'Số tờ bản đồ'
+                },
+                {
+                    name: 'SoHieuThua',
+                    alias: 'Số hiệu thửa'
+                },
+                {
+                    name: 'KyHieuMDSD',
+                    alias: 'Ký hiệu mục đích sử dụng'
+                }],
                 typemap: [
-                    // {
-
-                    //     name: 'Giá đất',
-                    //     style: 'nongnghiep_gianhanuoc',
-                    //     subs: [
-                    //         {
-                    //             checked:true,
-                    //             name: 'Giá nhà nước',
-                    //             style:'sqlserver:nongnghiep_gianhanuoc'
-                    //         }, {
-                    //             name: 'Giá thị trường',
-                    //             style:'sqlserver:nongnghiep_giathitruong'
-                    //         }, {
-                    //             name: 'Giá người dân cung cấp',
-                    //             style:'sqlserver:nongnghiep_gianguoidancungcap'
-                    //         }
-                    //     ]
-                    // },
                     {
                         name: 'Đơn giá',
-                        style: 'nongnghiep_dongia_lua',
+                        style: 'sqlserver:nongnghiep_dongia_lua',
                         subs: [{
                             checked: true,
                             name: 'Lúa',
@@ -120,7 +124,7 @@ define([], function () {
                     }, {
                         checked: true,
                         name: 'Phân hạng vị trí',
-                        style: 'sqlserver:ThuaDat_PhanViTri'
+                        style: 'sqlserver:ThuaDat_PhanViTri_NN'
                     }
                 ]
             }
@@ -140,35 +144,41 @@ define([], function () {
                 opacity: 0.7,
                 minZoom: 15,
                 version: '1.1.0',
-                // outField: {
-                //     tenChuSoHuu: 'Tên chủ sở hữu',
-                //     sotobando: 'Số tờ bản đồ',
-                //     sothua: 'Số thửa',
-                //     sothuacu: 'Số thửa cũ',
-                //     dientich: 'Diện tích',
-                //     diachithuadat: 'Địa chỉ'
-                // },
+                outField: ["KyHieuMDSD", "ChuSuDung", "SoHieuToBanDo", "SoHieuThua", "DienTich"],
+                layerInfos: [{
+                    name: 'TenQuanHuyen',
+                    alias: 'Quận/Huyện'
+                }, {
+                    name: 'TenXaPhuong',
+                    alias: 'Xã/Phường'
+                }, {
+                    name: 'ChuSuDung',
+                    alias: 'Chủ sử dụng'
+                },
+                {
+                    name: 'ChuSoHuu',
+                    alias: 'Chủ sở hữu'
+                },
+                {
+                    name: 'DienTich',
+                    alias: 'Diện tích'
+                },
+                {
+                    name: 'SoHieuToBanDo',
+                    alias: 'Số tờ bản đồ'
+                },
+                {
+                    name: 'SoHieuThua',
+                    alias: 'Số hiệu thửa'
+                },
+                {
+                    name: 'KyHieuMDSD',
+                    alias: 'Ký hiệu mục đích sử dụng'
+                }],
                 typemap: [
-                    // {
-                    //     name: 'Giá đất',
-                    //     style: 'sqlserver:phinongnghiep_gianhanuoc',
-                    //     subs: [
-                    //         {
-                    //             checked:true,
-                    //             name: 'Giá nhà nước',
-                    //             style:'sqlserver:phinongnghiep_gianhanuoc'
-                    //         }, {
-                    //             name: 'Giá thị trường',
-                    //             style:'sqlserver:phinongnghiep_giathitruong'
-                    //         }, {
-                    //             name: 'Giá người dân cung cấp',
-                    //             style:'sqlserver:phinongnghiep_gianguoidancungcap'
-                    //         }
-                    //     ]
-                    // }, 
                     {
                         name: 'Đơn giá',
-                        style: 'phinongnghiep_dongia_odothi',
+                        style: 'sqlserver:phinongnghiep_dongia_odothi',
                         subs: [{
                             checked: true,
                             name: 'Ở đô thị',
@@ -186,23 +196,13 @@ define([], function () {
                     }, {
                         checked: true,
                         name: 'Phân hạng vị trí',
-                        style: 'sqlserver:ThuaDat_PhanViTri'
+                        style: 'sqlserver:ThuaDat_PhanViTri_PNN'
                     }
                 ]
             }
         }
         ],
         basemaps: [
-            // {
-            //     name: 'hanhchinhhuyen',
-            //     url: 'http://ditagis.com:8080/geoserver/BinhDuong/wms',
-            //     options: {
-            //         layers: 'BinhDuong:hanhchinhhuyen',
-            //         maxZoom: 13,
-
-            //     },
-            //     visible: true
-            // },
             {
                 id: 'hanhchinhxa',
                 url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',
@@ -225,32 +225,6 @@ define([], function () {
                 },
                 visible: true
             },
-            //  {
-            //     id: 'giaothong_vinhphu',
-            //     url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',
-            //     options: {
-            //         layers: 'sqlserver:giaothong',
-            //         minZoom: 15,
-            //         transparent: true,
-            //         format: 'image/png',
-            //         bounds: [
-            //             [10.865608, 106.690644],
-            //             [10.889687, 106.716681]
-            //         ]
-            //     },
-            //     visible: true
-            // },
-            // {
-            //     id: 'hlatdb',
-            //     url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',
-            //     options: {
-            //         layers: 'sqlserver:hlatdb',
-            //         minZoom: 15,
-            //         transparent: true,
-            //         format: 'image/png',
-            //     },
-            //     visible: true
-            // },
             {
                 id: 'songho',
                 url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',
@@ -263,21 +237,6 @@ define([], function () {
                 },
                 visible: true
             },
-            // {
-            //     id: 'songho_vinhphu',
-            //     url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',
-            //     options: {
-            //         layers: 'sqlserver:songho',
-            //         minZoom: 15,
-            //         transparent: true,
-            //         format: 'image/png',
-            //         bounds: [
-            //             [10.865608, 106.690644],
-            //             [10.889687, 106.716681]
-            //         ]
-            //     },
-            //     visible: true
-            // }
             {
                 id: 'timduong',
                 url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',

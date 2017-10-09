@@ -129,3 +129,7 @@ table.featureInfo caption {
 	color: #fff;
 	background-color: #20c063
 }
+.leaflet-control-legend{
+	max-height: 133px;
+    overflow-y: auto;
+}
