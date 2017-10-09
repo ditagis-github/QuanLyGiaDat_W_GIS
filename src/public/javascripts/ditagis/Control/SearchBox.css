@@ -201,7 +201,7 @@ textarea::-moz-focus-inner {
 
 .ditagis-search .panel .search-container, .results-container {
     padding: 0 9px;
-    height: 391px;
+    max-height: 420px;
     overflow: auto;
 }
 

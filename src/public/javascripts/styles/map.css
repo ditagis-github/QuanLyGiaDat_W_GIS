@@ -95,6 +95,10 @@ table.featureInfo caption {
 }
 .popup-container{
 	font-size:16px;
+	background-color: #fff;
+    color: #000;
+	padding: 10px;
+	border-radius: 20px
 }
 .popup-container table tr td:first-child{
 	font-weight: bold;
@@ -107,7 +111,7 @@ table.featureInfo caption {
 }
 .popup-container .popup-footer .fa{
 	font-size: 25px;
-	color:#fff
+	color:#20c063
 }
 .leaflet-container a.leaflet-popup-close-button{
 	color: #fff

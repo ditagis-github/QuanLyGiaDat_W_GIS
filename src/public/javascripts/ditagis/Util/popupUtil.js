@@ -6,7 +6,7 @@ define([
         static show(map, latlng, content) {
             var popup = L.popup({
                 maxWidth: 800,
-                maxHeight:204
+                maxHeight:252
             })
                 .setLatLng(latlng)
                 .setContent(content);

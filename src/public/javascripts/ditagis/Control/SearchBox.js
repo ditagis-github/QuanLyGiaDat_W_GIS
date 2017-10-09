@@ -15,7 +15,7 @@ define([
                 placeHolder: 'Nhập tên đường',
                 position: "topleft",
                 sideBar: {
-                    searchTitle: 'Tìm kiếm thửa đất',
+                    searchTitle: 'Thông tin giá đất',
                     resultTitle: 'Kết quả tìm kiếm'
                 },
             },
