@@ -1,6 +1,13 @@
-﻿#map {
+﻿#fh-grid-map{
+	border-left: 5px solid #20c063;
+    border-right: 5px solid #20c063;
+    border-top: 1px solid #20c063;
+    border-radius: 10px;
+}
+#map {
 	width: 100%;
 	height: 600px;
+	background-color: #fff;
 }
 
 
@@ -131,5 +138,6 @@ table.featureInfo caption {
 }
 .leaflet-control-legend{
 	max-height: 133px;
-    overflow-y: auto;
+	max-width: 133px;
+    overflow: auto;
 }
