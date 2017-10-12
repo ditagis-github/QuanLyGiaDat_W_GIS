@@ -211,10 +211,11 @@ define(['L',
                             //thi goi den ham showresult de hien thi popup
                             // showResults(err, latlng, content);
                             var popup = popupUtil.show(this._map, latlng, content);
-                            L.DomEvent.on(popup._closeButton, 'click', () => {
+                            function clickFunc () {
                                 this.clearHighlightThuaDat();
-                                L.DomEvent.off(popup._closeButton, 'click');
-                            })
+                                popup._closeButton.removeEventListener('click',clickFunc,false);
+                            };
+                            popup._closeButton.addEventListener('click',clickFunc.bind(this),false)
                         }
                         // nếu không có content thì chỉ cần fly đến vị trí latlng
                         else {

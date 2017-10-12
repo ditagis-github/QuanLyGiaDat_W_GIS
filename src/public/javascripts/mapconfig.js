@@ -4,6 +4,8 @@ define([], function () {
         map: {
             div: 'map',
             options: {
+                minZoom: 12,
+                maxZoom: 25,
                 fullscreenControl: true,
                 fullscreenControlOptions: {
                     position: 'topleft'
@@ -25,6 +27,7 @@ define([], function () {
                 transparent: true,
                 // opacity: 0.7,
                 minZoom: 15,
+                maxZoom: 25,
                 version: '1.1.0',
                 outField: ["KyHieuMDSD", "ChuSuDung", "SoHieuToBanDo", "SoHieuThua", "DienTich"],
                 layerInfos: [{
@@ -71,6 +74,7 @@ define([], function () {
                 styles: 'sqlserver:ThuaDat_PhanViTri',
                 transparent: true,
                 minZoom: 15,
+                maxZoom: 25,
                 version: '1.1.0',
                 outField: ["KyHieuMDSD", "ChuSuDung", "SoHieuToBanDo", "SoHieuThua", "DienTich"],
                 layerInfos: [{
@@ -143,6 +147,7 @@ define([], function () {
                 transparent: true,
                 opacity: 0.7,
                 minZoom: 15,
+                maxZoom: 25,
                 version: '1.1.0',
                 outField: ["KyHieuMDSD", "ChuSuDung", "SoHieuToBanDo", "SoHieuThua", "DienTich"],
                 layerInfos: [{
@@ -220,6 +225,7 @@ define([], function () {
                 options: {
                     layers: 'sqlserver:giaothong',
                     minZoom: 15,
+                    maxZoom: 25,
                     transparent: true,
                     format: 'image/png',
                 },
@@ -231,6 +237,7 @@ define([], function () {
                 options: {
                     layers: 'sqlserver:songho',
                     minZoom: 14,
+                    maxZoom: 25,
                     transparent: true,
                     format: 'image/png',
 
@@ -243,6 +250,7 @@ define([], function () {
                 options: {
                     layers: 'sqlserver:timduong',
                     minZoom: 14,
+                    maxZoom: 25,
                     transparent: true,
                     format: 'image/png',
                 },
