@@ -46,8 +46,8 @@ class TraCuuDB {
       var values = [xa];
 
       if (duong) {
-        sql += ` and a.ten_duong like $2`;
-        values.push('%' + duong + '%')
+        sql += ` and LOWER(a.ten_duong) like $2`;
+        values.push('%' + duong.toLowerCase() + '%')
       }
       sql += ` ORDER BY ten_duong`;
       this.query({
