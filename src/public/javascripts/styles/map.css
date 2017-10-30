@@ -126,7 +126,8 @@ table.featureInfo caption {
 .cmd-container{
 	left: 0;
     position: absolute;
-    margin-left: 15px;
+	margin-left: 15px;
+	max-width: 375px;
 }
 .cmd-container .price{
 	font-size: 28px;

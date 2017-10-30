@@ -133,11 +133,7 @@ define(['L',
                 cungCapGiaDat.setAttribute('href', '#');
                 L.DomEvent.on(cungCapGiaDat, 'click', (evt) => {
                     evt.preventDefault();
-                    if ($) {
-                        let body = `Chức năng sẽ sớm được cập nhật trong phiên bản tiếp theo`;
-                        let modal = bootstrap.modal('modal-cungcapgiadat', 'Cung cấp giá đất', body);
-                        modal.modal();
-                    }
+                    thuaDatLayer._popupAction.cungCapGiaDat(props);
                 })
                 let chuyenDoiMucDich = L.DomUtil.create('a', 'item', divFooter);
                 chuyenDoiMucDich.setAttribute('title', "Chuyển đổi mục đích");
@@ -197,6 +193,7 @@ define(['L',
                         // this._map.fitBounds(polygon.getBounds());
                     });
                     if (ft.properties != undefined) {
+                        ft.properties['OBJECTID'] = ft.id.match(/\d+/)[0];
                         var content = this.getPopupContent(ft.properties);
 
                         //cap nhat gia tri cho bien input id=thuadatid voi gia tri objectid vao form updatePrice

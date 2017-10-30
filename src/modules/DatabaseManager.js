@@ -16,6 +16,34 @@ class DatabaseManager {
       }).catch(err => { reject(err); this.sql.close(); });
     });
   }
+  close(){
+    return this.sql.close();
+  }
+  query(sql, request){
+    return new Promise((resolve, reject) => {
+      if (request) {
+        request.query(sql, (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result.recordset)
+          }
+        })
+      } else {
+        this.connect().then((request) => {
+          request.query(sql, (err, result) => {
+            if (err) {
+              console.log(err);
+              reject(err);
+            } else {
+              resolve(result)
+            }
+            this.close();
+          })
+        }).catch(err => { console.log(err); reject(err); this.close(); });
+      }
+    });
+  }
   select(sql, request) {
     return new Promise((resolve, reject) => {
       if (request) {
@@ -156,6 +184,10 @@ class DatabaseManager {
         })
       }).catch(err => { this.sql.close(); reject(err) });
     });
+  }
+  cungCapGiaDat(props){
+    console.log(props);
+      return this.query(`UPDATE THUADAT SET GiaDoDanCungCap = ${props.gia} WHERE OBJECTID = ${props.OBJECTID}`)
   }
 }
 module.exports = DatabaseManager;
