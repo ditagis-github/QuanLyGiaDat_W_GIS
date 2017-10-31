@@ -142,3 +142,6 @@ table.featureInfo caption {
 	max-width: 133px;
     overflow: auto;
 }
+.modal-header,.modal-footer{
+	padding: 6px;
+}
