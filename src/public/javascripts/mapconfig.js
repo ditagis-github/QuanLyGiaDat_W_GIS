@@ -256,6 +256,18 @@ define([], function () {
                 },
                 visible: true,
             },
+            {
+                id: 'timsong',
+                url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',
+                options: {
+                    layers: 'sqlserver:TIMSONG',
+                    minZoom: 14,
+                    maxZoom: 25,
+                    transparent: true,
+                    format: 'image/png',
+                },
+                visible: true,
+            },
         ]
     }
 
