@@ -4,13 +4,13 @@ Copyright (c) 2016 Dominik Moritz
 This file is part of the leaflet locate control. It is licensed under the MIT license.
 You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
 */
-define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
+define(['L', 'css!ditagis/Control/Locate.min.css', ], function (L) {
     L.Control.Locate = L.Control.extend({
         options: {
             position: 'topleft',
-            layer: undefined,  // use your own layer for the location marker
+            layer: undefined, // use your own layer for the location marker
             drawCircle: true,
-            follow: false,  // follow with zoom and pan the user's location
+            follow: false, // follow with zoom and pan the user's location
             stopFollowingOnDrag: false, // if follow is true, stop following when map is dragged (deprecated)
             // if true locate control remains active on click even if the user's location is in view.
             // clicking control will just pan to location
@@ -40,17 +40,17 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
                 //color: '#FFA500',
                 //fillColor: '#FFB000'
             },
-            icon: 'fa fa-map-marker',  // fa-location-arrow or fa-map-marker
+            icon: 'fa fa-map-marker', // fa-location-arrow or fa-map-marker
             iconLoading: 'fa fa-spinner fa-spin',
             iconElementTag: 'span', // span or i
             circlePadding: [0, 0],
             metric: true,
-            onLocationError: function(err) {
+            onLocationError: function (err) {
                 // this event is called in case of any location error
                 // that is not a time out error.
                 alert(err.message);
             },
-            onLocationOutsideMapBounds: function(control) {
+            onLocationOutsideMapBounds: function (control) {
                 // this event is repeatedly called when the location changes
                 control.stop();
                 alert(control.options.strings.outsideMapBoundsMsg);
@@ -68,7 +68,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
             },
             locateOptions: {
                 maxZoom: Infinity,
-                watch: true  // if you overwrite this, visualization cannot be updated
+                watch: true // if you overwrite this, visualization cannot be updated
             }
         },
 
@@ -89,7 +89,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
 
             L.extend(this.options.locateOptions, {
                 setView: false // have to set this to false because we have to
-                               // do setView manually
+                // do setView manually
             });
         },
 
@@ -102,12 +102,12 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
          * It should set the this._active to true and do nothing if
          * this._active is not true.
          */
-        _activate: function() {
+        _activate: function () {
             if (this.options.setView) {
                 this._locateOnNextLocationFound = true;
             }
 
-            if(!this._active) {
+            if (!this._active) {
                 this._map.locate(this.options.locateOptions);
             }
             this._active = true;
@@ -122,7 +122,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
          *
          * Override it to shutdown any functionalities you added on start.
          */
-        _deactivate: function() {
+        _deactivate: function () {
             this._map.stopLocate();
 
             this._map.off('dragstart', this._stopFollowing, this);
@@ -136,7 +136,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
          *
          * Uses the event retrieved from onLocationFound from the map.
          */
-        drawMarker: function(map) {
+        drawMarker: function (map) {
             if (this._event.accuracy === undefined) {
                 this._event.accuracy = 0;
             }
@@ -147,13 +147,13 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
                     this.options.onLocationOutsideMapBounds(this);
                 } else {
                     // If accuracy info isn't desired, keep the current zoom level
-                    if(this.options.keepCurrentZoomLevel) {
+                    if (this.options.keepCurrentZoomLevel) {
                         map.panTo([this._event.latitude, this._event.longitude]);
                     } else {
                         map.fitBounds(this._event.bounds, {
                             padding: this.options.circlePadding,
                             maxZoom: this.options.keepCurrentZoomLevel ?
-                            map.getZoom() : this.options.locateOptions.maxZoom
+                                map.getZoom() : this.options.locateOptions.maxZoom
                         });
                     }
                 }
@@ -171,7 +171,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
 
                 if (!this._circle) {
                     this._circle = L.circle(this._event.latlng, radius, style)
-                    .addTo(this._layer);
+                        .addTo(this._layer);
                 } else {
                     this._circle.setLatLng(this._event.latlng).setRadius(radius);
                     for (o in style) {
@@ -183,7 +183,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
             var distance, unit;
             if (this.options.metric) {
                 distance = radius.toFixed(0);
-                unit =  this.options.strings.metersUnit;
+                unit = this.options.strings.metersUnit;
             } else {
                 distance = (radius * 3.2808399).toFixed(0);
                 unit = this.options.strings.feetUnit;
@@ -199,15 +199,18 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
 
             if (!this._marker) {
                 this._marker = this.createMarker(this._event.latlng, mStyle)
-                .addTo(this._layer);
+                    .addTo(this._layer);
             } else {
                 this.updateMarker(this._event.latlng, mStyle);
             }
 
             var t = this.options.strings.popup;
             if (this.options.showPopup && t) {
-                this._marker.bindPopup(L.Util.template(t, {distance: distance, unit: unit}))
-                ._popup.setLatLng(this._event.latlng);
+                this._marker.bindPopup(L.Util.template(t, {
+                        distance: distance,
+                        unit: unit
+                    }))
+                    ._popup.setLatLng(this._event.latlng);
             }
 
             this._toggleContainerStyle();
@@ -221,7 +224,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
          *
          * Used by drawMarker, you can ignore it if you have overridden it.
          */
-        createMarker: function(latlng, mStyle) {
+        createMarker: function (latlng, mStyle) {
             return this.options.markerClass(latlng, mStyle);
         },
 
@@ -230,7 +233,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
          *
          * Used by drawMarker, you can ignore it if you have overridden it.
          */
-        updateMarker: function(latlng, mStyle) {
+        updateMarker: function (latlng, mStyle) {
             this._marker.setLatLng(latlng);
             for (var o in mStyle) {
                 this._marker.options[o] = mStyle[o];
@@ -240,7 +243,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
         /**
          * Remove the marker from map.
          */
-        removeMarker: function() {
+        removeMarker: function () {
             this._layer.clearLayers();
             this._marker = undefined;
             this._circle = undefined;
@@ -270,7 +273,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
             L.DomEvent
                 .on(this._link, 'click', L.DomEvent.stopPropagation)
                 .on(this._link, 'click', L.DomEvent.preventDefault)
-                .on(this._link, 'click', function() {
+                .on(this._link, 'click', function () {
                     var shouldStop = (this._event === undefined ||
                         this._map.getBounds().contains(this._event.latlng) ||
                         !this.options.setView || this._isOutsideMapBounds());
@@ -291,7 +294,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
         /**
          * Binds the actions to the map events.
          */
-        bindEvents: function(map) {
+        bindEvents: function (map) {
             map.on('locationfound', this._onLocationFound, this);
             map.on('locationerror', this._onLocationError, this);
             map.on('unload', this.stop, this);
@@ -302,7 +305,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
          * - activates the engine
          * - draws the marker (if coordinates available)
          */
-        start: function() {
+        start: function () {
             this._activate();
 
             if (!this._event) {
@@ -318,7 +321,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
          * - reinitializes the button
          * - removes the marker
          */
-        stop: function() {
+        stop: function () {
             this._deactivate();
 
             this._cleanClasses();
@@ -330,7 +333,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
         /**
          * Calls deactivate and dispatches an error.
          */
-        _onLocationError: function(err) {
+        _onLocationError: function (err) {
             // ignore time out error if the location is watched
             if (err.code == 3 && this.options.locateOptions.watch) {
                 return;
@@ -343,12 +346,12 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
         /**
          * Stores the received event and updates the marker.
          */
-        _onLocationFound: function(e) {
+        _onLocationFound: function (e) {
             // no need to do anything if the location has not changed
             if (this._event &&
                 (this._event.latlng.lat === e.latlng.lat &&
-                 this._event.latlng.lng === e.latlng.lng &&
-                     this._event.accuracy === e.accuracy)) {
+                    this._event.latlng.lng === e.latlng.lng &&
+                    this._event.accuracy === e.accuracy)) {
                 return;
             }
 
@@ -368,7 +371,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
         /**
          * Dispatches the 'startfollowing' event on map.
          */
-        _startFollowing: function() {
+        _startFollowing: function () {
             this._map.fire('startfollowing', this);
             this._following = true;
             if (this.options.stopFollowingOnDrag) {
@@ -379,7 +382,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
         /**
          * Dispatches the 'stopfollowing' event on map.
          */
-        _stopFollowing: function() {
+        _stopFollowing: function () {
             this._map.fire('stopfollowing', this);
             this._following = false;
             if (this.options.stopFollowingOnDrag) {
@@ -391,7 +394,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
         /**
          * Check if location is in map bounds
          */
-        _isOutsideMapBounds: function() {
+        _isOutsideMapBounds: function () {
             if (this._event === undefined)
                 return false;
             return this._map.options.maxBounds &&
@@ -401,7 +404,7 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
         /**
          * Toggles button class between following and active.
          */
-        _toggleContainerStyle: function() {
+        _toggleContainerStyle: function () {
             if (!this._container) {
                 return;
             }
@@ -416,44 +419,47 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
         /**
          * Sets the CSS classes for the state.
          */
-        _setClasses: function(state) {
-            if (state == 'requesting') {
-                L.DomUtil.removeClasses(this._container, "active following");
-                L.DomUtil.addClasses(this._container, "requesting");
+        _setClasses: function (state) {
+            // if (state == 'requesting') {
+            //     if (L.DomUtil.hasClass(this.container, 'active') && L.DomUtil.hasClass(this.container, 'following'))
+            //         L.DomUtil.removeClass(this._container, "active following");
+            //     L.DomUtil.addClass(this._container, "requesting");
 
-                L.DomUtil.removeClasses(this._icon, this.options.icon);
-                L.DomUtil.addClasses(this._icon, this.options.iconLoading);
-            } else if (state == 'active') {
-                L.DomUtil.removeClasses(this._container, "requesting following");
-                L.DomUtil.addClasses(this._container, "active");
-
-                L.DomUtil.removeClasses(this._icon, this.options.iconLoading);
-                L.DomUtil.addClasses(this._icon, this.options.icon);
-            } else if (state == 'following') {
-                L.DomUtil.removeClasses(this._container, "requesting");
-                L.DomUtil.addClasses(this._container, "active following");
-
-                L.DomUtil.removeClasses(this._icon, this.options.iconLoading);
-                L.DomUtil.addClasses(this._icon, this.options.icon);
-            }
+            //     L.DomUtil.removeClass(this._icon, this.options.icon);
+            //     L.DomUtil.addClass(this._icon, this.options.iconLoading);
+            // } else if (state == 'active') {
+            //     if (L.DomUtil.hasClass(this.container, 'requesting') && L.DomUtil.hasClass(this.container, 'following'))
+            //         L.DomUtil.removeClass(this._container, "requesting following");
+            //     L.DomUtil.addClass(this._container, "active");
+            //     if (L.DomUtil.hasClass(this.container, this.options.iconLoading))
+            //         L.DomUtil.removeClass(this._icon, this.options.iconLoading);
+            //     L.DomUtil.addClass(this._icon, this.options.icon);
+            // } else if (state == 'following') {
+            //     if (L.DomUtil.hasClass(this.container, 'requesting'))
+            //         L.DomUtil.removeClass(this._container, "requesting");
+            //     L.DomUtil.addClass(this._container, "active following");
+            //     if (L.DomUtil.hasClass(this.container, this.options.iconLoading))
+            //         L.DomUtil.removeClass(this._icon, this.options.iconLoading);
+            //     L.DomUtil.addClass(this._icon, this.options.icon);
+            // }
         },
 
         /**
          * Removes all classes from button.
          */
-        _cleanClasses: function() {
+        _cleanClasses: function () {
             L.DomUtil.removeClass(this._container, "requesting");
             L.DomUtil.removeClass(this._container, "active");
             L.DomUtil.removeClass(this._container, "following");
 
-            L.DomUtil.removeClasses(this._icon, this.options.iconLoading);
-            L.DomUtil.addClasses(this._icon, this.options.icon);
+            L.DomUtil.removeClass(this._icon, this.options.iconLoading);
+            L.DomUtil.addClass(this._icon, this.options.icon);
         },
 
         /**
          * Reinitializes attributes.
          */
-        _resetVariables: function() {
+        _resetVariables: function () {
             this._active = false;
             this._locateOnNextLocationFound = this.options.setView;
             this._following = false;
@@ -464,5 +470,5 @@ define(['L','css!ditagis/Control/Locate.min.css',],function (L) {
         return new L.Control.Locate(options);
     };
 
-    
+
 });

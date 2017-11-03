@@ -1,59 +1,64 @@
 
 doctype html
 head
-  meta(charset='utf-8')
-  meta(name='viewport', content='width=device-width, initial-scale=1.0')
-  title=  title
-  link(href='stylesheets/bootstrap.min.css', rel='stylesheet', type='text/css')
-  link(href='stylesheets/font-awesome.min.css', rel='stylesheet', type='text/css')
-  link(href='stylesheets/style.css', rel='stylesheet', type='text/css')
-  link(href='stylesheets/loader.css', rel='stylesheet', type='text/css')
-  script(src='javascripts/lib/Loader.js')
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    title=  title
+    link(href='stylesheets/bootstrap.min.css', rel='stylesheet', type='text/css')
+    link(href='stylesheets/font-awesome.min.css', rel='stylesheet', type='text/css')
+    link(href='stylesheets/style.css', rel='stylesheet', type='text/css')
+    link(href='stylesheets/loader.css', rel='stylesheet', type='text/css')
+    script(src='javascripts/lib/Loader.js')
 body
-  header.fh-wrapper
-    nav.navbar.navbar-inverse
-      .container-fluid
-        .navbar-header
-          a.navbar-brand(href='/') Sở tài nguyên và môi trường tỉnh Bình Dương
-        ul.nav.navbar-nav
-          li
-            a(href='/') Trang ch&#x1EE7;
-          li
-            a(href='/tracuu') Tra c&#x1EE9;u
-  block content
+    header.fh-wrapper
+        nav.navbar.navbar-inverse
+            .container-fluid
+                .navbar-header
+                    a.navbar-brand(href='/') Sở Tài nguyên và Môi trường tỉnh Bình Dương
+                    button.navbar-toggle(type='button', data-toggle='collapse', data-target='#myNavbar')
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                #myNavbar.collapse.navbar-collapse
+                    ul.nav.navbar-nav
+                        li
+                            a(href='/') Trang ch&#x1EE7;
+                        li
+                            a(href='/tracuu') Tra c&#x1EE9;u
+    block content
 
-  footer.footer-bottom-area
-      // Footer Top Area End
-      .container
-          .row
-              // Copyright
-              .copyright.text-left.col-sm-6.col-xs-12
-                  p.title
-                    a(href='http://stnmt.binhduong.gov.vn/', target='_blank') S&#x1EDF; t&agrave;i nguy&ecirc;n v&agrave; m&ocirc;i tr&#x1B0;&#x1EDD;ng t&#x1EC9;nh B&igrave;nh D&#x1B0;&#x1A1;ng.
-                  p
-                      span
-                  p
-                      span Điện thoại: 
-                      i 0650 3 822252 - 0650 3 828035
-                  p
-                      a(href='mailto:sotnmt@binhduong.gov.vn') sotnmt@binhduong.gov.vn
-                  p 
-                    span Phiên bản:
-                    i v1.0.8
+    footer.footer-bottom-area
+        // Footer Top Area End
+        .container
+            .row
+                // Copyright
+                .copyright.text-left.col-sm-6.col-xs-12
+                    p.title
+                        a(href='http://stnmt.binhduong.gov.vn/', target='_blank') S&#x1EDF; T&agrave;i nguy&ecirc;n v&agrave; M&ocirc;i tr&#x1B0;&#x1EDD;ng t&#x1EC9;nh B&igrave;nh D&#x1B0;&#x1A1;ng.
+                    p
+                        span
+                    p
+                        span Điện thoại: 
+                        i 0650 3 822252 - 0650 3 828035
+                    p
+                        a(href='mailto:sotnmt@binhduong.gov.vn') sotnmt@binhduong.gov.vn
+                    p 
+                        span Phiên bản:
+                        i v1.0.8
 
-              // Author Credit
-              .author-credit.text-right.col-sm-6.col-xs-12
-                  p.title
+                // Author Credit
+                .author-credit.text-right.col-sm-6.col-xs-12
+                    p.title
                         a(href='http://www.ditagis.hcmut.edu.vn/', target='_blank') Trung t&acirc;m c&ocirc;ng ngh&#x1EC7; th&ocirc;ng tin &dstrok;&#x1ECB;a l&yacute; DITAGIS
-                  p
-                      span 268, L&yacute; Th&#x1B0;&#x1EDD;ng Ki&#x1EC7;t, Qu&#x1EAD;n 10, Tp.HCM (L&#x1EA7;u 4, Nh&agrave; B2)
-                  p
-                      span Điện thoại: 
-                      i (+84.8).38642768 - (+84.8).38686548
-                  p
-                      span
-                          a(href='mailto:ditagis@hcmut.edu.vn') ditagis@hcmut.edu.vn
-                  p(style='display:none') fuhi-dev
+                    p
+                        span 268, L&yacute; Th&#x1B0;&#x1EDD;ng Ki&#x1EC7;t, Qu&#x1EAD;n 10, Tp.HCM (L&#x1EA7;u 4, Nh&agrave; B2)
+                    p
+                        span Điện thoại: 
+                        i (+84.8).38642768 - (+84.8).38686548
+                    p
+                        span
+                            a(href='mailto:ditagis@hcmut.edu.vn') ditagis@hcmut.edu.vn
+                    p(style='display:none') fuhi-dev
 script(src='javascripts/lib/jquery-2.2.3.min.js')
 script(src='javascripts/lib/jquery-ui.min.js')
 script(src='javascripts/lib/bootstrap.min.js')

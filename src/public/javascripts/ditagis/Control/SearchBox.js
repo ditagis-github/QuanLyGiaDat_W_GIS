@@ -3,7 +3,6 @@ define([
     "ditagis/Util/popupUtil",
     "ditagis/support/Query",
     "ditagis/Util/geometryUtil",
-    'css!ditagis/Control/SearchBox.css'
 ], function (L,
     popupUtil, Query, geometryUtil) {
         'use strict';
@@ -340,7 +339,7 @@ define([
                                     const id = feature.OBJECTID;//lấy id của feature 
                                     
                                     let li = L.DomUtil.create('li', 'list-group-item', ul); //tạo dom
-                                    li.setAttribute('data-id', 'thuadat.' + id); //gán giá trị id cho data-id
+                                    // li.setAttribute('data-id', 'thuadat.' + id); //gán giá trị id cho data-id
                                     let nameStrong = L.DomUtil.create('strong', 'name');
                                     if (feature.ChuSoHuu && feature.ChuSoHuu.trim()) {
                                         nameStrong.innerText = feature.ChuSoHuu;
@@ -362,7 +361,8 @@ define([
                                     li.setAttribute('title', title);
 
                                     //dang ky su kien click cho the li va goi den ham thuaDatResultClick de xu ly
-                                    L.DomEvent.on(li, 'click', this.thuaDatResultClick, this);
+                                    $(li).click(()=>{this.thuaDatResultClick( 'thuadat.' + id)});
+                                    $(nameStrong).click(()=>{this.thuaDatResultClick( 'thuadat.' + id)});
                                     //hiển thị bảng kết quả
                                     this.displayPanelResultContainer();
                                 }
@@ -378,9 +378,7 @@ define([
                     notify.update({ 'type': 'danger', 'message': 'Không tìm thấy kết quả', 'progress': 90 });
                 }
             },
-            thuaDatResultClick(evt) {
-                let li = evt.target;
-                const id = li.getAttribute('data-id');
+            thuaDatResultClick(id) {
 
                 if (id != undefined && id != null) {
                     let query = new Query({

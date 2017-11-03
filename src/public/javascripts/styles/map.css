@@ -54,7 +54,12 @@
 	background-color: white;
 	font-family: OpenSans, sans-serif;
 }
-
+@media (max-width: 768px){
+	.navbar-brand {
+		max-width: 278px;
+		height: unset;
+	}
+}
 
 
 
@@ -144,4 +149,241 @@ table.featureInfo caption {
 }
 .modal-header,.modal-footer{
 	padding: 6px;
+}
+@media (max-width: 768px){
+	.ditagis-search .ditagis-searchbox {
+		max-width: 282px;
+	}
+}
+.ditagis-search .ditagis-searchbox {
+    position: relative;
+    background: #fff;
+    border-radius: 2px;
+    box-sizing: border-box;
+    width: 359px;
+    height: 48px;
+    border: 1px solid #20c063;
+    padding: 12px 70px 11px;
+    transition-property: background, box-shadow;
+    transition-duration: .3s;
+    transition: left .5s;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    transition-property: -webkit-transform, transform, visibility, opacity;
+    transition-duration: .2s;
+    transition-timing-function: cubic-bezier(0, 0, .2, 1)
+}
+
+.ditagis-search .ditagis-searchbox .ditagis-searchbox-shadow {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2), 0 -1px 0 rgba(0, 0, 0, .02)
+}
+
+.ditagis-search .ditagis-searchbox .ditagis-searchbox-menu-container {
+    position: absolute;
+    z-index: 1003;
+    left: 0;
+    top: 0
+}
+
+.ditagis-search .ditagis-searchbox .ditagis-searchbox-menubutton::before {
+    content: '';
+    display: block;
+    background-image: url(images/ic_dehaze_black_24dp_2x.png);
+    background-size: 100%;
+    background-position: 0 0;
+    height: 24px;
+    width: 24px;
+    opacity: .62
+}
+
+.ditagis-search .ditagis-searchbox .ditagis-searchbox-menubutton {
+    display: block;
+    cursor: pointer;
+    padding: 12px 16px
+}
+
+#searchboxinput {
+    width: 100%
+}
+
+.ditagis-search .ditagis-searchbox .ditagis-searchbox-input-container input {
+    font-size: 17px;
+}
+
+.ditagis-search .ditagis-searchbox .search-button {
+    display: block;
+    padding: 2px 15px;
+    cursor: pointer;
+    opacity: .61
+}
+
+.ditagis-search .ditagis-searchbox .search-button:hover {
+    opacity: .98
+}
+
+.ditagis-search .ditagis-searchbox .search-button-container,
+.ditagis-search .ditagis-searchbox .search-button-container::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 10px;
+    border-left: 1px solid #ddd;
+    height: 28px
+}
+
+.ditagis-search .ditagis-searchbox .search-button::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 24px;
+    background: url(images/ic_search_black_24dp_2x.png);
+    background-size: 100%;
+    opacity: .5
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner,
+textarea::-moz-focus-inner {
+    margin: 0;
+    padding: 0;
+    border: 0
+}
+
+
+/**
+* Hiển thị kết quả trả về khi tìm kiếm tại ô tìm kiếm
+**/
+
+.ditagis-search .ditagis-searchbox .result-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    padding: 0;
+    margin: 5px 0 0 0;
+    font-size: 14px;
+    line-height: 16px;
+    background-clip: padding-box;
+    overflow: hidden;
+    width: 100%;
+    visibility: hidden;
+    max-height: 0;
+}
+
+.ditagis-search .ditagis-searchbox .result-container.show {
+    overflow: auto;
+    visibility: visible;
+    max-height: 300px;
+    animation: esri-fade-in 250ms ease-out;
+}
+
+.ditagis-search .ditagis-searchbox .result-container ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ditagis-search .ditagis-searchbox .result-container li {
+    cursor: pointer;
+    padding: 5px;
+    border-top: solid 1px rgba(50, 50, 50, 0.25);
+}
+
+.ditagis-search .none-border {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font: inherit;
+    vertical-align: baseline;
+    background: 0 0;
+    list-style: none;
+    overflow: visible
+}
+@media (max-width: 768px){
+	.ditagis-search .panel {
+		max-width: 282px;	
+	}
+}
+.ditagis-search .panel {
+    width: 359px;
+    margin-top: 10px;
+    float: left;
+    background: #fff;
+    position: relative;
+    display: none
+}
+.ditagis-search .panel li {
+    cursor: pointer
+}
+.ditagis-search .panel li strong.name.error{
+    color: red;
+}
+
+.ditagis-search .panel .panel-header {
+    display: table
+}
+
+.ditagis-search .panel .panel-header-container {
+    display: table-row;
+    background-color: #20c063;
+    color: #fff
+}
+
+.ditagis-search .panel .panel-header-title {
+    display: table-cell;
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+    width: 100%;
+    line-height: 24px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.ditagis-search .panel .panel-close-button {
+    background: url(images/ic_navigate_before_black_24dp_2x.png) no-repeat;
+    background-size: 100%;
+    height: 24px;
+    width: 24px;
+    margin: 5px;
+    cursor: pointer;
+    opacity: .6;
+    vertical-align: middle
+}
+
+.ditagis-search .panel .panel-close-button:hover {
+    opacity: .94
+}
+
+.ditagis-search .panel .search-container, .results-container {
+    padding: 0 9px;
+    max-height: 420px;
+    overflow: auto;
+}
+
+.ditagis-search .panel .btn-primary {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.428571429;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    width: 100%;
+    color: #ffffff;
+    background-color: #20c063;
+    border-color: #cccccc;
 }

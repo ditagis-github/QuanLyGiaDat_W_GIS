@@ -53,7 +53,6 @@ define([
                             var jsondata = JSON.parse(response);
                             resolve(jsondata);
                         } catch (error) {
-                            console.log(error);
                             reject(response);
                         }
                     } else {
