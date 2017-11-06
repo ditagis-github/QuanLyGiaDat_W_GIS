@@ -272,9 +272,11 @@ define([
                 let labelSoTo = L.DomUtil.create('label', null, divSoTo);
                 labelSoTo.innerText = 'Số tờ';
                 this.inputSoTo = L.DomUtil.create('input', 'form-control', divSoTo);
+                this.inputSoTo.id = 'soto';
                 this.inputSoTo.type = 'number';
+                this.inputSoTo.setAttribute('data-dependency','sothua')
                 this.inputSoTo.setAttribute('placeHolder', 'Có thể để trống');
-                L.DomEvent.on(this.inputSoTo, 'keyup', this.inputPanelSearchThuaDatKeyUp, this);
+                L.DomEvent.on(this.inputSoTo, 'keypress', this.inputPanelSearchThuaDatKeyUp, this);
                 //số thửa
                 let divSoThua = L.DomUtil.create('div', 'form-group', container);
                 let labelSoThua = L.DomUtil.create('label', null, divSoThua);
@@ -282,7 +284,7 @@ define([
                 this.inputSoThua = L.DomUtil.create('input', 'form-control', divSoThua);
                 this.inputSoThua.type = 'number';
                 this.inputSoThua.setAttribute('placeHolder', 'Có thể để trống');
-                L.DomEvent.on(this.inputSoThua, 'keyup', this.inputPanelSearchThuaDatKeyUp, this);
+                L.DomEvent.on(this.inputSoThua, 'keypress', this.inputPanelSearchThuaDatKeyUp, this);
 
                 let divSearch = L.DomUtil.create('div', 'form-group', container);
                 let btnSearch = L.DomUtil.create('input', 'btn-primary', container);
@@ -298,8 +300,14 @@ define([
                     this.displayPanelResultContainer(true);
                 }, this);
             },
-            inputPanelSearchThuaDatKeyUp(){
+            inputPanelSearchThuaDatKeyUp(event){
                 if (event.key === 'Enter') {
+                    if(isMobile){
+                        $(event.target).css('display','none');
+                        setTimeout(() => {
+                            $(event.target).css('display','block');    
+                        }, 1);
+                    }else
                     this.search();
                 }
             },

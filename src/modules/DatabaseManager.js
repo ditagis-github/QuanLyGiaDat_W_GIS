@@ -89,12 +89,12 @@ class DatabaseManager {
       where.push(`MaPhuongXa = '${info.phuongxa}'`);
     }
     where = where.join(' and ');
-    let sql = `select OBJECTID,ChuSoHuu,TenQuanHuyen,TenPhuongXa,DienTich,SoHieuToBanDo,SoHieuThua from THUADAT where ${where} order by tenquanhuyen,tenphuongxa,chusohuu`
+    let sql = `select LIMIT 100 OBJECTID,ChuSoHuu,TenQuanHuyen,TenPhuongXa,DienTich,SoHieuToBanDo,SoHieuThua from THUADAT where ${where} order by tenquanhuyen,tenphuongxa,chusohuu`
     return this.select(sql);
   }
   findStreet(text) {
     console.log('Tìm kiếm đường ' + text);
-    let sql = `SELECT * FROM (
+    let sql = `SELECT LIMIT 10 * FROM (
             SELECT OBJECTID,tu,den,TenConDuong,
             ROW_NUMBER() OVER (PARTITION BY TenConDuong ORDER BY OBJECTID) AS RowNumber
             from timduong 

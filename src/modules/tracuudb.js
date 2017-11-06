@@ -10,7 +10,6 @@ class TraCuuDB {
     };
     this.client = new Client(config)
     this.client.connect();
-    console.log('wtff');
   }
   query(query) {
     return new Promise((resolve, reject) => {
