@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    title= title
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    link(href='/stylesheets/bootstrap.min.css', rel='stylesheet', type='text/css')
+    link(href='/stylesheets/font-awesome.min.css', rel='stylesheet', type='text/css')
+    link(rel='stylesheet', href='stylesheets/style.css')
+    link(href='/stylesheets/loader.css', rel='stylesheet', type='text/css')
+    script(src='/javascripts/lib/Loader.js')
+    
+  body
+    script.
+        Loader.show();
+    #map(style="height:100%")
+  script(src='/javascripts/lib/jquery-2.2.3.min.js')
+  script(src='/javascripts/lib/jquery-ui.min.js')
+  script(src='/javascripts/lib/bootstrap.min.js')
+  script(src='/javascripts/lib/bootstrap-notify.min.js')
+  script(src='/javascripts/lib/require.js', data-main='/javascripts/app.js')

@@ -1,7 +1,16 @@
+const { Client,Pool } = require('pg')
 class TraCuuDB {
   constructor() {
-    this.client = require('./databases');
+    const config = {
+      host: 'ditagis.com',
+      port: 5432,
+      user: 'postgres',
+      password: 'ditagis@2017',
+      database:'BinhDuong_TraCuuGiaDat'
+    };
+    this.client = new Client(config)
     this.client.connect();
+    console.log('wtff');
   }
   query(query) {
     return new Promise((resolve, reject) => {

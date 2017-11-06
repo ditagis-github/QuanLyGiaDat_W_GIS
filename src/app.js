@@ -9,6 +9,7 @@ var map = require('./routes/map');
 var tracuu = require('./routes/tracuu');
 
 var app = express();
+var appNguoiDan = require('./NguoiDan/app');
 var server = require('http').Server(app);
 
 // view engine setup
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', map);
 app.use('/map', map);
 app.use('/tracuu', tracuu);
+app.use('/m',appNguoiDan);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
