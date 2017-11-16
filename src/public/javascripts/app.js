@@ -140,7 +140,7 @@ require([
     /**
      * TOP - RIGHT
      */
-    var position = 'topright';
+    var position = isMobile?'bottomleft': 'topright';
 
     ///// Add the geolocate control to the map
 
@@ -175,7 +175,7 @@ require([
      * BOTTOM-RIGHT
      */
     var position = 'bottomright';
-
+    if(!isMobile)
     TypeMap(map.layers, {
       position: position
     }).addTo(map);
