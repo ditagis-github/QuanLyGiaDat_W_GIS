@@ -1,6 +1,6 @@
 ﻿#map {
     width: 100%;
-    height: 600px;
+    height: calc(100vh - 50px);
     background-color: #f2efe9;
 }
 
@@ -212,6 +212,7 @@ table.featureInfo caption {
 
 .ditagis-search .ditagis-searchbox .ditagis-searchbox-input-container input {
     font-size: 17px;
+    color: #fff
 }
 
 .ditagis-search .ditagis-searchbox .ditagis-searchbox-input-container input::-webkit-input-placeholder {
@@ -249,7 +250,6 @@ table.featureInfo caption {
 
 .ditagis-search .ditagis-searchbox .search-button-container,
 .ditagis-search .ditagis-searchbox .search-button-container::after {
-    content: "";
     position: absolute;
     right: 0;
     top: 10px;
@@ -303,7 +303,7 @@ textarea::-moz-focus-inner {
 
 .ditagis-search .ditagis-searchbox .result-container li {
     cursor: pointer;
-    padding: 5px;
+    padding: 10px;
     border-top: solid 1px rgba(50, 50, 50, 0.25);
 }
 
@@ -380,24 +380,33 @@ textarea::-moz-focus-inner {
 
 .ditagis-search .panel .search-container,
 .results-container {
-    padding: 0 9px;
     max-height: 420px;
     overflow: auto;
+    background-color: #109d59;
 }
-
+.ditagis-search .panel .search-container .input-container{
+    padding: 0 9px; 
+}
+.ditagis-search .panel .search-container .input-container .form-control{
+    border: none;
+    border-radius: 0;
+}
+.ditagis-search .panel .search-container .input-container label{
+    margin-left: 10px;
+    color:#fff
+}
 .ditagis-search .panel .btn-primary {
-    display: inline-block;
     padding: 6px 12px;
+    display: inline-block;
     margin-bottom: 0;
-    font-size: 14px;
-    font-weight: normal;
+    font-size: 17px;
+    font-weight: 700;
     line-height: 1.428571429;
     text-align: center;
     white-space: nowrap;
     vertical-align: middle;
     cursor: pointer;
-    border: 1px solid transparent;
-    border-radius: 4px;
+    border: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -406,7 +415,6 @@ textarea::-moz-focus-inner {
     width: 100%;
     color: #ffffff;
     background-color: #20c063;
-    border-color: #cccccc;
 }
 
 .ditagis-search .results-container .col-1 {
@@ -428,6 +436,8 @@ textarea::-moz-focus-inner {
 }
 
 .ditagis-search .results-container .list-group-item {
+    padding: 10px 15px 1px 15px;
+    border-radius: 0;
     border: none;
 }
 
@@ -439,6 +449,14 @@ textarea::-moz-focus-inner {
 .leaflet-touch .leaflet-bar a {
     background-color: #20c063;
     color: #fff;
+}
+.leaflet-touch .leaflet-control-layers-toggle:hover,
+.leaflet-touch .leaflet-bar a:hover {
+    background-color: #34B67A;
+}
+.leaflet-touch .leaflet-bar a.leaflet-disabled{
+    background-color: #20c063a6;
+    color: #bbb;
 }
 
 .leaflet-touch .leaflet-control-layers-toggle {

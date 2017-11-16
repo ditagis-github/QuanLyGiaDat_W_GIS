@@ -231,9 +231,9 @@ define([
             //HOME
             let container_home = L.DomUtil.create('div', 'search-container tab-pane fade in active', tabContent);
             container_home.id = 'home';
-
+            let input_container = L.DomUtil.create('div', 'input-container', container_home);
             //huyện/tp
-            let divDistrict = L.DomUtil.create('div', 'form-group', container_home);
+            let divDistrict = L.DomUtil.create('div', 'form-group', input_container);
             let labelDistrict = L.DomUtil.create('label', null, divDistrict);
             labelDistrict.innerText = 'Quận/Huyện';
             this.cbDistrict = L.DomUtil.create('select', 'form-control', divDistrict);
@@ -248,7 +248,7 @@ define([
             }
             L.DomEvent.on(this.cbDistrict, 'change', this.cbDisTrictChangeHandler, this);
             //xã/phường
-            let divWard = L.DomUtil.create('div', 'form-group', container_home);
+            let divWard = L.DomUtil.create('div', 'form-group', input_container);
             let labelWard = L.DomUtil.create('label', null, divWard);
             labelWard.innerText = 'Xã/Phường';
             this.cbWard = L.DomUtil.create('select', 'form-control', divWard);
@@ -274,7 +274,7 @@ define([
                 })
             }
             //số tờ
-            let divSoTo = L.DomUtil.create('div', 'form-group', container_home);
+            let divSoTo = L.DomUtil.create('div', 'form-group', input_container);
             let labelSoTo = L.DomUtil.create('label', null, divSoTo);
             labelSoTo.innerText = 'Số tờ';
             this.inputSoTo = L.DomUtil.create('input', 'form-control', divSoTo);
@@ -284,7 +284,7 @@ define([
             this.inputSoTo.setAttribute('placeHolder', 'Có thể để trống');
             L.DomEvent.on(this.inputSoTo, 'keypress', this.inputPanelSearchThuaDatKeyUp, this);
             //số thửa
-            let divSoThua = L.DomUtil.create('div', 'form-group', container_home);
+            let divSoThua = L.DomUtil.create('div', 'form-group', input_container);
             let labelSoThua = L.DomUtil.create('label', null, divSoThua);
             labelSoThua.innerText = 'Số thửa';
             this.inputSoThua = L.DomUtil.create('input', 'form-control', divSoThua);
@@ -293,7 +293,7 @@ define([
             L.DomEvent.on(this.inputSoThua, 'keypress', this.inputPanelSearchThuaDatKeyUp, this);
 
             let divSearch = L.DomUtil.create('div', 'form-group', container_home);
-            let btnSearch = L.DomUtil.create('input', 'btn-primary', container_home);
+            let btnSearch = L.DomUtil.create('input', 'btn-primary', divSearch);
 
             L.DomEvent.on(btnSearch, 'click', this.search, this);
             btnSearch.type = 'button';

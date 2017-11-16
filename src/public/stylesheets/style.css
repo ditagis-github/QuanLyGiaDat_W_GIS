@@ -347,11 +347,11 @@ th {
 }
 
 ul.nav.nav-tabs li {
-    width: 178px
+    width: 179px
 }
 
 @media (max-width: 768px) {
     ul.nav.nav-tabs li {
-        width: 140px
+        width: 141px
     }
 }
