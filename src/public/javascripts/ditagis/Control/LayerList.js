@@ -3,7 +3,7 @@
 // A layer control which provides for layer groupings.
 // Author: Ishmael Smyrnow
 define([
-  'L',  'css!ditagis/Control/LayerList.css'
+  'L'
 ], function (L) {
   'use strict';
 L.Control.LayerList = L.Control.Layers.extend({

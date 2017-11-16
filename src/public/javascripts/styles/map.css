@@ -1,39 +1,33 @@
-﻿#fh-grid-map{
-	border-left: 5px solid #20c063;
-    border-right: 5px solid #20c063;
-    border-top: 1px solid #20c063;
-    border-radius: 10px;
-}
-#map {
-	width: 100%;
-	height: 600px;
-	background-color: #f2efe9;
+﻿#map {
+    width: 100%;
+    height: 600px;
+    background-color: #f2efe9;
 }
 
 
 /* Cho những thành phần cố định vị trí */
 
 .fixed {
-	position: absolute;
+    position: absolute;
 }
 
 
 /* Cho những thành phần là điều khiển */
 
 .mapControl {
-	z-index: 100;
+    z-index: 100;
 }
 
 
 /*Vị trí mapControl*/
 
 .leaflet-center {
-	left: 42%;
+    left: 42%;
 }
 
 .left-bottom {
-	top: 150px;
-	left: 10px;
+    top: 150px;
+    left: 10px;
 }
 
 
@@ -45,22 +39,22 @@
 /* Mục chú thích*/
 
 .map-control {
-	border: 1px solid #cdd1d4;
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
-	-ms-border-radius: 6px;
-	-o-border-radius: 6px;
-	border-radius: 6px;
-	background-color: white;
-	font-family: OpenSans, sans-serif;
-}
-@media (max-width: 768px){
-	.navbar-brand {
-		max-width: 278px;
-		height: unset;
-	}
+    border: 1px solid #cdd1d4;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+    background-color: white;
+    font-family: OpenSans, sans-serif;
 }
 
+@media (max-width: 768px) {
+    .navbar-brand {
+        max-width: 278px;
+        height: unset;
+    }
+}
 
 
 /*Popup FeatureLayer*/
@@ -68,96 +62,113 @@
 table.featureInfo,
 table.featureInfo td,
 table.featureInfo th {
-	border: 1px solid #ddd;
-	border-collapse: collapse;
-	margin: 0;
-	padding: 0;
-	font-size: 90%;
-	padding: .2em .1em;
+    border: 1px solid #ddd;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    font-size: 90%;
+    padding: .2em .1em;
 }
 
 table.featureInfo th {
-	padding: .2em .2em;
-	font-weight: bold;
-	background: #eee;
+    padding: .2em .2em;
+    font-weight: bold;
+    background: #eee;
 }
 
 table.featureInfo td {
-	background: #fff;
+    background: #fff;
 }
 
 table.featureInfo tr.odd td {
-	background: #eee;
+    background: #eee;
 }
 
 table.featureInfo caption {
-	text-align: left;
-	font-size: 100%;
-	font-weight: bold;
-	padding: .2em .2em;
+    text-align: left;
+    font-size: 100%;
+    font-weight: bold;
+    padding: .2em .2em;
 }
-.leaflet-popup-content-wrapper, .leaflet-popup-tip{
-	background: #20c063;
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+    background: #20c063;
     color: #fff;
 }
 
 .leaflet-touch .leaflet-control-layers,
 .leaflet-touch .leaflet-bar {
-	border: 1px solid #cdd1d4;
+    border: 1px solid #cdd1d4;
 }
-.popup-container{
-	font-size:16px;
-	background-color: #fff;
+
+.popup-container {
+    font-size: 16px;
+    background-color: #fff;
     color: #000;
-	padding: 10px;
-	border-radius: 20px
+    padding: 10px;
+    border-radius: 20px
 }
-.popup-container table tr td:first-child{
-	font-weight: bold;
+
+.popup-container table tr td:first-child {
+    font-weight: bold;
 }
-.popup-container .popup-footer{
-	margin: 5px;
+
+.popup-container .popup-footer {
+    margin: 5px;
 }
-.popup-container .popup-footer .item{
-	padding: 5px;
+
+.popup-container .popup-footer .item {
+    padding: 5px;
 }
-.popup-container .popup-footer .fa{
-	font-size: 25px;
-	color:#20c063
+
+.popup-container .popup-footer .fa {
+    font-size: 25px;
+    color: #20c063
 }
-.leaflet-container a.leaflet-popup-close-button{
-	color: #fff
+
+.leaflet-container a.leaflet-popup-close-button {
+    color: #fff
 }
-.cmd-container{
-	left: 0;
+
+.cmd-container {
+    left: 0;
     position: absolute;
-	margin-left: 15px;
-	max-width: 375px;
+    margin-left: 15px;
+    max-width: 375px;
 }
-.cmd-container .price{
-	font-size: 28px;
-	color:#fff
+
+.cmd-container .price {
+    font-size: 28px;
+    color: #fff
 }
-.modal-header,.modal-footer{
-	color: #fff;
-	background-color: #20c063
+
+.modal-header,
+.modal-footer {
+    color: #fff;
+    background-color: #20c063
 }
-.leaflet-control-legend{
-	max-height: 133px;
-	max-width: 133px;
+
+.leaflet-control-legend {
+    max-height: 133px;
+    max-width: 133px;
     overflow: auto;
 }
-.modal-header,.modal-footer{
-	padding: 6px;
+
+.modal-header,
+.modal-footer {
+    padding: 6px;
 }
-@media (max-width: 768px){
-	.ditagis-search .ditagis-searchbox {
-		max-width: 282px;
-	}
+
+@media (max-width: 768px) {
+    .ditagis-search .ditagis-searchbox {
+        max-width: 282px;
+    }
 }
+
 .ditagis-search .ditagis-searchbox {
     position: relative;
-    background: #fff;
+    background: #20c063;
     border-radius: 2px;
     box-sizing: border-box;
     width: 359px;
@@ -185,15 +196,8 @@ table.featureInfo caption {
     top: 0
 }
 
-.ditagis-search .ditagis-searchbox .ditagis-searchbox-menubutton::before {
-    content: '';
-    display: block;
-    background-image: url(images/ic_dehaze_black_24dp_2x.png);
-    background-size: 100%;
-    background-position: 0 0;
-    height: 24px;
-    width: 24px;
-    opacity: .62
+.ditagis-search .ditagis-searchbox .ditagis-searchbox-menubutton i {
+    color: #fff
 }
 
 .ditagis-search .ditagis-searchbox .ditagis-searchbox-menubutton {
@@ -208,6 +212,28 @@ table.featureInfo caption {
 
 .ditagis-search .ditagis-searchbox .ditagis-searchbox-input-container input {
     font-size: 17px;
+}
+
+.ditagis-search .ditagis-searchbox .ditagis-searchbox-input-container input::-webkit-input-placeholder {
+    color: #ffffff9c!important;
+}
+
+.ditagis-search .ditagis-searchbox .ditagis-searchbox-input-container input:-moz-placeholder {
+    /* Firefox 18- */
+    color: #ffffff9c!important;
+}
+
+.ditagis-search .ditagis-searchbox .ditagis-searchbox-input-container input::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #ffffff9c!important;
+}
+
+.ditagis-search .ditagis-searchbox .ditagis-searchbox-input-container input:-ms-input-placeholder {
+    color: #ffffff9c!important;
+}
+
+.ditagis-search .ditagis-searchbox .search-button i {
+    color: #fff
 }
 
 .ditagis-search .ditagis-searchbox .search-button {
@@ -229,16 +255,6 @@ table.featureInfo caption {
     top: 10px;
     border-left: 1px solid #ddd;
     height: 28px
-}
-
-.ditagis-search .ditagis-searchbox .search-button::before {
-    content: '';
-    display: block;
-    width: 24px;
-    height: 24px;
-    background: url(images/ic_search_black_24dp_2x.png);
-    background-size: 100%;
-    opacity: .5
 }
 
 button::-moz-focus-inner,
@@ -302,23 +318,27 @@ textarea::-moz-focus-inner {
     list-style: none;
     overflow: visible
 }
-@media (max-width: 768px){
-	.ditagis-search .panel {
-		max-width: 282px;	
-	}
+
+@media (max-width: 768px) {
+    .ditagis-search .panel {
+        max-width: 282px;
+    }
 }
+
 .ditagis-search .panel {
     width: 359px;
-    margin-top: 10px;
     float: left;
+    border: none;
     background: #fff;
     position: relative;
     display: none
 }
+
 .ditagis-search .panel li {
     cursor: pointer
 }
-.ditagis-search .panel li strong.name.error{
+
+.ditagis-search .panel li strong.name.error {
     color: red;
 }
 
@@ -358,7 +378,8 @@ textarea::-moz-focus-inner {
     opacity: .94
 }
 
-.ditagis-search .panel .search-container, .results-container {
+.ditagis-search .panel .search-container,
+.results-container {
     padding: 0 9px;
     max-height: 420px;
     overflow: auto;
@@ -386,4 +407,44 @@ textarea::-moz-focus-inner {
     color: #ffffff;
     background-color: #20c063;
     border-color: #cccccc;
+}
+
+.ditagis-search .results-container .col-1 {
+    width: 25%;
+    display: inline-block;
+    text-align: center
+}
+
+.ditagis-search .results-container .col-2 {
+    width: 75%;
+    display: inline-block;
+}
+
+.ditagis-search .results-container .number {
+    color: #34B67A;
+    font-size: 28px;
+    font-family: "Roboto", sans-serif, "Helvetica Neue" !important;
+    font-weight: 300 !important;
+}
+
+.ditagis-search .results-container .list-group-item {
+    border: none;
+}
+
+.ditagis-search .results-container .list-group-item .row {
+    border-bottom: 1px #ddd solid;
+}
+
+.leaflet-touch .leaflet-control-layers-toggle,
+.leaflet-touch .leaflet-bar a {
+    background-color: #20c063;
+    color: #fff;
+}
+
+.leaflet-touch .leaflet-control-layers-toggle {
+    text-align: center;
+    font-size: 1.4em;
+    line-height: 30px;
+    width: 30px;
+    height: 30px;
 }
