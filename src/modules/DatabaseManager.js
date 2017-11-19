@@ -3,23 +3,47 @@ const config = {
   password: '268@lTk',
   server: '112.78.4.175',
   database: 'QUANLYGIADAT',
+  pool:{
+    min:1,max:15
+  }
 }
+let sql = require('mssql');
 class DatabaseManager {
   constructor(params) {
-    this.sql = require('mssql')
+  }
+  static set request(request) {
+    this._request = request
+  }
+  static get request() {
+    return this._request;
+  }
+  static create(params) {
+    if (!this._instance)
+      this._instance = new DatabaseManager(params);
+    return this._instance;
   }
   connect() {
+    console.log('connect database');
     return new Promise((resolve, reject) => {
-      this.sql.connect(config).then(() => {
-        const request = new this.sql.Request()
-        resolve(request);
-      }).catch(err => { reject(err); this.sql.close(); });
+    if (DatabaseManager.request) {
+      resolve(DatabaseManager.request);
+    } else {
+      sql.connect(config).then(function () {
+        DatabaseManager.request = new sql.Request();
+        resolve(DatabaseManager.request);
+      })
+    }
+    //   ////this.close();
+    //   sql.connect(config).then(() => {
+    //     const request = new sql.Request()
+    //     resolve(request);
+    //   }).catch(err => {
+    //     reject(err);
+    //     ////this.close();
+    //   });
     });
   }
-  close(){
-    return this.sql.close();
-  }
-  query(sql, request){
+  query(sql, request) {
     return new Promise((resolve, reject) => {
       if (request) {
         request.query(sql, (err, result) => {
@@ -38,9 +62,13 @@ class DatabaseManager {
             } else {
               resolve(result)
             }
-            this.close();
+            ////this.close();
           })
-        }).catch(err => { console.log(err); reject(err); this.close(); });
+        }).catch(err => {
+          console.log(err);
+          reject(err);
+          ////this.close();
+        });
       }
     });
   }
@@ -49,27 +77,33 @@ class DatabaseManager {
       if (request) {
         request.query(sql, (err, result) => {
           if (err) {
+            console.log(err);
             reject(err);
           } else {
-            if (result.recordset.length > 0)
-              resolve(result.recordset)
-            else resolve(null);
+            resolve(result.recordset)
           }
         })
       } else {
-        this.sql.connect(config).then(() => {
-          const request = new this.sql.Request()
+        this.connect().then((request) => {
           request.query(sql, (err, result) => {
             if (err) {
+              console.log(err);
               reject(err);
             } else {
               resolve(result.recordset)
             }
-            this.sql.close();
+            ////this.close();
           })
-        }).catch(err => { console.log(err); reject(err); this.sql.close(); });
+        }).catch(err => {
+          console.log(err);
+          reject(err);
+          ////this.close();
+        });
       }
     });
+  }
+  close(){
+    sql.close();
   }
   findThuaDat(info) {
     console.log(`
@@ -141,10 +175,10 @@ class DatabaseManager {
                 nhomDat: element['nhomDat']
               })
             }
-            this.sql.close();
+            sql.close();
             resolve(results);
-          }).catch(err => { this.sql.close(); reject(err) });
-        }).catch(err => { this.sql.close(); reject(err) });
+          }).catch(err => { sql.close(); reject(err) });
+        }).catch(err => { sql.close(); reject(err) });
       })
     })
 
@@ -158,7 +192,7 @@ class DatabaseManager {
       let sql = `select LOAIMUCDICHSUDUNG.tenDayDu, dienTich, nhomDonGia,nhomDat from DAMUCDICHSUDUNG inner join LOAIMUCDICHSUDUNG on DAMUCDICHSUDUNG.loaiMucDichSuDungId = LOAIMUCDICHSUDUNG.loaiMucDichSuDungId where soThuTuThua = ${soThua} and soHieuToBanDo = ${soTo} and MaQuanHuyen = ${quanHuyen} and MaPhuongXa = ${phuongxa}`
       this.connect().then(request => {
         this.select(sql, request).then(res => {
-          if (!res || (res && res.length <= 0)) { this.sql.close(); resolve([]); }
+          if (!res || (res && res.length <= 0)) { sql.close(); resolve([]); }
           else {
             let proms = [];
 
@@ -177,12 +211,12 @@ class DatabaseManager {
                   dienTich: element['dienTich']
                 })
               }
-              this.sql.close();
+              sql.close();
               resolve(results);
-            }).catch(err => { this.sql.close(); reject(err) });
+            }).catch(err => { sql.close(); reject(err) });
           }
         })
-      }).catch(err => { this.sql.close(); reject(err) });
+      }).catch(err => { sql.close(); reject(err) });
     });
   }
   cungCapGiaDat(props){

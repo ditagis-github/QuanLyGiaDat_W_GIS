@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var DatabaseManager = require('../modules/DatabaseManager');
-var dbMng = new DatabaseManager();
+var dbMng = require('../modules/DatabaseManager').create();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
