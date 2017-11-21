@@ -4,7 +4,7 @@ define([
     'use strict';
     return class {
         constructor(url, options = {}) {
-            this.url = url || 'http://ditagis.com:8080/geoserver/sqlserver/wms';
+            this.url = url || 'https://ditagis.com:8443/geoserver/sqlserver/wms';
         }
         getRequestUrl(params) {
             return this.url + L.Util.getParamString(params, this.url, true);

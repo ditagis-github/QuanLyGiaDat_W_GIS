@@ -45,6 +45,7 @@ define(['L', 'css!ditagis/Control/Locate.min.css', ], function (L) {
             iconElementTag: 'span', // span or i
             circlePadding: [0, 0],
             metric: true,
+            locationFound:null,
             onLocationError: function (err) {
                 // this event is called in case of any location error
                 // that is not a time out error.
@@ -91,6 +92,7 @@ define(['L', 'css!ditagis/Control/Locate.min.css', ], function (L) {
                 setView: false // have to set this to false because we have to
                 // do setView manually
             });
+            this.options.locationFound = options.locationFound;
         },
 
         /**
@@ -212,7 +214,7 @@ define(['L', 'css!ditagis/Control/Locate.min.css', ], function (L) {
                     }))
                     ._popup.setLatLng(this._event.latlng);
             }
-
+            this._map.fire('abc',this._event)
             this._toggleContainerStyle();
         },
 
@@ -364,7 +366,8 @@ define(['L', 'css!ditagis/Control/Locate.min.css', ], function (L) {
             if (this.options.follow && this._following) {
                 this._locateOnNextLocationFound = true;
             }
-
+            if(this.options.locationFound)
+            this.options.locationFound(this._event)
             this.drawMarker(this._map);
         },
 
@@ -448,12 +451,12 @@ define(['L', 'css!ditagis/Control/Locate.min.css', ], function (L) {
          * Removes all classes from button.
          */
         _cleanClasses: function () {
-            L.DomUtil.removeClass(this._container, "requesting");
-            L.DomUtil.removeClass(this._container, "active");
-            L.DomUtil.removeClass(this._container, "following");
+            // L.DomUtil.removeClass(this._container, "requesting");
+            // L.DomUtil.removeClass(this._container, "active");
+            // L.DomUtil.removeClass(this._container, "following");
 
-            L.DomUtil.removeClass(this._icon, this.options.iconLoading);
-            L.DomUtil.addClass(this._icon, this.options.icon);
+            // L.DomUtil.removeClass(this._icon, this.options.iconLoading);
+            // L.DomUtil.addClass(this._icon, this.options.icon);
         },
 
         /**

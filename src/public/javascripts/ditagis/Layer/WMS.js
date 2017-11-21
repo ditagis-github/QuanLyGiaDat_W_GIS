@@ -172,6 +172,56 @@ define(['L',
             return params;
         },
         getFeatureInfo(latlng) {
+            return new Promise((resolve, reject) => {
+                const thuaDatLayer = this._map.getLayer('thuadat');
+            let queryTask = new QueryTask(this._url);
+            let query = new Query({
+                params: this.generateParams(latlng,thuaDatLayer.wmsParams)
+            })
+            queryTask.execute(query).then((features) => {
+                if (features != undefined && features.length > 0) {
+                    var ft = features[0];
+                    
+                    let query = new Query({
+                        params: {
+                            featureId: ft.id
+                        }
+                    });
+                   
+                    thuaDatLayer.getFeatures(query).then((results) => {
+                        const feature = results[0];
+                        this.highLightThuaDat(feature.geometry);
+                        // this._map.fitBounds(polygon.getBounds());
+                    });
+                    if (ft.properties != undefined) {
+                        ft.properties['OBJECTID'] = ft.id.match(/\d+/)[0];
+                        var content = this.getPopupContent(ft.properties);
+
+                        //neu co noi dung hien thi 
+                        if (content != undefined) {
+                            //thi goi den ham showresult de hien thi popup
+                            // showResults(err, latlng, content);
+                            var popup = popupUtil.show(this._map, latlng, content);
+                            function clickFunc () {
+                                this.clearHighlightThuaDat();
+                                popup._closeButton.removeEventListener('click',clickFunc,false);
+                            };
+                            popup._closeButton.addEventListener('click',clickFunc.bind(this),false)
+                        }
+                        // nếu không có content thì chỉ cần fly đến vị trí latlng
+                        else {
+                            this._map.flyTo(latlng, 18);
+                        }
+                    }
+                    resolve(ft)
+                }
+                else{
+                    resolve(null);
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
+            });
             const thuaDatLayer = this._map.getLayer('thuadat');
             let queryTask = new QueryTask(this._url);
             let query = new Query({

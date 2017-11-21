@@ -34,7 +34,7 @@ define([
                 layer.on('set-params add', (evt) => {
                     const style = evt.type === 'set-params'?evt.params.styles:evt.target.wmsParams.styles;
                     if (style) {
-                        let link = 'http://ditagis.com:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=' + style;
+                        let link = 'https://ditagis.com:8443/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=' + style;
                         this.changeImage(link);
                     }
                 })
@@ -56,7 +56,7 @@ define([
             // var lastLi = L.DomUtil.create('li', 'pbs', ul);
             // lastLi.innerText = this.options.values[1] + ' +';
             this.image = L.DomUtil.create('img', null, this._container);
-            this.image.src = 'http://ditagis.com:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=postgres:ThuaDat';
+            this.image.src = 'https://ditagis.com:8443/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=postgres:ThuaDat';
             L.DomEvent.disableClickPropagation(this._container);
             return this._container;
         },

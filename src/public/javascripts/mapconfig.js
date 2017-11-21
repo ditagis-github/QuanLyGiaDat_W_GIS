@@ -16,7 +16,7 @@ define([], function () {
             }
         },
         layers: [{
-            url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',
+            url: 'https://ditagis.com:8443/geoserver/sqlserver/wms',
             visible: true,
             options: {
                 id: 'thuadat',
@@ -67,7 +67,7 @@ define([], function () {
         },
         {
 
-            url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',
+            url: 'https://ditagis.com:8443/geoserver/sqlserver/wms',
             // visible: true,
             options: {
                 id: 'thuadatnongnghiep',
@@ -139,7 +139,7 @@ define([], function () {
         {
 
 
-            url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',
+            url: 'https://ditagis.com:8443/geoserver/sqlserver/wms',
             visible: false,
             options: {
                 id: 'thuadatphinongnghiep',
@@ -213,7 +213,7 @@ define([], function () {
         basemaps: [
             {
                 id: 'hanhchinhxa',
-                url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',
+                url: 'https://ditagis.com:8443/geoserver/sqlserver/wms',
                 options: {
                     layers: 'sqlserver:hanhchinh',
                     maxZoom: 14,
@@ -224,7 +224,7 @@ define([], function () {
                 visible: true
             }, {
                 id: 'giaothong',
-                url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',
+                url: 'https://ditagis.com:8443/geoserver/sqlserver/wms',
                 options: {
                     layers: 'sqlserver:giaothong',
                     minZoom: 15,
@@ -236,7 +236,7 @@ define([], function () {
             },
             {
                 id: 'songho',
-                url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',
+                url: 'https://ditagis.com:8443/geoserver/sqlserver/wms',
                 options: {
                     layers: 'sqlserver:songho',
                     minZoom: 14,
@@ -249,7 +249,7 @@ define([], function () {
             },
             {
                 id: 'timduong',
-                url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',
+                url: 'https://ditagis.com:8443/geoserver/sqlserver/wms',
                 options: {
                     layers: 'sqlserver:timduong',
                     minZoom: 14,
@@ -261,7 +261,7 @@ define([], function () {
             },
             {
                 id: 'timsong',
-                url: 'http://ditagis.com:8080/geoserver/sqlserver/wms',
+                url: 'https://ditagis.com:8443/geoserver/sqlserver/wms',
                 options: {
                     layers: 'sqlserver:TIMSONG',
                     minZoom: 14,
