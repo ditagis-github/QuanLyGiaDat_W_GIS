@@ -33,14 +33,6 @@ class DatabaseManager {
         resolve(DatabaseManager.request);
       })
     }
-    //   ////this.close();
-    //   sql.connect(config).then(() => {
-    //     const request = new sql.Request()
-    //     resolve(request);
-    //   }).catch(err => {
-    //     reject(err);
-    //     ////this.close();
-    //   });
     });
   }
   query(sql, request) {
@@ -71,7 +63,7 @@ class DatabaseManager {
         });
       }
     });
-  }
+  } 
   select(sql, request) {
     return new Promise((resolve, reject) => {
       if (request) {
@@ -175,10 +167,10 @@ class DatabaseManager {
                 nhomDat: element['nhomDat']
               })
             }
-            sql.close();
+            // sql.close();
             resolve(results);
-          }).catch(err => { sql.close(); reject(err) });
-        }).catch(err => { sql.close(); reject(err) });
+          }).catch(err => {  reject(err) });
+        }).catch(err => {  reject(err) });
       })
     })
 
@@ -192,7 +184,7 @@ class DatabaseManager {
       let sql = `select LOAIMUCDICHSUDUNG.tenDayDu, dienTich, nhomDonGia,nhomDat from DAMUCDICHSUDUNG inner join LOAIMUCDICHSUDUNG on DAMUCDICHSUDUNG.loaiMucDichSuDungId = LOAIMUCDICHSUDUNG.loaiMucDichSuDungId where soThuTuThua = ${soThua} and soHieuToBanDo = ${soTo} and MaQuanHuyen = ${quanHuyen} and MaPhuongXa = ${phuongxa}`
       this.connect().then(request => {
         this.select(sql, request).then(res => {
-          if (!res || (res && res.length <= 0)) { sql.close(); resolve([]); }
+          if (!res || (res && res.length <= 0)) {  resolve([]); }
           else {
             let proms = [];
 
@@ -205,18 +197,20 @@ class DatabaseManager {
               let results = [];
               for (var i = 0; i < res.length; i++) {
                 var element = res[i];
-                results.push({
+                for (const donGia of donGias[0]) {
+                  results.push({
                   tenDayDu: element['tenDayDu'],
-                  donGia: donGias[i][0][element['nhomDonGia']],
+                  donGia: donGia[element['nhomDonGia']],
                   dienTich: element['dienTich']
                 })
+                }
+                
               }
-              sql.close();
               resolve(results);
-            }).catch(err => { sql.close(); reject(err) });
+            }).catch(err => {  reject(err) });
           }
         })
-      }).catch(err => { sql.close(); reject(err) });
+      }).catch(err => { reject(err) });
     });
   }
   cungCapGiaDat(props){
