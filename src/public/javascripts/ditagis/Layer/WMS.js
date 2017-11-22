@@ -26,6 +26,7 @@ define(['L',
             //   Register a click listener, then do all the upstream WMS things
             L.TileLayer.WMS.prototype.onAdd.call(this, map);
             map.on('click', this.click, this);
+            this.map = map;
         },
 
         onRemove: function (map) {
@@ -39,13 +40,13 @@ define(['L',
         click: function (evt) {
             if (this.id === 'thuadat' || this.id === 'thuadatnongnghiep' || this.id === 'thuadatphinongnghiep') {
                 if (this._highLightThuaDat) {
-                    this._map.removeLayer(this._highLightThuaDat);
+                    this.map.removeLayer(this._highLightThuaDat);
                     delete this._highLightThuaDat;
                 }
                 //nếu có outfield thì mới hiển thị
                 if (this.options.outField) {
-                    if (this._map) {
-                        const zoom = this._map.getZoom();
+                    if (this.map) {
+                        const zoom = this.map.getZoom();
                         if (zoom) {
                             //nếu hiển thị thì mới tìm kiếm
                             if ((this.options.minZoom !== undefined && zoom >= this.options.minZoom) &&
@@ -58,7 +59,7 @@ define(['L',
             }
         },
         highLightThuaDat(geometry) {
-            const thuaDatLayer = this._map.getLayer('thuadat');
+            const thuaDatLayer = this.map.getLayer('thuadat');
             this.clearHighlightThuaDat();
             if (geometry) {
                 const tmpCoors = geometry.coordinates[0];
@@ -66,20 +67,20 @@ define(['L',
                 for (let item of tmpCoors) {
                     coors.push([item[1], item[0]]);
                 }
-                thuaDatLayer._highLightThuaDat = L.polygon(coors, { color: 'red' }).addTo(this._map);
+                thuaDatLayer._highLightThuaDat = L.polygon(coors, { color: 'red' }).addTo(this.map);
                 thuaDatLayer._highLightThuaDat.bringToFront();
             }
             return thuaDatLayer._highLightThuaDat;
         },
         clearHighlightThuaDat() {
-            const thuaDatLayer = this._map.getLayer('thuadat');
+            const thuaDatLayer = this.map.getLayer('thuadat');
             if (thuaDatLayer._highLightThuaDat) {
-                this._map.removeLayer(thuaDatLayer._highLightThuaDat);
+                this.map.removeLayer(thuaDatLayer._highLightThuaDat);
                 delete thuaDatLayer._highLightThuaDat;
             }
         },
         getPopupContent(props) {
-            const thuaDatLayer = this._map.getLayer('thuadat');
+            const thuaDatLayer = this.map.getLayer('thuadat');
             var div = null;
             //nếu có outfield thì mới generate popup
             if (this.options.outField) {
@@ -148,8 +149,8 @@ define(['L',
             return div;
         },
         generateParams(latlng,wmsParams = this.wmsParams) {
-            var point = this._map.latLngToContainerPoint(latlng, this._map.getZoom()),
-                size = this._map.getSize(),
+            var point = this.map.latLngToContainerPoint(latlng, this.map.getZoom()),
+                size = this.map.getSize(),
 
                 params = {
                     request: 'GetFeatureInfo',
@@ -159,7 +160,7 @@ define(['L',
                     transparent: wmsParams.transparent,
                     version: wmsParams.version,
                     format: wmsParams.format,
-                    bbox: this._map.getBounds().toBBoxString() + ',EPSG:4326',
+                    bbox: this.map.getBounds().toBBoxString() + ',EPSG:4326',
                     height: size.y,
                     width: size.x,
                     layers: wmsParams.layers,
@@ -173,7 +174,7 @@ define(['L',
         },
         getFeatureInfo(latlng) {
             return new Promise((resolve, reject) => {
-                const thuaDatLayer = this._map.getLayer('thuadat');
+                const thuaDatLayer = this.map.getLayer('thuadat');
             let queryTask = new QueryTask(this._url);
             let query = new Query({
                 params: this.generateParams(latlng,thuaDatLayer.wmsParams)
@@ -191,7 +192,7 @@ define(['L',
                     thuaDatLayer.getFeatures(query).then((results) => {
                         const feature = results[0];
                         this.highLightThuaDat(feature.geometry);
-                        // this._map.fitBounds(polygon.getBounds());
+                        // this.map.fitBounds(polygon.getBounds());
                     });
                     if (ft.properties != undefined) {
                         ft.properties['OBJECTID'] = ft.id.match(/\d+/)[0];
@@ -201,7 +202,7 @@ define(['L',
                         if (content != undefined) {
                             //thi goi den ham showresult de hien thi popup
                             // showResults(err, latlng, content);
-                            var popup = popupUtil.show(this._map, latlng, content);
+                            var popup = popupUtil.show(this.map, latlng, content);
                             function clickFunc () {
                                 this.clearHighlightThuaDat();
                                 popup._closeButton.removeEventListener('click',clickFunc,false);
@@ -210,7 +211,7 @@ define(['L',
                         }
                         // nếu không có content thì chỉ cần fly đến vị trí latlng
                         else {
-                            this._map.flyTo(latlng, 18);
+                            this.map.flyTo(latlng, 18);
                         }
                     }
                     resolve(ft)
@@ -222,7 +223,7 @@ define(['L',
                 console.log(err);
             })
             });
-            const thuaDatLayer = this._map.getLayer('thuadat');
+            const thuaDatLayer = this.map.getLayer('thuadat');
             let queryTask = new QueryTask(this._url);
             let query = new Query({
                 params: this.generateParams(latlng,thuaDatLayer.wmsParams)
@@ -240,7 +241,7 @@ define(['L',
                     thuaDatLayer.getFeatures(query).then((results) => {
                         const feature = results[0];
                         this.highLightThuaDat(feature.geometry);
-                        // this._map.fitBounds(polygon.getBounds());
+                        // this.map.fitBounds(polygon.getBounds());
                     });
                     if (ft.properties != undefined) {
                         ft.properties['OBJECTID'] = ft.id.match(/\d+/)[0];
@@ -257,7 +258,7 @@ define(['L',
                         if (content != undefined) {
                             //thi goi den ham showresult de hien thi popup
                             // showResults(err, latlng, content);
-                            var popup = popupUtil.show(this._map, latlng, content);
+                            var popup = popupUtil.show(this.map, latlng, content);
                             function clickFunc () {
                                 this.clearHighlightThuaDat();
                                 popup._closeButton.removeEventListener('click',clickFunc,false);
@@ -266,7 +267,7 @@ define(['L',
                         }
                         // nếu không có content thì chỉ cần fly đến vị trí latlng
                         else {
-                            this._map.flyTo(latlng, 18);
+                            this.map.flyTo(latlng, 18);
                         }
                     }
                 }
