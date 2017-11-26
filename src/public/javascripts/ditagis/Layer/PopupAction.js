@@ -181,7 +181,7 @@ define([
       let that = this;
       let total = 0;
       let body = document.createElement('div');
-      let columns = ['Mục đích sử đụng đất', 'Đơn giá', 'Diện tích', 'Thành tiền']
+      let columns = ['Mục đích sử đụng đất', 'Đơn giá', 'Vị trí', 'Diện tích', 'Thành tiền']
       let table = bootstrap.table(columns);
       body.appendChild(table);
       let tbody = table.getElementsByTagName('tbody')[0];
@@ -231,6 +231,7 @@ define([
 
             //muc dich chuyen
             let donGia = item['donGia'] || 0,
+              vitri = item['viTri'],
               dienTich = item['dienTich'] || 0,
               thanhTien = 0;
             donGia = parseFloat(donGia);
@@ -370,7 +371,7 @@ define([
           KetQua = KetQua.substring(0, KetQua.length - 1);
         }
         KetQua = KetQua.substring(1, 2).toUpperCase() + KetQua.substring(2);
-        return KetQua+' đồng'; //.substring(0, 1);//.toUpperCase();// + KetQua.substring(1);
+        return KetQua + ' đồng'; //.substring(0, 1);//.toUpperCase();// + KetQua.substring(1);
       }
       let modal, body, footer, input, tienSangChu, btnSubmit, btnClose;
       body = document.createElement('div');
@@ -381,7 +382,7 @@ define([
         if (input.value.length > 0) {
           let price = parseFloat(input.value.replace(',', ''));
           // input.value = price.format();
-          tienSangChu.innerText =  DocTienBangChu(price);
+          tienSangChu.innerText = DocTienBangChu(price);
         }
 
       })
@@ -393,7 +394,7 @@ define([
       btnSubmit.type = 'button';
       btnSubmit.classList.add('btn', 'btn-primary');
       btnSubmit.innerText = 'Cung cấp';
-      btnSubmit.addEventListener('click',function(){
+      btnSubmit.addEventListener('click', function () {
         let notify = $.notify({
           title: `<strong>Cung cấp giá đất</strong>`,
           message: 'Hệ thống đang ghi nhận...'
@@ -401,22 +402,25 @@ define([
           showProgressbar: true,
           delay: 20000
         })
-        if(input.value.length>0){
-          $.post('thuadat/cungcapgiadat',{OBJECTID:props['OBJECTID'],gia:input.value}).done(function(){
+        if (input.value.length > 0) {
+          $.post('thuadat/cungcapgiadat', {
+            OBJECTID: props['OBJECTID'],
+            gia: input.value
+          }).done(function () {
             notify.update({
               'type': 'success',
               'message': 'Cung cấp giá đất thành công, <strong>xin CẢM ƠN!</strong>',
               'progress': 90
             });
             modal.modal('toggle');
-          }).fail(function(){
+          }).fail(function () {
             notify.update({
               'type': 'danger',
               'message': 'Có lỗi xảy ra, vui lòng thử lại',
               'progress': 90
             });
           })
-        }else{
+        } else {
           notify.update({
             'type': 'danger',
             'message': 'Vui lòng nhập giá đất',

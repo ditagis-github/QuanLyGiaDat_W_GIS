@@ -3,14 +3,14 @@ const config = {
   password: '268@lTk',
   server: '112.78.4.175',
   database: 'QUANLYGIADAT',
-  pool:{
-    min:1,max:15
+  pool: {
+    min: 1,
+    max: 15
   }
 }
 let sql = require('mssql');
 class DatabaseManager {
-  constructor(params) {
-  }
+  constructor(params) {}
   static set request(request) {
     this._request = request
   }
@@ -25,14 +25,14 @@ class DatabaseManager {
   connect() {
     console.log('connect database');
     return new Promise((resolve, reject) => {
-    if (DatabaseManager.request) {
-      resolve(DatabaseManager.request);
-    } else {
-      sql.connect(config).then(function () {
-        DatabaseManager.request = new sql.Request();
+      if (DatabaseManager.request) {
         resolve(DatabaseManager.request);
-      })
-    }
+      } else {
+        sql.connect(config).then(function () {
+          DatabaseManager.request = new sql.Request();
+          resolve(DatabaseManager.request);
+        })
+      }
     });
   }
   query(sql, request) {
@@ -63,7 +63,7 @@ class DatabaseManager {
         });
       }
     });
-  } 
+  }
   select(sql, request) {
     return new Promise((resolve, reject) => {
       if (request) {
@@ -94,7 +94,7 @@ class DatabaseManager {
       }
     });
   }
-  close(){
+  close() {
     sql.close();
   }
   findThuaDat(info) {
@@ -131,20 +131,35 @@ class DatabaseManager {
 
   loaiMucDichSD(params) {
     return new Promise((resolve, reject) => {
-      let soTo = params.soTo, soThua = params.soThua, quanHuyen = params.quanHuyen, phuongxa = params.phuongXa;
+      let soTo = params.soTo,
+        soThua = params.soThua,
+        quanHuyen = params.quanHuyen,
+        phuongxa = params.phuongXa;
 
       let proms = [];
       this.connect().then(request => {
         let sql = `Select kyHieuMucDich,tenDayDu,nhomDonGia,nhomDat from LoaiMucDichSuDung where nhomDonGia is not null and nhomDat is not null and (nhomDat = 'NN' OR nhomDat = 'PNN') order by tenDayDu`
         this.select(sql, request).then(res => {
           let nn = res
-            .filter(f => { return f['nhomDat'] === 'NN'; })
-            .map(m => { return m['nhomDonGia']; })
-            .filter((f, index, self) => { return self.indexOf(f) === index; }).join(',')
+            .filter(f => {
+              return f['nhomDat'] === 'NN';
+            })
+            .map(m => {
+              return m['nhomDonGia'];
+            })
+            .filter((f, index, self) => {
+              return self.indexOf(f) === index;
+            }).join(',')
           let pnn = res
-            .filter((f) => { return f['nhomDat'] === 'PNN'; })
-            .map(m => { return m['nhomDonGia']; })
-            .filter((f, index, self) => { return self.indexOf(f) === index; }).join(',');
+            .filter((f) => {
+              return f['nhomDat'] === 'PNN';
+            })
+            .map(m => {
+              return m['nhomDonGia'];
+            })
+            .filter((f, index, self) => {
+              return self.indexOf(f) === index;
+            }).join(',');
           if (nn && nn.length > 0) {
             sql = `select ${nn} from PHANVT_NN_GIA WHERE SoHieuThua = ${soThua} and soHieuToBanDo = ${soTo} and MaQuanHuyen = ${quanHuyen} and MaPhuongXa = ${phuongxa}`;
             proms.push(this.select(sql, request));
@@ -169,8 +184,12 @@ class DatabaseManager {
             }
             // sql.close();
             resolve(results);
-          }).catch(err => {  reject(err) });
-        }).catch(err => {  reject(err) });
+          }).catch(err => {
+            reject(err)
+          });
+        }).catch(err => {
+          reject(err)
+        });
       })
     })
 
@@ -180,17 +199,21 @@ class DatabaseManager {
   chitietthuadat(params) {
     return new Promise((resolve, reject) => {
       let results = [];
-      let soTo = params.soTo, soThua = params.soThua, quanHuyen = params.quanHuyen, phuongxa = params.phuongXa;
+      let soTo = params.soTo,
+        soThua = params.soThua,
+        quanHuyen = params.quanHuyen,
+        phuongxa = params.phuongXa;
       let sql = `select LOAIMUCDICHSUDUNG.tenDayDu, dienTich, nhomDonGia,nhomDat from DAMUCDICHSUDUNG inner join LOAIMUCDICHSUDUNG on DAMUCDICHSUDUNG.loaiMucDichSuDungId = LOAIMUCDICHSUDUNG.loaiMucDichSuDungId where soThuTuThua = ${soThua} and soHieuToBanDo = ${soTo} and MaQuanHuyen = ${quanHuyen} and MaPhuongXa = ${phuongxa}`
       this.connect().then(request => {
         this.select(sql, request).then(res => {
-          if (!res || (res && res.length <= 0)) {  resolve([]); }
-          else {
+          if (!res || (res && res.length <= 0)) {
+            resolve([]);
+          } else {
             let proms = [];
 
             for (let item of res) {
               let tableName = item['nhomDat'] === 'NN' ? 'PHANVT_NN_GIA' : 'PHANVT_PNN_GIA';
-              sql = `select ${item['nhomDonGia']} from ${tableName} WHERE SoHieuThua = ${soThua} and soHieuToBanDo = ${soTo} and MaQuanHuyen = ${quanHuyen} and MaPhuongXa = ${phuongxa}`;
+              sql = `select ${item['nhomDonGia']},viTri,dienTich from ${tableName} WHERE SoHieuThua = ${soThua} and soHieuToBanDo = ${soTo} and MaQuanHuyen = ${quanHuyen} and MaPhuongXa = ${phuongxa} order by vitri`;
               proms.push(this.select(sql, request));
             }
             Promise.all(proms).then(donGias => {
@@ -199,23 +222,28 @@ class DatabaseManager {
                 var element = res[i];
                 for (const donGia of donGias[0]) {
                   results.push({
-                  tenDayDu: element['tenDayDu'],
-                  donGia: donGia[element['nhomDonGia']],
-                  dienTich: element['dienTich']
-                })
+                    tenDayDu: element['tenDayDu'] || 'N/A',
+                    donGia: donGia[element['nhomDonGia']] || 0,
+                    viTri: donGia['viTri'],
+                    dienTich: donGia['dienTich'] || 0
+                  })
                 }
-                
+
               }
               resolve(results);
-            }).catch(err => {  reject(err) });
+            }).catch(err => {
+              reject(err)
+            });
           }
         })
-      }).catch(err => { reject(err) });
+      }).catch(err => {
+        reject(err)
+      });
     });
   }
-  cungCapGiaDat(props){
+  cungCapGiaDat(props) {
     console.log(props);
-      return this.query(`UPDATE THUADAT SET GiaDoDanCungCap = ${props.gia} WHERE OBJECTID = ${props.OBJECTID}`)
+    return this.query(`UPDATE THUADAT SET GiaDoDanCungCap = ${props.gia} WHERE OBJECTID = ${props.OBJECTID}`)
   }
 }
 module.exports = DatabaseManager;
