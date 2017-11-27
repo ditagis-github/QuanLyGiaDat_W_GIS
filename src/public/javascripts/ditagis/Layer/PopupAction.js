@@ -5,8 +5,7 @@ define([
   class Popup {
     constructor(options) {
       Number.prototype.format = function () {
-        var re = '\\d(?=(\\d{' + 3 + '})+' + '$' + ')';
-        return this.toFixed(0).replace(new RegExp(re, 'g'), '$&,');
+        return this.toFixed(6).replace(/\.?0*$/,'')
       }
     }
     chuyeDoiMucDich(props) {
