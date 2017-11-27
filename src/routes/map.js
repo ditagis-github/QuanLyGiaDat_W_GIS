@@ -31,6 +31,20 @@ router.post('/thuadat/chitiet', function (req, res) {
     res.status(400).send('Đã có lỗi xảy ra');
   })
 });
+router.post('/thuadat/xemgiadat', function (req, res) {
+  dbMng.xemGiaDat(req.body).then(result => {
+    res.status(200).send(result);
+  }).catch(e => {
+    res.status(400).send('Đã có lỗi xảy ra');
+  })
+});
+router.post('/thuadat/chuyenmucdich', function (req, res) {
+  dbMng.chuyenDoiGiaDat(req.body).then(result => {
+    res.status(200).send(result);
+  }).catch(e => {
+    res.status(400).send('Đã có lỗi xảy ra');
+  })
+});
 router.post('/thuadat/mdsd', function (req, res) {
   dbMng.loaiMucDichSD(req.body).then(result => {
     res.status(200).send(result);

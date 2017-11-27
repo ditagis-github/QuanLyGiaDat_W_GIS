@@ -203,7 +203,7 @@ class DatabaseManager {
         soThua = params.soThua,
         quanHuyen = params.quanHuyen,
         phuongxa = params.phuongXa;
-      let sql = `select LOAIMUCDICHSUDUNG.tenDayDu, dienTich, nhomDonGia,nhomDat from DAMUCDICHSUDUNG inner join LOAIMUCDICHSUDUNG on DAMUCDICHSUDUNG.loaiMucDichSuDungId = LOAIMUCDICHSUDUNG.loaiMucDichSuDungId where soThuTuThua = ${soThua} and soHieuToBanDo = ${soTo} and MaQuanHuyen = ${quanHuyen} and MaPhuongXa = ${phuongxa}`
+      let sql = `select LOAIMUCDICHSUDUNG.tenDayDu, dienTich, nhomDonGia,nhomDat from DAMUCDICHSUDUNG inner join LOAIMUCDICHSUDUNG on DAMUCDICHSUDUNG.loaiMucDichSuDungId = LOAIMUCDICHSUDUNG.loaiMucDichSuDungId where soThuTuThua = ${soThua} and soHieuToBanDo = ${soTo} and MaQuanHuyen = ${quanHuyen} and MaPhuongXa = ${phuongxa} order by thuTuSapXep desc`
       this.connect().then(request => {
         this.select(sql, request).then(res => {
           if (!res || (res && res.length <= 0)) {
@@ -220,12 +220,12 @@ class DatabaseManager {
               let results = [];
               for (var i = 0; i < res.length; i++) {
                 var element = res[i];
-                for (const donGia of donGias[0]) {
+                for (const donGia of donGias[i]) {
                   results.push({
                     tenDayDu: element['tenDayDu'] || 'N/A',
                     donGia: donGia[element['nhomDonGia']] || 0,
                     viTri: donGia['viTri'],
-                    dienTich: donGia['dienTich'] || 0
+                    dienTich: element['dienTich'] || 0
                   })
                 }
 
@@ -234,6 +234,274 @@ class DatabaseManager {
             }).catch(err => {
               reject(err)
             });
+          }
+        })
+      }).catch(err => {
+        reject(err)
+      });
+    });
+  }
+  async xemGiaDat(params) {
+    return new Promise((resolve, reject) => {
+      let results = {
+        tongTien: 0,
+        chiTiet: []
+      };
+      let soTo = params.soTo,
+        soThua = params.soThua,
+        quanHuyen = params.quanHuyen,
+        phuongxa = params.phuongXa;
+      let sql = `select LOAIMUCDICHSUDUNG.tenDayDu,LOAIMUCDICHSUDUNG.kyHieuMucDich, dienTich, nhomDonGia,nhomDat from DAMUCDICHSUDUNG inner join LOAIMUCDICHSUDUNG on DAMUCDICHSUDUNG.loaiMucDichSuDungId = LOAIMUCDICHSUDUNG.loaiMucDichSuDungId where soThuTuThua = ${soThua} and soHieuToBanDo = ${soTo} and MaQuanHuyen = ${quanHuyen} and MaPhuongXa = ${phuongxa} order by thuTuSapXep desc`
+      this.connect().then(async request => {
+        this.select(sql, request).then(async rows => {
+            if (rows && rows.length > 0) {
+              let dientichconlai = 0,
+                vitri = 1,
+                index = 0;
+              for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                let giadat, dientich, MDSD = row["kyHieuMucDich"];
+                if (row['dienTich']) {
+                  dientich = parseFloat(row['dienTich']);
+                  if (row["nhomDat"] === "NN") {
+                    let donGia = await this.select(`select ${row["nhomDonGia"]} from PhanVT_NN_GIA where soHieuToBanDo='${soTo}' and SoHieuThua='${soThua}' and MaPhuongXa='${phuongxa}' and ViTri=${vitri}`).then(async(selectRes) => {
+                      if (selectRes.length > 0)
+                        return await selectRes[0][row["nhomDonGia"]];
+                      return await null;
+                    })
+                    let item = {
+                      tenDayDu: row['tenDayDu'] || 'N/A',
+                      donGia: donGia ? parseFloat(donGia) : 0,
+                      viTri: vitri,
+                      dienTich: dientichconlai > 0 ? dientichconlai : dientich
+                    }
+                    let thanhTien = item['donGia'] * item['dienTich'];
+                    item['thanhTien'] = thanhTien;
+                    results.chiTiet.push(item);
+                    results.tongTien += thanhTien;
+                    if (dientichconlai > 0) {
+                      dientichconlai = 0;
+                      vitri++;
+                    }
+                  } else if (row["nhomDat"] == "PNN") {
+                    let duLieuPhanViTri = await this.query(`select ${row["nhomDonGia"]},viTri,Shape.STArea() as Area from PhanVT_PNN_GIA where soHieuToBanDo='${soTo}' and SoHieuThua='${soThua}' and MaPhuongXa='${phuongxa}'`).then(async(selectRes) => {
+                      return await selectRes.recordset;
+                    })
+                    let countVT = duLieuPhanViTri.length;
+                    if (countVT == 1) {
+                      let donGia = duLieuPhanViTri[0][row['nhomDonGia']];
+                      let item = {
+                        tenDayDu: row['tenDayDu'] || 'N/A',
+                        donGia: donGia ? parseFloat(donGia) : 0,
+                        viTri: vitri,
+                        dienTich: dientich
+                      }
+                      let thanhTien = item['donGia'] * item['dienTich'];
+                      item['thanhTien'] = thanhTien;
+                      results.chiTiet.push(item);
+                      results.tongTien += thanhTien;
+                    } else if (countVT == 2) {
+                      let vt = 1;
+                      for (const phanViTri of duLieuPhanViTri) {
+                        if (vt == 1) {
+                          let dientichShape = phanViTri['Area'];
+                          let donGia = phanViTri[row['nhomDonGia']];
+                          let item = {
+                            tenDayDu: row['tenDayDu'] || 'N/A',
+                            donGia: donGia ? parseFloat(donGia) : 0,
+                            viTri: vitri,
+                            dienTich: dientichShape < dientich ? dientichShape : dientich
+                          }
+                          let thanhTien = item['donGia'] * item['dienTich'];
+                          item['thanhTien'] = thanhTien;
+                          results.chiTiet.push(item);
+                          results.tongTien += thanhTien;
+                          if (dientichShape < dientich) {
+                            dientichconlai = dientich - dientichShape;
+                            vitri++;
+                            vt++;
+                          } else {
+                            dientichconlai = dientichShape - dientich;
+                          }
+                        } else {
+                          if (vitri == 2) {
+                            let donGia = phanViTri[row['nhomDonGia']];
+                            let item = {
+                              tenDayDu: row['tenDayDu'] || 'N/A',
+                              donGia: donGia ? parseFloat(donGia) : 0,
+                              viTri: vitri,
+                              dienTich: dientichconlai
+                            }
+                            let thanhTien = item['donGia'] * item['dienTich'];
+                            item['thanhTien'] = thanhTien;
+                            results.chiTiet.push(item);
+                            results.tongTien += thanhTien;
+                            dientichconlai = 0;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              // if (res.length > 1) {
+              //   var select = [];
+              //   for (let item of res) {
+              //     let tableName = item['nhomDat'] === 'NN' ? 'PHANVT_NN_GIA' : 'PHANVT_PNN_GIA';
+              //     select.push(`select ${item['nhomDonGia']},viTri,dienTich from ${tableName} WHERE SoHieuThua = ${soThua} and soHieuToBanDo = ${soTo} and MaQuanHuyen = ${quanHuyen} and MaPhuongXa = ${phuongxa} order by vitri`);
+              //   }
+              //   this.query(select.join(';')).then((queryRes) => {
+              //     let tongTien = 0;
+              //     for (let i = 0; i < queryRes.recordsets.length; i++) {
+              //       let rows = queryRes.recordsets[i];
+              //       let element = res[i];
+              //       for (const row of rows) {
+
+              //         let item = {
+              //           tenDayDu: element['tenDayDu'] || 'N/A',
+              //           donGia: row[element['nhomDonGia']] ? parseFloat(row[element['nhomDonGia']]) : 0,
+              //           viTri: row['viTri'],
+              //           dienTich: row['dienTich'] ? parseFloat(row['dienTich']) : 0
+              //         }
+              //         let thanhTien = item['donGia'] * item['dienTich'];
+              //         item['thanhTien'] = thanhTien;
+              //         results.chiTiet.push(item);
+              //         tongTien += thanhTien;
+              //       }
+              //     }
+              //     results.tongTien = tongTien;
+              //     resolve(results);
+              //   })
+              // } else {
+              //   var select = [];
+              //   for (let item of res) {
+              //     let tableName = item['nhomDat'] === 'NN' ? 'PHANVT_NN_GIA' : 'PHANVT_PNN_GIA';
+              //     select.push(`select ${item['nhomDonGia']},viTri,dienTich from ${tableName} WHERE SoHieuThua = ${soThua} and soHieuToBanDo = ${soTo} and MaQuanHuyen = ${quanHuyen} and MaPhuongXa = ${phuongxa} order by vitri`);
+              //   }
+              //   this.query(select.join(';')).then((queryRes) => {
+              //     let tongTien = 0;
+              //     for (let i = 0; i < queryRes.recordsets.length; i++) {
+              //       let rows = queryRes.recordsets[i];
+              //       let element = res[i];
+              //       for (const row of rows) {
+
+              //         let item = {
+              //           tenDayDu: element['tenDayDu'] || 'N/A',
+              //           donGia: row[element['nhomDonGia']] ? parseFloat(row[element['nhomDonGia']]) : 0,
+              //           viTri: row['viTri'],
+              //           dienTich: row['dienTich'] ? parseFloat(row['dienTich']) : 0
+              //         }
+              //         let thanhTien = item['donGia'] * item['dienTich'];
+              //         item['thanhTien'] = thanhTien;
+              //         results.chiTiet.push(item);
+              //         tongTien += thanhTien;
+              //       }
+              //     }
+              //     results.tongTien = tongTien;
+              //     resolve(results);
+              //   })
+              // }
+          }
+          resolve(results);
+        })
+      }).catch(err => {
+        reject(err)
+      });
+    });
+  }
+  async chuyenDoiGiaDat(params) {
+    return new Promise((resolve, reject) => {
+      let results = [];
+      let soTo = params.soTo,
+        soThua = params.soThua,
+        quanHuyen = params.quanHuyen,
+        phuongxa = params.phuongXa;
+      let sql = `select LOAIMUCDICHSUDUNG.tenDayDu,LOAIMUCDICHSUDUNG.kyHieuMucDich, dienTich, nhomDonGia,nhomDat from DAMUCDICHSUDUNG inner join LOAIMUCDICHSUDUNG on DAMUCDICHSUDUNG.loaiMucDichSuDungId = LOAIMUCDICHSUDUNG.loaiMucDichSuDungId where soThuTuThua = ${soThua} and soHieuToBanDo = ${soTo} and MaQuanHuyen = ${quanHuyen} and MaPhuongXa = ${phuongxa} order by thuTuSapXep desc`
+      this.connect().then(async request => {
+        this.select(sql, request).then(async rows => {
+          if (!rows || (rows && rows.length <= 0)) {
+            resolve([]);
+          } else {
+            let proms = [];
+            if (rows.length > 0) {
+              let dientichconlai = 0,
+                vitri = 1,
+                index = 0;
+              for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                let giadat, dientich, MDSD = row["kyHieuMucDich"];
+                if (row['dienTich']) {
+                  dientich = parseFloat(row['dienTich']);
+                  if (row["nhomDat"] === "NN") {
+                    let donGia = await this.select(`select ${row["nhomDonGia"]} from PhanVT_NN_GIA where soHieuToBanDo='${soTo}' and SoHieuThua='${soThua}' and MaPhuongXa='${phuongxa}' and ViTri=${vitri}`).then(async(selectRes) => {
+                      return await selectRes[0][row["nhomDonGia"]];
+                    })
+                    let item = {
+                      tenDayDu: row['tenDayDu'] || 'N/A',
+                      donGia: donGia ? parseFloat(donGia) : 0,
+                      viTri: vitri,
+                      dienTich: dientichconlai > 0 ? dientichconlai : dientich
+                    }
+                    results.push(item);
+                    if (dientichconlai > 0) {
+                      dientichconlai = 0;
+                      vitri++;
+                    }
+                  } else if (row["nhomDat"] == "PNN") {
+                    let duLieuPhanViTri = await this.query(`select ${row["nhomDonGia"]},viTri,Shape.STArea() as Area from PhanVT_PNN_GIA where soHieuToBanDo='${soTo}' and SoHieuThua='${soThua}' and MaPhuongXa='${phuongxa}'`).then(async(selectRes) => {
+                      return await selectRes.recordset;
+                    })
+                    let countVT = duLieuPhanViTri.length;
+                    if (countVT == 1) {
+                      let donGia = duLieuPhanViTri[0][row['nhomDonGia']];
+                      let item = {
+                        tenDayDu: row['tenDayDu'] || 'N/A',
+                        donGia: donGia ? parseFloat(donGia) : 0,
+                        viTri: vitri,
+                        dienTich: dientich
+                      }
+                      results.push(item);
+                    } else if (countVT == 2) {
+                      let vt = 1;
+                      for (const phanViTri of duLieuPhanViTri) {
+                        if (vt == 1) {
+                          let dientichShape = phanViTri['Area'];
+                          let donGia = phanViTri[row['nhomDonGia']];
+                          let item = {
+                            tenDayDu: row['tenDayDu'] || 'N/A',
+                            donGia: donGia ? parseFloat(donGia) : 0,
+                            viTri: vitri,
+                            dienTich: dientichShape < dientich ? dientichShape : dientich
+                          }
+                          results.push(item);
+                          if (dientichShape < dientich) {
+                            dientichconlai = dientich - dientichShape;
+                            vitri++;
+                            vt++;
+                          } else {
+                            dientichconlai = dientichShape - dientich;
+                          }
+                        } else {
+                          if (vitri == 2) {
+                            let donGia = phanViTri[row['nhomDonGia']];
+                            let item = {
+                              tenDayDu: row['tenDayDu'] || 'N/A',
+                              donGia: donGia ? parseFloat(donGia) : 0,
+                              viTri: vitri,
+                              dienTich: dientichconlai
+                            }
+                            results.push(item);
+                            dientichconlai = 0;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              resolve(results);
+            }
+
           }
         })
       }).catch(err => {

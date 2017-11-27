@@ -44,7 +44,7 @@ define([
           }
 
           let body = document.createElement('div');
-          let columns = ['Mục đích sử đụng đất hiện tại', 'Đơn giá', 'Diện tích', 'Mục đích sử dụng chuyển', 'Diện tích', 'Số năm sử dụng']
+          let columns = ['Mục đích sử đụng đất hiện tại', 'Đơn giá', 'Vị trí', 'Diện tích', 'Mục đích sử dụng chuyển', 'Diện tích', 'Số năm sử dụng']
           let table = bootstrap.table(columns);
           body.appendChild(table);
           let tbody = table.getElementsByTagName('tbody')[0];
@@ -52,14 +52,21 @@ define([
           notify.update({}, {
             'progress': 50
           });
-          $.post('/map/thuadat/chitiet', {
+          $.post('/map/thuadat/chuyenmucdich', {
               soTo: props.SoHieuToBanDo,
               soThua: props.SoHieuThua,
               phuongXa: props.MaPhuongXa,
               quanHuyen: props.MaQuanHuyen
             })
             .done((datas) => {
-              if (!datas) return;
+              if (!datas) {
+                notify.update({
+                  'type': 'info',
+                  'message': 'Không đủ dữ liệu để truy vấn',
+                  'progress': 90
+                });
+                return;
+              }
 
               for (let item of datas) {
                 let tr = document.createElement('tr');
@@ -211,7 +218,7 @@ define([
         delay: 20000
       })
       // let dataSource = null;
-      $.post('/map/thuadat/chitiet', {
+      $.post('/map/thuadat/xemgiadat', {
           soTo: props.SoHieuToBanDo,
           soThua: props.SoHieuThua,
           phuongXa: props.MaPhuongXa,
@@ -219,32 +226,18 @@ define([
         })
         .done((datas) => {
           if (!datas) return;
-          for (let item of datas) {
+          for (let item of datas.chiTiet) {
             let tr = document.createElement('tr');
             for (let key in item) {
               let value = item[key];
               let td = document.createElement('td');
-              if (value)
+              if (value != null || value != undefined)
                 td.innerText = !isNaN(value) ? value.format() : value;
               tr.appendChild(td);
             }
-
-            //muc dich chuyen
-            let donGia = item['donGia'] || 0,
-              vitri = item['viTri'],
-              dienTich = item['dienTich'] || 0,
-              thanhTien = 0;
-            donGia = parseFloat(donGia);
-            dienTich = parseFloat(dienTich);
-            thanhTien = donGia * dienTich;
-            total += thanhTien;
-
-            let tdThanhTien = document.createElement('td');
-            tdThanhTien.innerText = thanhTien.format() + ' VNĐ';
-            tr.appendChild(tdThanhTien);
             tbody.appendChild(tr);
           }
-          price.innerText = total.format() + ' VNĐ';
+          price.innerText = datas.tongTien.format() + ' VNĐ';
           notify.update({
             'type': 'success',
             'message': 'Truy vấn thành công',

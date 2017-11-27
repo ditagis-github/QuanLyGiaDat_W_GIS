@@ -154,11 +154,11 @@ require([
       position: position,
       locationFound: function (e) {
         let thuaDatLayer = map.getLayer('thuadat');
-        thuaDatLayer.getFeatureInfo(e.latlng).then(function(r){
-          if(!r)
-          $.notify({
-            message: 'Không tìm thấy thửa đất ở vị trí này...'
-          })
+        thuaDatLayer.getFeatureInfo(e.latlng).then(function (r) {
+          if (!r)
+            $.notify({
+              message: 'Không tìm thấy thửa đất ở vị trí này...'
+            })
         })
       }
     }).addTo(map);
@@ -180,10 +180,10 @@ require([
      * BOTTOM-RIGHT
      */
     var position = 'bottomright';
-    if (!isMobile)
-      TypeMap(map.layers, {
-        position: position
-      }).addTo(map);
+
+    TypeMap(map.layers, {
+      position: position
+    }).addTo(map);
 
     /**
      * END BOTTOM-RIGHT
@@ -194,9 +194,10 @@ require([
     var position = 'bottomleft';
 
     ///// Add legend control to the map
-    Legend({
-      position: position
-    }).addTo(map);
+    if (!isMobile)
+      Legend({
+        position: position
+      }).addTo(map);
 
     /**
      * BOTTOM - CENTER
