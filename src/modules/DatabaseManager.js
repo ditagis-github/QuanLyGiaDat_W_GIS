@@ -120,7 +120,7 @@ class DatabaseManager {
   }
   findStreet(text) {
     console.log('Tìm kiếm đường ' + text);
-    let sql = `SELECT TOP 10 * FROM (
+    let sql = `SELECT * FROM (
             SELECT OBJECTID,tu,den,TenConDuong,
             ROW_NUMBER() OVER (PARTITION BY TenConDuong ORDER BY OBJECTID) AS RowNumber
             from timduong 
@@ -261,54 +261,28 @@ class DatabaseManager {
               let MDSD = row["kyHieuMucDich"];
               if (row['dienTich']) {
                 dientichconlai = parseFloat(row['dienTich']);
-                if (row["nhomDat"] === "NN") {
-                  var duLieuPhanViTri = await this.query(`select ${row["nhomDonGia"]},viTri,Shape.STArea() as Area from PhanVT_NN_GIA where soHieuToBanDo='${soTo}' and SoHieuThua='${soThua}' and MaPhuongXa='${phuongxa}' order by vitri`).then(async(selectRes) => {
-                    return await selectRes.recordset;
-                  })
-                  for (const phanViTri of duLieuPhanViTri) {
-                    let dientichShape = Math.round(phanViTri['Area']*10)/10;
-                    if (Math.round(dientichconlai) > Math.round(dientichShape) || Math.round(dientichconlai) > 0) {
-                      var donGia = phanViTri[row['nhomDonGia']];
-                      let item = {
-                        tenDayDu: row['tenDayDu'] || 'N/A',
-                        donGia: donGia ? parseFloat(donGia) : 0,
-                        viTri: phanViTri['viTri'],
-                        dienTich: Math.round(dientichconlai) > Math.round(dientichShape)  ? dientichShape : dientichconlai
-                      }
-                      
-                      let thanhTien = item['donGia'] * item['dienTich'];
-                      item['thanhTien'] = thanhTien;
-                      results.chiTiet.push(item);
-                      results.tongTien += thanhTien;
+                var duLieuPhanViTri = await this.query(`select ${row["nhomDonGia"]},viTri,Shape.STArea() as Area from PhanVT_${row['nhomDat']}_GIA where soHieuToBanDo='${soTo}' and SoHieuThua='${soThua}' and MaPhuongXa='${phuongxa}' order by vitri`).then(async(selectRes) => {
+                  return await selectRes.recordset;
+                })
+                for (const phanViTri of duLieuPhanViTri) {
+                  let dientichShape = Math.round(phanViTri['Area'] * 10) / 10;
+                  if (Math.round(dientichconlai) > Math.round(dientichShape) || Math.round(dientichconlai) > 0) {
+                    var donGia = phanViTri[row['nhomDonGia']];
+                    let item = {
+                      tenDayDu: row['tenDayDu'] || 'N/A',
+                      donGia: donGia ? parseFloat(donGia) : 0,
+                      viTri: phanViTri['viTri'],
+                      dienTich: Math.round(dientichconlai) > Math.round(dientichShape) ? dientichShape : dientichconlai
+                    }
 
-                      if (Math.round(dientichconlai) > Math.round(dientichShape) ) {
-                        dientichconlai -= dientichShape;
-                      }else break;
-                    }
-                  }
-                } else if (row["nhomDat"] == "PNN") {
-                  var duLieuPhanViTri = await this.query(`select ${row["nhomDonGia"]},viTri,Shape.STArea() as Area from PhanVT_PNN_GIA where soHieuToBanDo='${soTo}' and SoHieuThua='${soThua}' and MaPhuongXa='${phuongxa}' order by vitri`).then(async(selectRes) => {
-                    return await selectRes.recordset;
-                  })
-                  for (const phanViTri of duLieuPhanViTri) {
-                    let dientichShape = Math.round(phanViTri['Area']*10)/10;
-                    if (Math.round(dientichconlai) > Math.round(dientichShape) || Math.round(dientichconlai) > 0) {
-                      var donGia = phanViTri[row['nhomDonGia']];
-                      let item = {
-                        tenDayDu: row['tenDayDu'] || 'N/A',
-                        donGia: donGia ? parseFloat(donGia) : 0,
-                        viTri: phanViTri['viTri'],
-                        dienTich: Math.round(dientichconlai) > Math.round(dientichShape)  ? dientichShape : dientichconlai
-                      }
-                      let thanhTien = item['donGia'] * item['dienTich'];
-                      item['thanhTien'] = thanhTien;
-                      results.chiTiet.push(item);
-                      results.tongTien += thanhTien;
-                      if (Math.round(dientichconlai) > Math.round(dientichShape) ) {
-                        dientichconlai -= dientichShape;
-                      }
-                      else break;
-                    }
+                    let thanhTien = item['donGia'] * item['dienTich'];
+                    item['thanhTien'] = thanhTien;
+                    results.chiTiet.push(item);
+                    results.tongTien += thanhTien;
+
+                    if (Math.round(dientichconlai) > Math.round(dientichShape)) {
+                      dientichconlai -= dientichShape;
+                    } else break;
                   }
                 }
               }
@@ -343,21 +317,21 @@ class DatabaseManager {
                     return await selectRes.recordset;
                   })
                   for (const phanViTri of duLieuPhanViTri) {
-                    let dientichShape = Math.round(phanViTri['Area']*10)/10;
+                    let dientichShape = Math.round(phanViTri['Area'] * 10) / 10;
                     if (Math.round(dientichconlai) > Math.round(dientichShape) || Math.round(dientichconlai) > 0) {
                       var donGia = phanViTri[row['nhomDonGia']];
                       let item = {
                         tenDayDu: row['tenDayDu'] || 'N/A',
                         donGia: donGia ? parseFloat(donGia) : 0,
                         viTri: phanViTri['viTri'],
-                        dienTich: Math.round(dientichconlai) > Math.round(dientichShape)  ? dientichShape : dientichconlai
+                        dienTich: Math.round(dientichconlai) > Math.round(dientichShape) ? dientichShape : dientichconlai
                       }
-                      
+
                       results.push(item);
 
-                      if (Math.round(dientichconlai) > Math.round(dientichShape) ) {
+                      if (Math.round(dientichconlai) > Math.round(dientichShape)) {
                         dientichconlai -= dientichShape;
-                      }else break;
+                      } else break;
                     }
                   }
                 } else if (row["nhomDat"] == "PNN") {
@@ -365,20 +339,19 @@ class DatabaseManager {
                     return await selectRes.recordset;
                   })
                   for (const phanViTri of duLieuPhanViTri) {
-                    let dientichShape = Math.round(phanViTri['Area']*10)/10;
+                    let dientichShape = Math.round(phanViTri['Area'] * 10) / 10;
                     if (Math.round(dientichconlai) > Math.round(dientichShape) || Math.round(dientichconlai) > 0) {
                       var donGia = phanViTri[row['nhomDonGia']];
                       let item = {
                         tenDayDu: row['tenDayDu'] || 'N/A',
                         donGia: donGia ? parseFloat(donGia) : 0,
                         viTri: phanViTri['viTri'],
-                        dienTich: Math.round(dientichconlai) > Math.round(dientichShape)  ? dientichShape : dientichconlai
+                        dienTich: Math.round(dientichconlai) > Math.round(dientichShape) ? dientichShape : dientichconlai
                       }
                       results.push(item);
-                      if (Math.round(dientichconlai) > Math.round(dientichShape) ) {
+                      if (Math.round(dientichconlai) > Math.round(dientichShape)) {
                         dientichconlai -= dientichShape;
-                      }
-                      else break;
+                      } else break;
                     }
                   }
                 }

@@ -68,7 +68,7 @@ define(['L', 'css!ditagis/Control/Locate.min.css', ], function (L) {
                 outsideMapBoundsMsg: "Bạn có vẻ đang nằm ngoài ranh giới của bản đồ"
             },
             locateOptions: {
-                maxZoom: Infinity,
+                maxZoom: 18,
                 watch: true // if you overwrite this, visualization cannot be updated
             }
         },

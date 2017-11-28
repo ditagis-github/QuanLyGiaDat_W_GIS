@@ -4,8 +4,13 @@ define([
 ], function (bootstrap) {
   class Popup {
     constructor(options) {
-      Number.prototype.format = function () {
-        return this.toFixed(6).replace(/\.?0*$/,'')
+      Number.prototype.format = function (flag) {
+        if(flag)
+        {
+          var re = '\\d(?=(\\d{' + 3 + '})+' + '$' + ')';
+          return this.toFixed(0).replace(new RegExp(re, 'g'), '$&.');
+        }
+        return this.toFixed(6).replace(/\.?0*$/,'').replace(/\./,',')
       }
     }
     chuyeDoiMucDich(props) {
@@ -43,7 +48,7 @@ define([
           }
 
           let body = document.createElement('div');
-          let columns = ['Mục đích sử đụng đất hiện tại', 'Đơn giá', 'Vị trí', 'Diện tích', 'Mục đích sử dụng chuyển', 'Diện tích', 'Số năm sử dụng']
+          let columns = ['Mục đích sử đụng đất hiện tại', 'Đơn giá (VNĐ)', 'Vị trí', 'Diện tích (㎡)', 'Mục đích sử dụng chuyển', 'Diện tích chuyển (㎡)', 'Số năm sử dụng']
           let table = bootstrap.table(columns);
           body.appendChild(table);
           let tbody = table.getElementsByTagName('tbody')[0];
@@ -73,7 +78,7 @@ define([
                   let value = item[key];
                   let td = document.createElement('td');
                   if (value)
-                    td.innerText = !isNaN(value) ? value.format() : value;
+                    td.innerText = !isNaN(value) ? key==='dienTich'?value.format():value.format(true) : value;
                   tr.appendChild(td);
                 }
 
@@ -161,7 +166,7 @@ define([
                 }
               }
             }
-            price.innerText = total.format() + ' VNĐ';
+            price.innerText = total.format(true) + ' VNĐ';
           })
           let btnClose = document.createElement('button');
           btnClose.type = 'button';
@@ -187,7 +192,7 @@ define([
       let that = this;
       let total = 0;
       let body = document.createElement('div');
-      let columns = ['Mục đích sử đụng đất', 'Đơn giá', 'Vị trí', 'Diện tích', 'Thành tiền']
+      let columns = ['Mục đích sử đụng đất', 'Đơn giá (VNĐ)', 'Vị trí', 'Diện tích (㎡)', 'Thành tiền (VNĐ)']
       let table = bootstrap.table(columns);
       body.appendChild(table);
       let tbody = table.getElementsByTagName('tbody')[0];
@@ -231,12 +236,12 @@ define([
               let value = item[key];
               let td = document.createElement('td');
               if (value != null || value != undefined)
-                td.innerText = !isNaN(value) ? value.format() : value;
+                td.innerText = !isNaN(value) ? key==='dienTich'?value.format():value.format(true) : value;
               tr.appendChild(td);
             }
             tbody.appendChild(tr);
           }
-          price.innerText = datas.tongTien.format() + ' VNĐ';
+          price.innerText = datas.tongTien.format(true) + ' VNĐ';
           notify.update({
             'type': 'success',
             'message': 'Truy vấn thành công',
