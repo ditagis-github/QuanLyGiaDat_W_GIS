@@ -68,29 +68,31 @@ require([
       bases['binhduong'] = layerGroup;
     }
     var satellite = L.tileLayer(
-      'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+      // 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         transparent: true,
         format: 'image/png',
         layers: 'satellite'
       });
-    var satelliteLabel = L.tileLayer(
-      'http://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-        transparent: true,
-        format: 'image/png',
-        layers: 'satellite'
-      });
+    // var satelliteLabel = L.tileLayer(
+    //   'http://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+    //   // 'http://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+    //     transparent: true,
+    //     format: 'image/png',
+    //     layers: 'satellite'
+    //   });
     satellite.id = 'satellite'
 
     satellite.on('add remove', (evt) => {
       const type = evt.type;
       if (type === 'add') {
-        satelliteLabel.addTo(map);
+        // satelliteLabel.addTo(map);
         satellite.bringToBack(); //chuyển nó xuống tầng dưới, tại vì nó là basemap
         //set độ mờ cho layer là 0.7
         if (map.layers)
           map.layers.map((layer) => layer.setOpacity(0.7));
       } else {
-        map.removeLayer(satelliteLabel);
+        // map.removeLayer(satelliteLabel);
         if (map.layers)
           map.layers.map((layer) => layer.setOpacity(1));
       }
